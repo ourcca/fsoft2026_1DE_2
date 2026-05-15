@@ -8,6 +8,7 @@ Created on: 15/05/2026
 
 #include "model/Clinic.h"
 #include "dto/AnimalInDTO.h"
+#include "dto/AnimalOutDTO.h"
 
 class AnimalService {
 private:
@@ -16,6 +17,7 @@ private:
 public:
     AnimalService(Clinic& clinic);
     void addAnimal(const AnimalInDTO& dto) const;
+    std::vector<AnimalOutDTO> getAllAnimals() const;
 };
 
 #endif

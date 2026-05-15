@@ -4,8 +4,10 @@ Controller.cpp
 Created on: 15/05/2026
 */
 #include "controllers/Controller.h"
+#include "dto/AnimalOutDTO.h"
 
 #include <iostream>
+#include <vector>
 
 Controller::Controller() : animalService(clinic) {}
 
@@ -52,9 +54,11 @@ void Controller::runAnimals() const {
                 AnimalView::showAnimalCreated();
                 break;
             }
-            case 2:
-                std::cout << "Listar animais ainda nao implementado.\n";
+            case 2: {
+                std::vector<AnimalOutDTO> animals = animalService.getAllAnimals();
+                AnimalView::printAnimals(animals);
                 break;
+            }
             case 0:
                 break;
             default:

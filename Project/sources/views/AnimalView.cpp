@@ -34,3 +34,22 @@ AnimalInDTO AnimalView::getAnimal() {
 void AnimalView::showAnimalCreated() {
     std::cout << "Animal registado com sucesso.\n";
 }
+
+void AnimalView::printAnimals(const std::vector<AnimalOutDTO>& animals) {
+    if (animals.empty()) {
+        std::cout << "Nao existem animais registados.\n";
+        return;
+    }
+
+    std::cout << "\n========== Lista de Animais ==========\n";
+
+    for (const AnimalOutDTO& animal : animals) {
+        std::cout << "ID: " << animal.id << "\n";
+        std::cout << "Nome: " << animal.name << "\n";
+        std::cout << "Especie: " << animal.species << "\n";
+        std::cout << "Raca: " << animal.breed << "\n";
+        std::cout << "Peso: " << animal.weight << "\n";
+        std::cout << "Idade: " << animal.age << "\n";
+        std::cout << "--------------------------------------\n";
+    }
+}
