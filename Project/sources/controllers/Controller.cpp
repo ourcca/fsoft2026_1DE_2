@@ -1,6 +1,13 @@
+/*
+Controller.cpp
+
+Created on: 15/05/2026
+*/
 #include "controllers/Controller.h"
 
 #include <iostream>
+
+Controller::Controller() : animalService(clinic) {}
 
 void Controller::run() {
     int option;
@@ -10,7 +17,7 @@ void Controller::run() {
 
         switch (option) {
             case 1:
-                std::cout << "Menu de Animais ainda nao implementado.\n";
+                runAnimals();
                 break;
             case 2:
                 std::cout << "Menu de Veterinarios ainda nao implementado.\n";
@@ -23,6 +30,32 @@ void Controller::run() {
                 break;
             case 0:
                 view.showExitMessage();
+                break;
+            default:
+                std::cout << "Opcao invalida.\n";
+                break;
+        }
+
+    } while (option != 0);
+}
+
+void Controller::runAnimals() const {
+    int option;
+
+    do {
+        option = AnimalView::menu();
+
+        switch (option) {
+            case 1: {
+                AnimalInDTO dto = AnimalView::getAnimal();
+                animalService.addAnimal(dto);
+                AnimalView::showAnimalCreated();
+                break;
+            }
+            case 2:
+                std::cout << "Listar animais ainda nao implementado.\n";
+                break;
+            case 0:
                 break;
             default:
                 std::cout << "Opcao invalida.\n";
