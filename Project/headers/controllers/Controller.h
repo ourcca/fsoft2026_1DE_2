@@ -12,6 +12,8 @@ Created on: 15/05/2026
 #include "services/AnimalService.h"
 #include "views/VeterinarianView.h"
 #include "services/VeterinarianService.h"
+#include "views/ServiceView.h"
+#include "services/ServiceService.h"
 
 class Controller {
 private:
@@ -21,9 +23,12 @@ private:
     AnimalService animalService;
     VeterinarianView veterinarianView;
     VeterinarianService veterinarianService;
+    ServiceView serviceView;
+    ServiceService serviceService;
 
     void runAnimals() const;
     void runVeterinarians();
+    void runServices();
 
 public:
     Controller();

@@ -12,8 +12,10 @@ Created on: 15/05/2026
 #include <iostream>
 #include <vector>
 
-Controller::Controller() : animalService(clinic),
-                            veterinarianService(clinic) {}
+Controller::Controller() :
+                            animalService(clinic),
+                            veterinarianService(clinic),
+                            serviceService(clinic){}
 
 void Controller::run() {
     int option;
@@ -29,7 +31,7 @@ void Controller::run() {
                 runVeterinarians();
                 break;
             case 3:
-                std::cout << "Menu de Servicos ainda nao implementado.\n";
+                runServices();
                 break;
             case 4:
                 std::cout << "Menu de Prescricoes ainda nao implementado.\n";
@@ -89,6 +91,33 @@ void Controller::runVeterinarians() {
             case 2: {
                 std::vector<VeterinarianOutDTO> veterinarians = veterinarianService.getAllVeterinarians();
                 veterinarianView.printVeterinarians(veterinarians);
+                break;
+            }
+            case 0:
+                break;
+            default:
+                std::cout << "Opcao invalida.\n";
+                break;
+        }
+
+    } while (option != 0);
+}
+void Controller::runServices() {
+    int option;
+
+    do {
+        option = serviceView.menu();
+
+        switch (option) {
+            case 1: {
+                ServiceInDTO dto = serviceView.getService();
+                serviceService.addService(dto);
+                serviceView.showServiceCreated();
+                break;
+            }
+            case 2: {
+                std::vector<ServiceOutDTO> services = serviceService.getAllServices();
+                serviceView.printServices(services);
                 break;
             }
             case 0:

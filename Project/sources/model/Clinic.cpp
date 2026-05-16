@@ -12,3 +12,7 @@ AnimalContainer& Clinic::getAnimalContainer() {
 VeterinarianContainer& Clinic::getVeterinarianContainer() {
     return veterinarians;
 }
+
+ServiceContainer& Clinic::getServiceContainer() {
+    return services;
+}
