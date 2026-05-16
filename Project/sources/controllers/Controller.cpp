@@ -7,6 +7,8 @@ Created on: 15/05/2026
 #include "dto/AnimalOutDTO.h"
 #include "dto/VeterinarianInDTO.h"
 #include "dto/VeterinarianOutDTO.h"
+#include "dto/PrescriptionInDTO.h"
+#include "dto/PrescriptionOutDTO.h"
 
 
 #include <iostream>
@@ -15,7 +17,8 @@ Created on: 15/05/2026
 Controller::Controller() :
                             animalService(clinic),
                             veterinarianService(clinic),
-                            serviceService(clinic){}
+                            serviceService(clinic),
+                            prescriptionService(clinic) {}
 
 void Controller::run() {
     int option;
@@ -34,7 +37,7 @@ void Controller::run() {
                 runServices();
                 break;
             case 4:
-                std::cout << "Menu de Prescricoes ainda nao implementado.\n";
+                runPrescriptions();
                 break;
             case 0:
                 view.showExitMessage();
@@ -130,3 +133,32 @@ void Controller::runServices() {
     } while (option != 0);
 }
 
+void Controller::runPrescriptions() {
+    int option;
+
+    do {
+        option = prescriptionView.menu();
+
+        switch (option) {
+            case 1: {
+                PrescriptionInDTO dto = prescriptionView.getPrescription();
+                prescriptionService.addPrescription(dto);
+                prescriptionView.showPrescriptionCreated();
+                break;
+            }
+            case 2: {
+                std::vector<PrescriptionOutDTO> prescriptions =
+                    prescriptionService.getAllPrescriptions();
+
+                prescriptionView.printPrescriptions(prescriptions);
+                break;
+            }
+            case 0:
+                break;
+            default:
+                std::cout << "Opcao invalida.\n";
+                break;
+        }
+
+    } while (option != 0);
+}
