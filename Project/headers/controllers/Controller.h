@@ -10,6 +10,8 @@ Created on: 15/05/2026
 #include "views/AnimalView.h"
 #include "model/Clinic.h"
 #include "services/AnimalService.h"
+#include "views/VeterinarianView.h"
+#include "services/VeterinarianService.h"
 
 class Controller {
 private:
@@ -17,8 +19,11 @@ private:
     View view;
     AnimalView animalView;
     AnimalService animalService;
+    VeterinarianView veterinarianView;
+    VeterinarianService veterinarianService;
 
     void runAnimals() const;
+    void runVeterinarians();
 
 public:
     Controller();

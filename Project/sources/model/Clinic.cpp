@@ -8,3 +8,7 @@ Created on: 15/05/2026
 AnimalContainer& Clinic::getAnimalContainer() {
     return animals;
 }
+
+VeterinarianContainer& Clinic::getVeterinarianContainer() {
+    return veterinarians;
+}

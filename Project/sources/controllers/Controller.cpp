@@ -5,11 +5,15 @@ Created on: 15/05/2026
 */
 #include "controllers/Controller.h"
 #include "dto/AnimalOutDTO.h"
+#include "dto/VeterinarianInDTO.h"
+#include "dto/VeterinarianOutDTO.h"
+
 
 #include <iostream>
 #include <vector>
 
-Controller::Controller() : animalService(clinic) {}
+Controller::Controller() : animalService(clinic),
+                            veterinarianService(clinic) {}
 
 void Controller::run() {
     int option;
@@ -22,7 +26,7 @@ void Controller::run() {
                 runAnimals();
                 break;
             case 2:
-                std::cout << "Menu de Veterinarios ainda nao implementado.\n";
+                runVeterinarians();
                 break;
             case 3:
                 std::cout << "Menu de Servicos ainda nao implementado.\n";
@@ -68,3 +72,32 @@ void Controller::runAnimals() const {
 
     } while (option != 0);
 }
+
+void Controller::runVeterinarians() {
+    int option;
+
+    do {
+        option = veterinarianView.menu();
+
+        switch (option) {
+            case 1: {
+                VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                veterinarianService.addVeterinarian(dto);
+                veterinarianView.showVeterinarianCreated();
+                break;
+            }
+            case 2: {
+                std::vector<VeterinarianOutDTO> veterinarians = veterinarianService.getAllVeterinarians();
+                veterinarianView.printVeterinarians(veterinarians);
+                break;
+            }
+            case 0:
+                break;
+            default:
+                std::cout << "Opcao invalida.\n";
+                break;
+        }
+
+    } while (option != 0);
+}
+

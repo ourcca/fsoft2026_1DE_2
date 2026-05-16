@@ -7,13 +7,16 @@ Created on: 15/05/2026
 #define HEADERS_MODEL_CLINIC_H_
 
 #include "model/AnimalContainer.h"
+#include "model/VeterinarianContainer.h"
 
 class Clinic {
 private:
     AnimalContainer animals;
+    VeterinarianContainer veterinarians;
 
 public:
     AnimalContainer& getAnimalContainer();
+    VeterinarianContainer& getVeterinarianContainer();
 };
 
 #endif
