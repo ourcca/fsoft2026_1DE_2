@@ -108,6 +108,16 @@ void Controller::runVeterinarians() {
                 veterinarianView.printVeterinarians(veterinarians);
                 break;
             }
+            case 3: {
+                int veterinarianId = veterinarianView.getVeterinarianId();
+
+                std::vector<ServiceOutDTO> services =
+                    serviceService.getServicesByVeterinarianId(veterinarianId);
+
+                serviceView.printServices(services);
+
+                break;
+            }
             case 0:
                 break;
             default:

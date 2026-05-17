@@ -16,6 +16,7 @@ public:
     int menu();
 
     VeterinarianInDTO getVeterinarian();
+    int getVeterinarianId();
 
     void showVeterinarianCreated();
     void printVeterinarians(const std::vector<VeterinarianOutDTO>& veterinarians);

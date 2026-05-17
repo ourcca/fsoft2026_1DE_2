@@ -19,3 +19,17 @@ std::vector<ServiceOutDTO> ServiceService::getAllServices() {
     std::vector<Service>& services = clinic.getServiceContainer().getAll();
     return ServiceMapper::toDTOList(services);
 }
+
+std::vector<ServiceOutDTO> ServiceService::getServicesByVeterinarianId(int veterinarianId) {
+    std::vector<ServiceOutDTO> result;
+
+    std::vector<Service>& services = clinic.getServiceContainer().getAll();
+
+    for (const Service& service : services) {
+        if (service.getVeterinarianId() == veterinarianId) {
+            result.push_back(ServiceMapper::toDTO(service));
+        }
+    }
+
+    return result;
+}

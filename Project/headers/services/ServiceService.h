@@ -21,6 +21,7 @@ public:
 
     void addService(const ServiceInDTO& dto);
     std::vector<ServiceOutDTO> getAllServices();
+    std::vector<ServiceOutDTO> getServicesByVeterinarianId(int veterinarianId);
 };
 
 #endif

@@ -13,6 +13,7 @@ int VeterinarianView::menu() {
     std::cout << "\n========== Gestao de Veterinarios ==========\n";
     std::cout << "1. Registar Veterinario\n";
     std::cout << "2. Listar Veterinarios\n";
+    std::cout << "3. Consultar Servicos de Veterinario\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");
@@ -48,4 +49,8 @@ void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>&
         std::cout << "Especialidade: " << veterinarian.specialty << "\n";
         std::cout << "------------------------------------------\n";
     }
+}
+
+int VeterinarianView::getVeterinarianId() {
+    return Utils::getNumber("ID do veterinario: ");
 }
