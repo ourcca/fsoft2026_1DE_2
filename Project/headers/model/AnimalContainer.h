@@ -16,6 +16,7 @@ class  AnimalContainer {
     public:
         void add(const Animal& animal);
         void remove(int id);
+        Animal* get(int id);
         std::vector<Animal>& getAll();
 };
 

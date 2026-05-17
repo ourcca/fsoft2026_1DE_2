@@ -20,6 +20,12 @@ public:
     static void showAnimalCreated();
 
     static void printAnimals(const std::vector<AnimalOutDTO>& animals);
+
+    int getAnimalId();
+
+    void printAnimal(const AnimalOutDTO& animal);
+
+    void showAnimalNotFound();
 };
 
 #endif

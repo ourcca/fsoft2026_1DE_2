@@ -50,7 +50,7 @@ void Controller::run() {
     } while (option != 0);
 }
 
-void Controller::runAnimals() const {
+void Controller::runAnimals() {
     int option;
 
     do {
@@ -66,6 +66,18 @@ void Controller::runAnimals() const {
             case 2: {
                 std::vector<AnimalOutDTO> animals = animalService.getAllAnimals();
                 AnimalView::printAnimals(animals);
+                break;
+            }
+            case 3: {
+                int id = animalView.getAnimalId();
+                AnimalOutDTO animal = animalService.getAnimalById(id);
+
+                if (animal.id == -1) {
+                    animalView.showAnimalNotFound();
+                } else {
+                    animalView.printAnimal(animal);
+                }
+
                 break;
             }
             case 0:

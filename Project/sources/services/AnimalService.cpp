@@ -18,3 +18,13 @@ std::vector<AnimalOutDTO> AnimalService::getAllAnimals() const {
     std::vector<Animal>& animals = clinic.getAnimalContainer().getAll();
     return AnimalMapper::toDTOList(animals);
 }
+
+AnimalOutDTO AnimalService::getAnimalById(int id) {
+    Animal* animal = clinic.getAnimalContainer().get(id);
+
+    if (animal == nullptr) {
+        return AnimalOutDTO{-1, "", "", "", 0, 0};
+    }
+
+    return AnimalMapper::toDTO(*animal);
+}

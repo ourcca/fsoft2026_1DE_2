@@ -18,6 +18,7 @@ public:
     AnimalService(Clinic& clinic);
     void addAnimal(const AnimalInDTO& dto) const;
     std::vector<AnimalOutDTO> getAllAnimals() const;
+    AnimalOutDTO getAnimalById(int id);
 };
 
 #endif

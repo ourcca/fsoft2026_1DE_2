@@ -12,6 +12,7 @@ int AnimalView::menu() {
     std::cout << "\n========== Gestao de Animais ==========\n";
     std::cout << "1. Registar Animal\n";
     std::cout << "2. Listar Animais\n";
+    std::cout << "3. Consultar Animal por ID\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");
@@ -52,4 +53,23 @@ void AnimalView::printAnimals(const std::vector<AnimalOutDTO>& animals) {
         std::cout << "Idade: " << animal.age << "\n";
         std::cout << "--------------------------------------\n";
     }
+}
+
+int AnimalView::getAnimalId() {
+    return Utils::getNumber("ID do animal: ");
+}
+
+void AnimalView::printAnimal(const AnimalOutDTO& animal) {
+    std::cout << "\n========== Dados do Animal ==========\n";
+    std::cout << "ID: " << animal.id << "\n";
+    std::cout << "Nome: " << animal.name << "\n";
+    std::cout << "Especie: " << animal.species << "\n";
+    std::cout << "Raca: " << animal.breed << "\n";
+    std::cout << "Peso: " << animal.weight << "\n";
+    std::cout << "Idade: " << animal.age << "\n";
+    std::cout << "------------------------------------\n";
+}
+
+void AnimalView::showAnimalNotFound() {
+    std::cout << "Animal nao encontrado.\n";
 }

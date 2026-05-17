@@ -31,7 +31,7 @@ private:
     PrescriptionService prescriptionService;
 
 
-    void runAnimals() const;
+    void runAnimals();
     void runVeterinarians();
     void runServices();
     void runPrescriptions();

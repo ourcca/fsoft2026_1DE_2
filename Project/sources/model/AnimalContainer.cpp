@@ -30,3 +30,13 @@ void AnimalContainer::remove(int id) {
 std::vector<Animal>& AnimalContainer::getAll() {
     return animals;
 }
+
+Animal* AnimalContainer::get(int id) {
+    auto it = findByID(id);
+
+    if (it != animals.end()) {
+        return &(*it);
+    }
+
+    return nullptr;
+}
