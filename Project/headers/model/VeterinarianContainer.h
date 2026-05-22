@@ -16,6 +16,7 @@ class VeterinarianContainer {
     public:
         void add(const Veterinarian& veterinarian);
         void remove(int id);
+        Veterinarian* get(int id);
         std::vector<Veterinarian>& getAll();
 };
 

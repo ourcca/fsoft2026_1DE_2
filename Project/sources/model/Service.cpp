@@ -6,14 +6,14 @@ Created on: 16/05/2026
 #include "model/Service.h"
 
 Service::Service(int id, std::string type, float cost, std::string date, std::string time,
-                 int animalId, int veterinarianId) {
+                 Animal* animal, Veterinarian* veterinarian) {
     this->id = id;
     this->type = type;
     this->cost = cost;
     this->date = date;
     this->time = time;
-    this->animalId = animalId;
-    this->veterinarianId = veterinarianId;
+    this->animal = animal;
+    this->veterinarian = veterinarian;
 }
 
 Service::Service(const Service& service) {
@@ -22,8 +22,8 @@ Service::Service(const Service& service) {
     this->cost = service.cost;
     this->date = service.date;
     this->time = service.time;
-    this->animalId = service.animalId;
-    this->veterinarianId = service.veterinarianId;
+    this->animal = service.animal;
+    this->veterinarian = service.veterinarian;
 }
 
 void Service::setId(int id) {
@@ -46,12 +46,12 @@ void Service::setTime(std::string time) {
     this->time = time;
 }
 
-void Service::setAnimalId(int animalId) {
-    this->animalId = animalId;
+void Service::setAnimal(Animal*animal) {
+    this->animal = animal;
 }
 
-void Service::setVeterinarianId(int veterinarianId) {
-    this->veterinarianId = veterinarianId;
+void Service::setVeterinarian(Veterinarian*veterinarian) {
+    this->veterinarian = veterinarian;
 }
 
 const int& Service::getId() const {
@@ -74,14 +74,13 @@ const std::string& Service::getTime() const {
     return this->time;
 }
 
-const int& Service::getAnimalId() const {
-    return this->animalId;
+Animal* Service::getAnimal() const {
+    return this->animal;
 }
 
-const int& Service::getVeterinarianId() const {
-    return this->veterinarianId;
+Veterinarian* Service::getVeterinarian() const {
+    return this->veterinarian;
 }
-
 bool Service::operator==(const Service& obj) const {
     return this->id == obj.id;
 }

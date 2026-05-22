@@ -13,8 +13,8 @@ ServiceOutDTO ServiceMapper::toDTO(const Service& service) {
     dto.cost = service.getCost();
     dto.date = service.getDate();
     dto.time = service.getTime();
-    dto.animalId = service.getAnimalId();
-    dto.veterinarianId = service.getVeterinarianId();
+    dto.animalId = service.getAnimal()->getId();
+    dto.veterinarianId = service.getVeterinarian()->getId();
 
     return dto;
 }

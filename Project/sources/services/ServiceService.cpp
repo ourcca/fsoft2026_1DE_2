@@ -11,7 +11,14 @@ Created on: 16/05/2026
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
 
 void ServiceService::addService(const ServiceInDTO& dto) {
-    Service service(dto.id, dto.type, dto.cost, dto.date, dto.time, dto.animalId, dto.veterinarianId);
+    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
+
+    if (animal == nullptr || veterinarian == nullptr) {
+        return;
+    }
+
+    Service service(dto.id, dto.type, dto.cost, dto.date, dto.time, animal, veterinarian);
     clinic.getServiceContainer().add(service);
 }
 
@@ -26,9 +33,10 @@ std::vector<ServiceOutDTO> ServiceService::getServicesByVeterinarianId(int veter
     std::vector<Service>& services = clinic.getServiceContainer().getAll();
 
     for (const Service& service : services) {
-        if (service.getVeterinarianId() == veterinarianId) {
+        if (service.getVeterinarian() != nullptr &&
+            service.getVeterinarian()->getId() == veterinarianId) {
             result.push_back(ServiceMapper::toDTO(service));
-        }
+            }
     }
 
     return result;

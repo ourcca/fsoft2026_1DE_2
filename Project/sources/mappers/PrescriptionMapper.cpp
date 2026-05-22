@@ -12,8 +12,8 @@ PrescriptionOutDTO PrescriptionMapper::toDTO(const Prescription& prescription) {
     dto.medication = prescription.getMedication();
     dto.quantity = prescription.getQuantity();
     dto.duration = prescription.getDuration();
-    dto.animalId = prescription.getAnimalId();
-    dto.veterinarianId = prescription.getVeterinarianId();
+    dto.animalId = prescription.getAnimal()->getId();
+    dto.veterinarianId = prescription.getVeterinarian()->getId();
 
     return dto;
 }

@@ -7,6 +7,8 @@ Created on: 16/05/2026
 #define HEADERS_MODEL_SERVICE_H_
 
 #include <string>
+#include "model/Animal.h"
+#include "model/Veterinarian.h"
 
 class Service {
 private:
@@ -15,12 +17,12 @@ private:
     float cost{};
     std::string date{};
     std::string time{};
-    int animalId{};
-    int veterinarianId{};
+    Animal* animal{};
+    Veterinarian* veterinarian{};
 
 public:
     Service(int id, std::string type, float cost, std::string date, std::string time,
-            int animalId, int veterinarianId);
+        Animal* animal, Veterinarian* veterinarian);
 
     Service(const Service& service);
     ~Service() = default;
@@ -30,16 +32,16 @@ public:
     void setCost(float cost);
     void setDate(std::string date);
     void setTime(std::string time);
-    void setAnimalId(int animalId);
-    void setVeterinarianId(int veterinarianId);
+    void setAnimal(Animal* animal);
+    void setVeterinarian(Veterinarian* veterinarian);
 
     const int& getId() const;
     const std::string& getType() const;
     const float& getCost() const;
     const std::string& getDate() const;
     const std::string& getTime() const;
-    const int& getAnimalId() const;
-    const int& getVeterinarianId() const;
+    Animal* getAnimal() const;
+    Veterinarian* getVeterinarian() const;
 
     bool operator==(const Service& obj) const;
 };

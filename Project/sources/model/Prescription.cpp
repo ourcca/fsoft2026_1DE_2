@@ -5,13 +5,13 @@ Created on: 16/05/2026
 */
 #include "model/Prescription.h"
 
-Prescription::Prescription(int id, std::string medication, std::string quantity, std::string duration, int animalId, int veterinarianId) {
+Prescription::Prescription(int id, std::string medication, std::string quantity, std::string duration, Animal* animal, Veterinarian* veterinarian) {
     this->id = id;
     this->medication = medication;
     this->quantity = quantity;
     this->duration = duration;
-    this->animalId = animalId;
-    this->veterinarianId = veterinarianId;
+    this->animal = animal;
+    this->veterinarian = veterinarian;
 }
 
 Prescription::Prescription(const Prescription &prescription) {
@@ -19,8 +19,8 @@ Prescription::Prescription(const Prescription &prescription) {
     this->medication = prescription.medication;
     this->quantity = prescription.quantity;
     this->duration = prescription.duration;
-    this->animalId = prescription.animalId;
-    this->veterinarianId = prescription.veterinarianId;
+    this->animal = prescription.animal;
+    this->veterinarian = prescription.veterinarian;
 }
 
 void Prescription::setId(int id) {
@@ -39,14 +39,14 @@ void Prescription::setDuration(std::string duration) {
     this->duration = duration;
 }
 
-void Prescription::setAnimalId(int animalId) {
-    this->animalId = animalId;
+void Prescription::setAnimal(Animal* animal) {
+    this->animal = animal;
 }
 
-
-void Prescription::setVeterinarianId(int veterinarianId) {
-    this->veterinarianId = veterinarianId;
+void Prescription::setVeterinarian(Veterinarian* veterinarian) {
+    this->veterinarian = veterinarian;
 }
+
 
 
 const int& Prescription::getId() const {
@@ -65,12 +65,12 @@ const std::string& Prescription::getDuration() const {
     return this->duration;
 }
 
-const int& Prescription::getAnimalId() const {
-    return this->animalId;
+Animal* Prescription::getAnimal() const {
+    return this->animal;
 }
 
-const int& Prescription::getVeterinarianId() const {
-    return this->veterinarianId;
+Veterinarian* Prescription::getVeterinarian() const {
+    return this->veterinarian;
 }
 
 bool Prescription::operator==(const Prescription& obj) const {

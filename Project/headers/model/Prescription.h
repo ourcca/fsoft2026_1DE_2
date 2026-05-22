@@ -8,17 +8,20 @@ Created on: 16/05/2026
 
 #include <string>
 
+#include "model/Animal.h"
+#include "model/Veterinarian.h"
+
 class Prescription {
     private:
         int id{};
         std::string medication{};
         std::string quantity{};
         std::string duration{};
-        int animalId{};
-        int veterinarianId{};
+        Animal* animal{};
+        Veterinarian* veterinarian{};
 
     public:
-        Prescription(int id,std::string medication, std::string quantity, std::string duration, int animalId, int veterinarianId);
+        Prescription(int id,std::string medication, std::string quantity, std::string duration, Animal* animal, Veterinarian* veterinarian);
         Prescription(const Prescription& prescription);
         ~Prescription() = default;
 
@@ -26,15 +29,15 @@ class Prescription {
         void setMedication(std::string medication);
         void setQuantity(std::string quantity);
         void setDuration(std::string duration);
-        void setAnimalId(int animalId);
-        void setVeterinarianId(int veterinarianId);
+        void setAnimal(Animal* animal);
+        void setVeterinarian(Veterinarian* veterinarian);
 
         const int& getId() const;
         const std::string& getMedication() const;
         const std::string& getQuantity() const;
         const std::string& getDuration() const;
-        const int& getAnimalId() const;
-        const int& getVeterinarianId() const;
+        Animal* getAnimal() const;
+        Veterinarian* getVeterinarian() const;
 
     bool operator==(const Prescription& obj) const;
 };

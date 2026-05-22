@@ -27,6 +27,16 @@ void VeterinarianContainer::remove(int id) {
     }
 }
 
+Veterinarian* VeterinarianContainer::get(int id) {
+    auto it = findByID(id);
+
+    if (it != veterinarians.end()) {
+        return &(*it);
+    }
+
+    return nullptr;
+}
+
 std::vector<Veterinarian>& VeterinarianContainer::getAll() {
     return veterinarians;
 }
