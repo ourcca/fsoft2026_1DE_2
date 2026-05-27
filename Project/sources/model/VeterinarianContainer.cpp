@@ -40,3 +40,15 @@ Veterinarian* VeterinarianContainer::get(int id) {
 std::vector<Veterinarian>& VeterinarianContainer::getAll() {
     return veterinarians;
 }
+
+int VeterinarianContainer::getNextId() {
+    int maxId = 0;
+
+    for (const Veterinarian& veterinarian : veterinarians) {
+        if (veterinarian.getId() > maxId) {
+            maxId = veterinarian.getId();
+        }
+    }
+
+    return maxId + 1;
+}

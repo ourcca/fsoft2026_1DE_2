@@ -21,7 +21,6 @@ int ServiceView::menu() {
 ServiceInDTO ServiceView::getService() {
     ServiceInDTO dto{};
 
-    dto.id = Utils::getNumber("ID: ");
     dto.type = Utils::getString("Tipo de servico: ");
     dto.cost = static_cast<float>(Utils::getNumber("Custo: "));
     dto.date = Utils::getString("Data (dd/mm/aaaa): ");

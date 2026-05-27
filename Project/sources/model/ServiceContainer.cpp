@@ -40,3 +40,15 @@ Service* ServiceContainer::get(int id) {
 std::vector<Service>& ServiceContainer::getAll() {
     return services;
 }
+
+int ServiceContainer::getNextId() {
+    int maxId = 0;
+
+    for (const Service& service : services) {
+        if (service.getId() > maxId) {
+            maxId = service.getId();
+        }
+    }
+
+    return maxId + 1;
+}

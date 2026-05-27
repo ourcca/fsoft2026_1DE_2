@@ -18,7 +18,9 @@ void ServiceService::addService(const ServiceInDTO& dto) {
         return;
     }
 
-    Service service(dto.id, dto.type, dto.cost, dto.date, dto.time, animal, veterinarian);
+    int id = clinic.getServiceContainer().getNextId();
+
+    Service service(id, dto.type, dto.cost, dto.date, dto.time, animal, veterinarian);
     clinic.getServiceContainer().add(service);
 }
 

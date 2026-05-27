@@ -19,6 +19,7 @@ public:
     void remove(int id);
     Prescription* get(int id);
     std::vector<Prescription>& getAll();
+    int getNextId();
 
 };
 

@@ -22,7 +22,6 @@ int VeterinarianView::menu() {
 VeterinarianInDTO VeterinarianView::getVeterinarian() {
     VeterinarianInDTO dto{};
 
-    dto.id = Utils::getNumber("ID: ");
     dto.name = Utils::getString("Nome: ");
     dto.age = Utils::getNumber("Idade: ");
     dto.specialty = Utils::getString("Especialidade: ");

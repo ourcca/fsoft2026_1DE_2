@@ -40,3 +40,15 @@ Animal* AnimalContainer::get(int id) {
 
     return nullptr;
 }
+
+int AnimalContainer::getNextId() {
+    int maxId = 0;
+
+    for (const Animal& animal : animals) {
+        if (animal.getId() > maxId) {
+            maxId = animal.getId();
+        }
+    }
+
+    return maxId + 1;
+}

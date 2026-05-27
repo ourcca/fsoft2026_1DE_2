@@ -9,7 +9,6 @@ Created on: 16/05/2026
 #include <string>
 
 struct ServiceInDTO {
-    int id;
     std::string type;
     float cost;
     std::string date;

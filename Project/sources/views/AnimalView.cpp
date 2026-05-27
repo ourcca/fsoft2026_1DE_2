@@ -21,7 +21,6 @@ int AnimalView::menu() {
 AnimalInDTO AnimalView::getAnimal() {
     AnimalInDTO dto{};
 
-    dto.id = Utils::getNumber("ID: ");
     dto.name = Utils::getString("Nome: ");
     dto.species = Utils::getString("Especie: ");
     dto.breed = Utils::getString("Raca: ");

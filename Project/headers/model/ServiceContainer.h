@@ -20,6 +20,7 @@ public:
     void remove(int id);
     Service* get(int id);
     std::vector<Service>& getAll();
+    int getNextId();
 };
 
 #endif

@@ -40,3 +40,15 @@ Prescription* PrescriptionContainer::get(int id) {
 std::vector<Prescription>& PrescriptionContainer::getAll() {
     return prescriptions;
 }
+
+int PrescriptionContainer::getNextId() {
+    int maxId = 0;
+
+    for (const Prescription& prescription : prescriptions) {
+        if (prescription.getId() > maxId) {
+            maxId = prescription.getId();
+        }
+    }
+
+    return maxId + 1;
+}

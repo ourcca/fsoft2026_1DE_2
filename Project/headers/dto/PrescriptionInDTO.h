@@ -9,7 +9,6 @@ Created on: 16/05/2026
 #include <string>
 
 struct PrescriptionInDTO {
-    int id;
     std::string medication;
     std::string quantity;
     std::string duration;

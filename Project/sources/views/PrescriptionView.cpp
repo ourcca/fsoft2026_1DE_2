@@ -22,7 +22,6 @@ int PrescriptionView::menu() {
 PrescriptionInDTO PrescriptionView::getPrescription() {
     PrescriptionInDTO dto{};
 
-    dto.id = Utils::getNumber("ID: ");
     dto.medication = Utils::getString("Medicamento: ");
     dto.quantity = Utils::getString("Quantidade: ");
     dto.duration = Utils::getString("Duracao: ");

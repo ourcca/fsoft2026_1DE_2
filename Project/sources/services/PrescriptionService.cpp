@@ -20,8 +20,10 @@ void PrescriptionService::addPrescription(const PrescriptionInDTO& dto) {
         return;
     }
 
+    int id = clinic.getPrescriptionContainer().getNextId();
+
     Prescription prescription(
-        dto.id,
+        id,
         dto.medication,
         dto.quantity,
         dto.duration,

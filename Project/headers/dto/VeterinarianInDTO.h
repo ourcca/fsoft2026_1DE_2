@@ -9,7 +9,6 @@ Created on: 16/05/2026
 #include <string>
 
 struct VeterinarianInDTO {
-    int id;
     std::string name;
     int age;
     std::string specialty;

@@ -18,6 +18,7 @@ class VeterinarianContainer {
         void remove(int id);
         Veterinarian* get(int id);
         std::vector<Veterinarian>& getAll();
+        int getNextId();
 };
 
 #endif

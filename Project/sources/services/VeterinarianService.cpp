@@ -11,7 +11,8 @@ Created on: 16/05/2026
 VeterinarianService::VeterinarianService(Clinic& clinic) : clinic(clinic) {}
 
 void VeterinarianService::addVeterinarian(const VeterinarianInDTO& dto) {
-    Veterinarian veterinarian(dto.id, dto.name, dto.age, dto.specialty);
+    int id = clinic.getVeterinarianContainer().getNextId();
+    Veterinarian veterinarian(id, dto.name, dto.age, dto.specialty);
     clinic.getVeterinarianContainer().add(veterinarian);
 }
 

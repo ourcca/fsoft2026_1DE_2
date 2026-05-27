@@ -9,7 +9,6 @@ Created on: 15/05/2026
 #include <string>
 
 struct AnimalInDTO {
-    int id;
     std::string name;
     std::string species;
     std::string breed;
