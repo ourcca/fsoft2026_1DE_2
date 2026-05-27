@@ -213,7 +213,7 @@ Exemplo do menu de prescrições:
 | UC6 - Consultar Histórico Geral de Serviços | Parcialmente implementado | Atualmente é possível listar todos os serviços                              |
 | UC7 - Consultar Serviços de um Veterinário  | Implementado              | Consulta feita através do ID do veterinário introduzido na interface        |
 | UC8 - Emitir Prescrição                     | Implementado              | Falta melhorar validações e tratamento de erros                             |
-| UC9 - Consultar Prescrições                 | Parcialmente implementado | Atualmente é possível listar todas as prescrições; falta filtrar por animal |
+| UC9 - Consultar Prescrições                 | Implementado | Atualmente é possível listar todas as prescrições e de um animal específico |
 | UC10 - Consultar Animal                     | Implementado              | Consulta feita através do ID do animal introduzido na interface             |
 
 ---
