@@ -13,6 +13,7 @@ int PrescriptionView::menu() {
     std::cout << "\n========== Gestao de Prescricoes ==========\n";
     std::cout << "1. Emitir Prescricao\n";
     std::cout << "2. Listar Prescricoes\n";
+    std::cout << "3. Consultar Prescricoes de Animal\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");
@@ -52,4 +53,8 @@ void PrescriptionView::printPrescriptions(const std::vector<PrescriptionOutDTO>&
         std::cout << "ID Veterinario: " << prescription.veterinarianId << "\n";
         std::cout << "------------------------------------------\n";
     }
+}
+
+int PrescriptionView::getAnimalId() {
+    return Utils::getNumber("ID do animal: ");
 }

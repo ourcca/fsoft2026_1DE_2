@@ -21,6 +21,7 @@ public:
 
     void addPrescription(const PrescriptionInDTO& dto);
     std::vector<PrescriptionOutDTO> getAllPrescriptions();
+    std::vector<PrescriptionOutDTO> getPrescriptionsByAnimalId(int animalId);
 };
 
 #endif

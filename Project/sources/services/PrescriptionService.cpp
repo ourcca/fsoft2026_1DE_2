@@ -36,3 +36,24 @@ std::vector<PrescriptionOutDTO> PrescriptionService::getAllPrescriptions() {
     std::vector<Prescription>& prescriptions = clinic.getPrescriptionContainer().getAll();
     return PrescriptionMapper::toDTOList(prescriptions);
 }
+
+std::vector<PrescriptionOutDTO> PrescriptionService::getPrescriptionsByAnimalId(int animalId) {
+    std::vector<PrescriptionOutDTO> result;
+
+    Animal* animal = clinic.getAnimalContainer().get(animalId);
+
+    if (animal == nullptr) {
+        return result;
+    }
+
+    std::vector<Prescription>& prescriptions = clinic.getPrescriptionContainer().getAll();
+
+    for (const Prescription& prescription : prescriptions) {
+        if (prescription.getAnimal() != nullptr &&
+            prescription.getAnimal() == animal) {
+            result.push_back(PrescriptionMapper::toDTO(prescription));
+            }
+    }
+
+    return result;
+}

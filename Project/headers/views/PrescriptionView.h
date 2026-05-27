@@ -19,6 +19,7 @@ public:
 
     void showPrescriptionCreated();
     void printPrescriptions(const std::vector<PrescriptionOutDTO>& prescriptions);
+    int getAnimalId();
 };
 
 #endif

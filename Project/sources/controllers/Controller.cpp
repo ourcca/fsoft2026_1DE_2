@@ -175,6 +175,15 @@ void Controller::runPrescriptions() {
                 prescriptionView.printPrescriptions(prescriptions);
                 break;
             }
+            case 3: {
+                int animalId = prescriptionView.getAnimalId();
+
+                std::vector<PrescriptionOutDTO> prescriptions =
+                    prescriptionService.getPrescriptionsByAnimalId(animalId);
+
+                prescriptionView.printPrescriptions(prescriptions);
+                break;
+            }
             case 0:
                 break;
             default:
