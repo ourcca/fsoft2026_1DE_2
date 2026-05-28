@@ -9,6 +9,7 @@ Created on: 16/05/2026
 #include "model/Animal.h"
 #include "model/Veterinarian.h"
 #include "mappers/PrescriptionMapper.h"
+#include "exceptions/DataConsistencyException.h"
 
 PrescriptionService::PrescriptionService(Clinic& clinic) : clinic(clinic) {}
 
@@ -17,7 +18,7 @@ void PrescriptionService::addPrescription(const PrescriptionInDTO& dto) {
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
 
     if (animal == nullptr || veterinarian == nullptr) {
-        return;
+        throw DataConsistencyException("Animal ou veterinario nao existe.");
     }
 
     int id = clinic.getPrescriptionContainer().getNextId();

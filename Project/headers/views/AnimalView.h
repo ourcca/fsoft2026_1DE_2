@@ -15,11 +15,11 @@ class AnimalView {
 public:
     static int menu();
 
-    static AnimalInDTO getAnimal();
+    AnimalInDTO getAnimal();
 
-    static void showAnimalCreated();
+    void showAnimalCreated();
 
-    static void printAnimals(const std::vector<AnimalOutDTO>& animals);
+    void printAnimals(const std::vector<AnimalOutDTO>& animals);
 
     int getAnimalId();
 

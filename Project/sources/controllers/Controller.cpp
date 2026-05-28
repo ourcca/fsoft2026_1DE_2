@@ -12,6 +12,7 @@ Created on: 15/05/2026
 
 
 #include <iostream>
+#include <exception>
 #include <vector>
 
 Controller::Controller() :
@@ -58,14 +59,19 @@ void Controller::runAnimals() {
 
         switch (option) {
             case 1: {
-                AnimalInDTO dto = AnimalView::getAnimal();
-                animalService.addAnimal(dto);
-                AnimalView::showAnimalCreated();
+                try {
+                    AnimalInDTO dto = animalView.getAnimal();
+                    animalService.addAnimal(dto);
+                    animalView.showAnimalCreated();
+                } catch (const std::exception& e) {
+                    std::cout << e.what() << "\n";
+                }
+
                 break;
             }
             case 2: {
                 std::vector<AnimalOutDTO> animals = animalService.getAllAnimals();
-                AnimalView::printAnimals(animals);
+                animalView.printAnimals(animals);
                 break;
             }
             case 3: {
@@ -98,9 +104,14 @@ void Controller::runVeterinarians() {
 
         switch (option) {
             case 1: {
-                VeterinarianInDTO dto = veterinarianView.getVeterinarian();
-                veterinarianService.addVeterinarian(dto);
-                veterinarianView.showVeterinarianCreated();
+                try {
+                    VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                    veterinarianService.addVeterinarian(dto);
+                    veterinarianView.showVeterinarianCreated();
+                } catch (const std::exception& e) {
+                    std::cout << e.what() << "\n";
+                }
+
                 break;
             }
             case 2: {
@@ -135,9 +146,14 @@ void Controller::runServices() {
 
         switch (option) {
             case 1: {
-                ServiceInDTO dto = serviceView.getService();
-                serviceService.addService(dto);
-                serviceView.showServiceCreated();
+                try {
+                    ServiceInDTO dto = serviceView.getService();
+                    serviceService.addService(dto);
+                    serviceView.showServiceCreated();
+                } catch (const std::exception& e) {
+                    std::cout << e.what() << "\n";
+                }
+
                 break;
             }
             case 2: {
@@ -163,9 +179,14 @@ void Controller::runPrescriptions() {
 
         switch (option) {
             case 1: {
-                PrescriptionInDTO dto = prescriptionView.getPrescription();
-                prescriptionService.addPrescription(dto);
-                prescriptionView.showPrescriptionCreated();
+                try {
+                    PrescriptionInDTO dto = prescriptionView.getPrescription();
+                    prescriptionService.addPrescription(dto);
+                    prescriptionView.showPrescriptionCreated();
+                } catch (const std::exception& e) {
+                    std::cout << e.what() << "\n";
+                }
+
                 break;
             }
             case 2: {

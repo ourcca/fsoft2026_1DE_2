@@ -7,6 +7,7 @@ Created on: 16/05/2026
 
 #include "model/Service.h"
 #include "mappers/ServiceMapper.h"
+#include "exceptions/DataConsistencyException.h"
 
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
 
@@ -15,7 +16,7 @@ void ServiceService::addService(const ServiceInDTO& dto) {
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
 
     if (animal == nullptr || veterinarian == nullptr) {
-        return;
+        throw DataConsistencyException("Animal ou veterinario nao existe.");
     }
 
     int id = clinic.getServiceContainer().getNextId();
