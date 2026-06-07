@@ -12,4 +12,7 @@ file(GLOB_RECURSE SOURCES
 
 add_executable(VeterinaryClinic ${SOURCES}
         headers/exceptions/DataConsistencyException.h
-        sources/exceptions/DataConsistencyException.cpp)
+        sources/exceptions/DataConsistencyException.cpp
+        headers/model/Date.h
+        headers/model/Time.h
+        sources/model/Time.cpp)
