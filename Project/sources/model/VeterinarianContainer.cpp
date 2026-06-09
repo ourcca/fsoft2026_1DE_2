@@ -4,7 +4,7 @@ VeterinarianlContainer.cpp
     Created on: 16/05/2026
 */
 #include "model/VeterinarianContainer.h"
-
+#include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
 std::vector<Veterinarian>::iterator VeterinarianContainer::findByID(int id) {
@@ -16,6 +16,8 @@ std::vector<Veterinarian>::iterator VeterinarianContainer::findByID(int id) {
 }
 
 void VeterinarianContainer::add(const Veterinarian& veterinarian) {
+    if (get(veterinarian.getId()) != nullptr)
+        throw DuplicatedDataException("Veterinarian already exists.");
     veterinarians.push_back(veterinarian);
 }
 

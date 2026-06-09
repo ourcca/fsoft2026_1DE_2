@@ -1,11 +1,11 @@
 #include "model/Date.h"
+#include "exceptions/InvalidDataException.h"
 #include <chrono>
 #include <ctime>
+#include <cmath>
 #include <cstdlib>
 
-Date::Date()
-    :day(1), month(1),year(1900) { //Throw exception em vez deste fallback
-
+Date::Date() {
 }
 
 Date::Date(int day, int month, int year) {
@@ -42,15 +42,15 @@ bool Date::isValid(int day, int month, int year) {
 }
 
 void Date::setDate(int day, int month, int year) {
-    if (isValid(day, month, year)) {
-        this->day = day;
-        this->month = month;
-        this->year = year;
-    } else {
-        this->day = 1;
-        this->month = 1;
-        this->year = 2000;
+    if (!isValid(day, month, year))
+    {
+        throw InvalidDataException("Invalid date.");
     }
+
+    this->day = day;
+    this->month = month;
+    this->year = year;
+
 }
 
 void Date::getDate(int& day, int& month, int& year) const {
@@ -90,11 +90,10 @@ int Date::daysBetween(const Date& other) const
 {
     time_t t1 = this->toTimeT();
     time_t t2 = other.toTimeT();
+    double seconds = std::difftime(t1, t2);
 
-    return std::abs(
-        static_cast<int>(
-            (t1, t2) / (60 * 60 * 24)
-        )
+    return static_cast<int>(
+            std::abs(seconds) / (60 * 60 * 24)
     );
 }
 

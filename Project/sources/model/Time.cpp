@@ -2,6 +2,7 @@
 // Created by rodri on 07/06/2026.
 //
 #include "model/Time.h"
+#include "exceptions/InvalidDataException.h"
 
 Time::Time() : hour(0), minute(0) {}
 
@@ -15,13 +16,14 @@ bool Time::isValid(int hour, int minute) {
 }
 
 void Time::setTime(int hour, int minute) {
-    if (isValid(hour, minute)) {
-        this->hour = hour;
-        this->minute = minute;
-    } else {
-        this->hour = 0;
-        this->minute = 0;
+    if (!isValid(hour, minute))
+    {
+        throw InvalidDataException("Invalid time.");
     }
+
+    this->hour = hour;
+    this->minute = minute;
+
 }
 
 void Time::getTime(int& hour, int& minute) const {

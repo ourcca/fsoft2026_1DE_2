@@ -4,7 +4,7 @@ ServiceContainer.cpp
 Created on: 16/05/2026
 */
 #include "model/ServiceContainer.h"
-
+#include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
 std::vector<Service>::iterator ServiceContainer::findByID(int id) {
@@ -16,6 +16,8 @@ std::vector<Service>::iterator ServiceContainer::findByID(int id) {
 }
 
 void ServiceContainer::add(const Service& service) {
+    if (get(service.getId()) != nullptr)
+        throw DuplicatedDataException("Service already exists.");
     services.push_back(service);
 }
 

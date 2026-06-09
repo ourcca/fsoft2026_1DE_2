@@ -4,7 +4,7 @@ PrescriptionContainer.cpp
 Created on: 16/05/2026
 */
 #include "model/PrescriptionContainer.h"
-
+#include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
 std::vector<Prescription>::iterator PrescriptionContainer::findByID(int id) {
@@ -16,6 +16,8 @@ std::vector<Prescription>::iterator PrescriptionContainer::findByID(int id) {
 }
 
 void PrescriptionContainer::add(const Prescription& prescription) {
+    if (get(prescription.getId()) != nullptr)
+        throw DuplicatedDataException("Prescription already exists.");
     prescriptions.push_back(prescription);
 }
 

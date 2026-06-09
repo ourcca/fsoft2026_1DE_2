@@ -4,7 +4,7 @@ AnimalContainer.cpp
 Created on: 15/05/2026
  */
 #include "model/AnimalContainer.h"
-
+#include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
 std::vector<Animal>::iterator AnimalContainer::findByID(int id) {
@@ -16,6 +16,8 @@ std::vector<Animal>::iterator AnimalContainer::findByID(int id) {
 }
 
 void AnimalContainer::add(const Animal& animal) {
+    if (get(animal.getId()) != nullptr)
+        throw DuplicatedDataException("Animal already exists.");
     animals.push_back(animal);
 }
 
