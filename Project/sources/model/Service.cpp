@@ -5,7 +5,7 @@ Created on: 16/05/2026
 */
 #include "model/Service.h"
 
-Service::Service(int id, std::string type, float cost, std::string date, std::string time,
+Service::Service(int id, std::string type, float cost, Date date, Time time,
                  Animal* animal, Veterinarian* veterinarian) {
     this->id = id;
     this->type = type;
@@ -38,11 +38,11 @@ void Service::setCost(float cost) {
     this->cost = cost;
 }
 
-void Service::setDate(std::string date) {
+void Service::setDate(const Date& date) {
     this->date = date;
 }
 
-void Service::setTime(std::string time) {
+void Service::setTime(const Time& time) {
     this->time = time;
 }
 
@@ -66,11 +66,11 @@ const float& Service::getCost() const {
     return this->cost;
 }
 
-const std::string& Service::getDate() const {
+const Date& Service::getDate() const {
     return this->date;
 }
 
-const std::string& Service::getTime() const {
+const Time& Service::getTime() const {
     return this->time;
 }
 

@@ -3,11 +3,14 @@ ServiceService.cpp
 
 Created on: 16/05/2026
 */
+#include <cstdio>
 #include "services/ServiceService.h"
-
 #include "model/Service.h"
 #include "mappers/ServiceMapper.h"
 #include "exceptions/DataConsistencyException.h"
+#include "exceptions/InvalidDataException.h"
+#include "model/Date.h"
+#include "model/Time.h"
 
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
 
@@ -21,7 +24,21 @@ void ServiceService::addService(const ServiceInDTO& dto) {
 
     int id = clinic.getServiceContainer().getNextId();
 
-    Service service(id, dto.type, dto.cost, dto.date, dto.time, animal, veterinarian);
+    int day, month, year;
+    if (sscanf(dto.date.c_str(), "%d/%d/%d",
+           &day, &month, &year) != 3) {
+        throw InvalidDataException("Invalid date format.");
+    }
+    Date date(day, month, year);
+
+    int hour, minute;
+    if (sscanf(dto.time.c_str(), "%d:%d",
+        &hour, &minute) != 2) {
+        throw InvalidDataException("Invalid time format.");
+    }
+    Time time(hour, minute);
+
+    Service service(id, dto.type, dto.cost, date, time, animal, veterinarian);
     clinic.getServiceContainer().add(service);
 }
 

@@ -3,7 +3,10 @@ ServiceMapper.cpp
 
 Created on: 16/05/2026
 */
+#include <string>
 #include "mappers/ServiceMapper.h"
+#include "model/Date.h"
+#include "model/Time.h"
 
 ServiceOutDTO ServiceMapper::toDTO(const Service& service) {
     ServiceOutDTO dto{};
@@ -11,8 +14,18 @@ ServiceOutDTO ServiceMapper::toDTO(const Service& service) {
     dto.id = service.getId();
     dto.type = service.getType();
     dto.cost = service.getCost();
-    dto.date = service.getDate();
-    dto.time = service.getTime();
+
+    int day, month, year;
+    service.getDate().getDate(day, month, year);
+    dto.date = std::to_string(day) + "/" +
+           std::to_string(month) + "/" +
+           std::to_string(year);
+
+    int hour, minute;
+    service.getTime().getTime(hour, minute);
+    dto.time = std::to_string(hour) + ":" +
+               std::to_string(minute);
+
     dto.animalId = service.getAnimal()->getId();
     dto.veterinarianId = service.getVeterinarian()->getId();
 
