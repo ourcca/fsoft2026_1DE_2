@@ -57,40 +57,33 @@ void Controller::runAnimals() {
     do {
         option = AnimalView::menu();
 
-        switch (option) {
-            case 1: {
-                try {
+        try {
+            switch (option) {
+                case 1: {
                     AnimalInDTO dto = animalView.getAnimal();
                     animalService.addAnimal(dto);
                     animalView.showAnimalCreated();
-                } catch (const std::exception& e) {
-                    std::cout << e.what() << "\n";
+                    break;
                 }
-
-                break;
-            }
-            case 2: {
-                std::vector<AnimalOutDTO> animals = animalService.getAllAnimals();
-                animalView.printAnimals(animals);
-                break;
-            }
-            case 3: {
-                int id = animalView.getAnimalId();
-                AnimalOutDTO animal = animalService.getAnimalById(id);
-
-                if (animal.id == -1) {
-                    animalView.showAnimalNotFound();
-                } else {
+                case 2: {
+                    std::vector<AnimalOutDTO> animals = animalService.getAllAnimals();
+                    animalView.printAnimals(animals);
+                    break;
+                }
+                case 3: {
+                    int id = animalView.getAnimalId();
+                    AnimalOutDTO animal = animalService.getAnimalById(id);
                     animalView.printAnimal(animal);
+                    break;
                 }
-
-                break;
+                case 0:
+                    break;
+                default:
+                    std::cout << "Opcao invalida.\n";
+                    break;
             }
-            case 0:
-                break;
-            default:
-                std::cout << "Opcao invalida.\n";
-                break;
+        } catch (const std::exception& e) {
+            std::cout << e.what() << "\n";
         }
 
     } while (option != 0);
@@ -101,41 +94,40 @@ void Controller::runVeterinarians() {
 
     do {
         option = veterinarianView.menu();
+        try {
+            switch (option) {
+                case 1: {
 
-        switch (option) {
-            case 1: {
-                try {
-                    VeterinarianInDTO dto = veterinarianView.getVeterinarian();
-                    veterinarianService.addVeterinarian(dto);
-                    veterinarianView.showVeterinarianCreated();
-                } catch (const std::exception& e) {
-                    std::cout << e.what() << "\n";
+                        VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                        veterinarianService.addVeterinarian(dto);
+                        veterinarianView.showVeterinarianCreated();
+
+                    break;
                 }
+                case 2: {
+                    std::vector<VeterinarianOutDTO> veterinarians = veterinarianService.getAllVeterinarians();
+                    veterinarianView.printVeterinarians(veterinarians);
+                    break;
+                }
+                case 3: {
+                    int veterinarianId = veterinarianView.getVeterinarianId();
 
-                break;
+                    std::vector<ServiceOutDTO> services =
+                        serviceService.getServicesByVeterinarianId(veterinarianId);
+
+                    serviceView.printServices(services);
+
+                    break;
+                }
+                case 0:
+                    break;
+                default:
+                    std::cout << "Opcao invalida.\n";
+                    break;
             }
-            case 2: {
-                std::vector<VeterinarianOutDTO> veterinarians = veterinarianService.getAllVeterinarians();
-                veterinarianView.printVeterinarians(veterinarians);
-                break;
-            }
-            case 3: {
-                int veterinarianId = veterinarianView.getVeterinarianId();
-
-                std::vector<ServiceOutDTO> services =
-                    serviceService.getServicesByVeterinarianId(veterinarianId);
-
-                serviceView.printServices(services);
-
-                break;
-            }
-            case 0:
-                break;
-            default:
-                std::cout << "Opcao invalida.\n";
-                break;
+        } catch (const std::exception& e) {
+            std::cout << e.what() << "\n";
         }
-
     } while (option != 0);
 }
 void Controller::runServices() {
@@ -143,31 +135,30 @@ void Controller::runServices() {
 
     do {
         option = serviceView.menu();
+        try {
+            switch (option) {
+                case 1: {
 
-        switch (option) {
-            case 1: {
-                try {
                     ServiceInDTO dto = serviceView.getService();
                     serviceService.addService(dto);
                     serviceView.showServiceCreated();
-                } catch (const std::exception& e) {
-                    std::cout << e.what() << "\n";
+
+                    break;
                 }
-
-                break;
+                case 2: {
+                    std::vector<ServiceOutDTO> services = serviceService.getAllServices();
+                    serviceView.printServices(services);
+                    break;
+                }
+                case 0:
+                    break;
+                default:
+                    std::cout << "Opcao invalida.\n";
+                    break;
             }
-            case 2: {
-                std::vector<ServiceOutDTO> services = serviceService.getAllServices();
-                serviceView.printServices(services);
-                break;
-            }
-            case 0:
-                break;
-            default:
-                std::cout << "Opcao invalida.\n";
-                break;
+        } catch (const std::exception& e) {
+            std::cout << e.what() << "\n";
         }
-
     } while (option != 0);
 }
 
@@ -176,41 +167,40 @@ void Controller::runPrescriptions() {
 
     do {
         option = prescriptionView.menu();
+        try {
+            switch (option) {
+                case 1: {
 
-        switch (option) {
-            case 1: {
-                try {
                     PrescriptionInDTO dto = prescriptionView.getPrescription();
                     prescriptionService.addPrescription(dto);
                     prescriptionView.showPrescriptionCreated();
-                } catch (const std::exception& e) {
-                    std::cout << e.what() << "\n";
+
+                    break;
                 }
+                case 2: {
+                    std::vector<PrescriptionOutDTO> prescriptions =
+                        prescriptionService.getAllPrescriptions();
 
-                break;
+                    prescriptionView.printPrescriptions(prescriptions);
+                    break;
+                }
+                case 3: {
+                    int animalId = prescriptionView.getAnimalId();
+
+                    std::vector<PrescriptionOutDTO> prescriptions =
+                        prescriptionService.getPrescriptionsByAnimalId(animalId);
+
+                    prescriptionView.printPrescriptions(prescriptions);
+                    break;
+                }
+                case 0:
+                    break;
+                default:
+                    std::cout << "Opcao invalida.\n";
+                    break;
             }
-            case 2: {
-                std::vector<PrescriptionOutDTO> prescriptions =
-                    prescriptionService.getAllPrescriptions();
-
-                prescriptionView.printPrescriptions(prescriptions);
-                break;
-            }
-            case 3: {
-                int animalId = prescriptionView.getAnimalId();
-
-                std::vector<PrescriptionOutDTO> prescriptions =
-                    prescriptionService.getPrescriptionsByAnimalId(animalId);
-
-                prescriptionView.printPrescriptions(prescriptions);
-                break;
-            }
-            case 0:
-                break;
-            default:
-                std::cout << "Opcao invalida.\n";
-                break;
+        } catch (const std::exception& e) {
+            std::cout << e.what() << "\n";
         }
-
     } while (option != 0);
 }
