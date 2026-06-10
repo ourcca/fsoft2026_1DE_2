@@ -15,11 +15,14 @@ Created on: 15/05/2026
 #include <exception>
 #include <vector>
 
-Controller::Controller() :
-                            animalService(clinic),
-                            veterinarianService(clinic),
-                            serviceService(clinic),
-                            prescriptionService(clinic) {}
+Controller::Controller()
+    : repository("clinic.dat"),
+      animalService(repository.getClinic()),
+      veterinarianService(repository.getClinic()),
+      serviceService(repository.getClinic()),
+      prescriptionService(repository.getClinic()) {
+    repository.load();
+}
 
 void Controller::run() {
     int option;
@@ -62,6 +65,7 @@ void Controller::runAnimals() {
                 case 1: {
                     AnimalInDTO dto = animalView.getAnimal();
                     animalService.addAnimal(dto);
+                    repository.save();
                     animalView.showAnimalCreated();
                     break;
                 }
@@ -98,9 +102,10 @@ void Controller::runVeterinarians() {
             switch (option) {
                 case 1: {
 
-                        VeterinarianInDTO dto = veterinarianView.getVeterinarian();
-                        veterinarianService.addVeterinarian(dto);
-                        veterinarianView.showVeterinarianCreated();
+                    VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                    veterinarianService.addVeterinarian(dto);
+                    repository.save();
+                    veterinarianView.showVeterinarianCreated();
 
                     break;
                 }
@@ -141,6 +146,7 @@ void Controller::runServices() {
 
                     ServiceInDTO dto = serviceView.getService();
                     serviceService.addService(dto);
+                    repository.save();
                     serviceView.showServiceCreated();
 
                     break;
@@ -173,6 +179,7 @@ void Controller::runPrescriptions() {
 
                     PrescriptionInDTO dto = prescriptionView.getPrescription();
                     prescriptionService.addPrescription(dto);
+                    repository.save();
                     prescriptionView.showPrescriptionCreated();
 
                     break;
