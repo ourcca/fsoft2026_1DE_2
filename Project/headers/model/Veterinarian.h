@@ -15,12 +15,12 @@ class Veterinarian {
         int age{};
         std::string specialty{};
     public:
-        Veterinarian(int id, std::string name,int age, std::string specialty);
+        Veterinarian(int id,const std::string& name,int age,const std::string& specialty);
         Veterinarian(const Veterinarian &veterinarian);
         ~Veterinarian() = default;
         void setId(int id);
-        void setName(std::string name);
-        void setSpecialty(std::string specialty);
+        void setName(const std::string& name);
+        void setSpecialty(const std::string& specialty);
         void setAge(int age);
         const int& getId() const;
         const std::string& getName() const;

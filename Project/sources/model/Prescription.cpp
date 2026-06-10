@@ -6,7 +6,21 @@ Created on: 16/05/2026
 #include "model/Prescription.h"
 #include "exceptions/InvalidDataException.h"
 
-Prescription::Prescription(int id, std::string medication, std::string quantity, std::string duration, Animal* animal, Veterinarian* veterinarian) {
+namespace {
+    std::string trim(const std::string& value) {
+        const std::string whitespace = " \t\n\r\f\v";
+        const size_t start = value.find_first_not_of(whitespace);
+
+        if (start == std::string::npos) {
+            return "";
+        }
+
+        const size_t end = value.find_last_not_of(whitespace);
+        return value.substr(start, end - start + 1);
+    }
+}
+
+Prescription::Prescription(int id,const std::string& medication,const std::string& quantity,const std::string& duration, Animal* animal, Veterinarian* veterinarian) {
     setId(id);
     setMedication(medication);
     setQuantity(quantity);
@@ -28,21 +42,21 @@ void Prescription::setId(int id) {
     this->id = id;
 }
 
-void Prescription::setMedication(std::string medication) {
+void Prescription::setMedication(const std::string& medication) {
     if (medication.empty()) {
         throw InvalidDataException("Medicamento da Prescrição não pode estar vazio.");
     }
     this->medication = medication;
 }
 
-void Prescription::setQuantity(std::string quantity) {
+void Prescription::setQuantity(const std::string& quantity) {
     if (quantity.empty()) {
         throw InvalidDataException("Quantidade de medicamento da Prescrição não pode estar vazio.");
     }
     this->quantity = quantity;
 }
 
-void Prescription::setDuration(std::string duration) {
+void Prescription::setDuration(const std::string& duration) {
     if (duration.empty()) {
         throw InvalidDataException("Duração da Prescrição não pode estar vazio.");
     }

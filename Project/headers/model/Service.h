@@ -23,14 +23,14 @@ private:
     Veterinarian* veterinarian{};
 
 public:
-    Service(int id, std::string type, float cost, Date date, Time time,
+    Service(int id,const std::string& type, float cost,const Date& date,const Time& time,
         Animal* animal, Veterinarian* veterinarian);
 
     Service(const Service& service);
     ~Service() = default;
 
     void setId(int id);
-    void setType(std::string type);
+    void setType(const std::string& type);
     void setCost(float cost);
     void setDate(const Date& date);
     void setTime(const Time& time);

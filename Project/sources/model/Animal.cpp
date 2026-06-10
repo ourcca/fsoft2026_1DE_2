@@ -6,6 +6,20 @@
 #include "model/Animal.h"
 #include "exceptions/InvalidDataException.h"
 
+namespace {
+    std::string trim(const std::string& value) {
+        const std::string whitespace = " \t\n\r\f\v";
+        const size_t start = value.find_first_not_of(whitespace);
+
+        if (start == std::string::npos) {
+            return "";
+        }
+
+        const size_t end = value.find_last_not_of(whitespace);
+        return value.substr(start, end - start + 1);
+    }
+}
+
 Animal::Animal(const int id, const std::string &name, const std::string &species, const std::string &breed, const float weight, const int age) {
     setId(id);
     setName(name);
@@ -28,21 +42,21 @@ void Animal::setId(int id) {
     this->id = id;
 }
 
-void Animal::setName(std::string name) {
+void Animal::setName(const std::string& name) {
     if (name.empty()) {
         throw InvalidDataException("Nome de Animal não pode estar vazio.");
     }
     this->name = name;
 }
 
-void Animal::setSpecies(std::string species) {
+void Animal::setSpecies(const std::string& species) {
     if (species.empty()) {
         throw InvalidDataException("Espécie de Animal não pode estar vazia.");
     }
     this->species = species;
 }
 
-void Animal::setBreed(std::string breed) {
+void Animal::setBreed(const std::string& breed) {
     this->breed = breed;
 }
 

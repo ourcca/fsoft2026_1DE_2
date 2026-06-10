@@ -21,14 +21,14 @@ class Prescription {
         Veterinarian* veterinarian{};
 
     public:
-        Prescription(int id,std::string medication, std::string quantity, std::string duration, Animal* animal, Veterinarian* veterinarian);
+        Prescription(int id,const std::string& medication,const std::string& quantity,const std::string& duration, Animal* animal, Veterinarian* veterinarian);
         Prescription(const Prescription& prescription);
         ~Prescription() = default;
 
         void setId(int id);
-        void setMedication(std::string medication);
-        void setQuantity(std::string quantity);
-        void setDuration(std::string duration);
+        void setMedication(const std::string& medication);
+        void setQuantity(const std::string& quantity);
+        void setDuration(const std::string& duration);
         void setAnimal(Animal* animal);
         void setVeterinarian(Veterinarian* veterinarian);
 

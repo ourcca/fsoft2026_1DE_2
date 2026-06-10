@@ -6,7 +6,21 @@ Created on: 16/05/2026
 #include "model/Service.h"
 #include "exceptions/InvalidDataException.h"
 
-Service::Service(int id, std::string type, float cost, Date date, Time time,
+namespace {
+    std::string trim(const std::string& value) {
+        const std::string whitespace = " \t\n\r\f\v";
+        const size_t start = value.find_first_not_of(whitespace);
+
+        if (start == std::string::npos) {
+            return "";
+        }
+
+        const size_t end = value.find_last_not_of(whitespace);
+        return value.substr(start, end - start + 1);
+    }
+}
+
+Service::Service(int id,const std::string& type, float cost,const Date& date,const Time& time,
                  Animal* animal, Veterinarian* veterinarian) {
     setId(id);
     setType(type);
@@ -31,7 +45,7 @@ void Service::setId(int id) {
     this->id = id;
 }
 
-void Service::setType(std::string type) {
+void Service::setType(const std::string& type) {
     if (type.empty()) {
         throw InvalidDataException("Tipo de Serviço não pode estar vazio.");
     }

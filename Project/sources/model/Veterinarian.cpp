@@ -6,7 +6,21 @@ Created on: 16/05/2026
 #include "model/Veterinarian.h"
 #include "exceptions/InvalidDataException.h"
 
-Veterinarian::Veterinarian(const int id, const std::string name, int age,const std::string specialty) {
+namespace {
+    std::string trim(const std::string& value) {
+        const std::string whitespace = " \t\n\r\f\v";
+        const size_t start = value.find_first_not_of(whitespace);
+
+        if (start == std::string::npos) {
+            return "";
+        }
+
+        const size_t end = value.find_last_not_of(whitespace);
+        return value.substr(start, end - start + 1);
+    }
+}
+
+Veterinarian::Veterinarian(const int id, const std::string& name, int age,const std::string& specialty) {
     setId(id);
     setName(name);
     setAge(age);
@@ -24,14 +38,14 @@ void Veterinarian::setId(int id) {
     this->id = id;
 }
 
-void Veterinarian::setName(std::string name) {
+void Veterinarian::setName(const std::string& name) {
     if (name.empty()) {
         throw InvalidDataException("Nome de Veterinário não pode estar vazio.");
     }
     this->name = name;
 }
 
-void Veterinarian::setSpecialty(std::string specialty) {
+void Veterinarian::setSpecialty(const std::string& specialty) {
     if (specialty.empty()) {
         throw InvalidDataException("Especialidade de Veterinário não pode estar vazia.");
     }
