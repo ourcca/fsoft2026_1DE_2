@@ -19,6 +19,8 @@ public:
 
     void showAnimalCreated();
 
+    void showAnimalUpdated();
+
     void printAnimals(const std::vector<AnimalOutDTO>& animals);
 
     int getAnimalId();
@@ -26,6 +28,7 @@ public:
     void printAnimal(const AnimalOutDTO& animal);
 
     void showAnimalNotFound();
+
 };
 
 #endif

@@ -34,6 +34,10 @@ void VeterinarianView::showVeterinarianCreated() {
     std::cout << "Veterinario registado com sucesso.\n";
 }
 
+void VeterinarianView::showVeterinarianUpdated() {
+    std::cout << "Veterinario editado com sucesso.\n";
+}
+
 void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>& veterinarians) {
     if (veterinarians.empty()) {
         std::cout << "Nao existem veterinarios registados.\n";
@@ -49,6 +53,15 @@ void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>&
         std::cout << "Especialidade: " << veterinarian.specialty << "\n";
         std::cout << "------------------------------------------\n";
     }
+}
+
+void VeterinarianView::printVeterinarian(const VeterinarianOutDTO& veterinarian) {
+    std::cout << "\n========== Dados do Veterinario ==========\n";
+    std::cout << "ID: " << veterinarian.id << "\n";
+    std::cout << "Nome: " << veterinarian.name << "\n";
+    std::cout << "Idade: " << veterinarian.age << "\n";
+    std::cout << "Especialidade: " << veterinarian.specialty << "\n";
+    std::cout << "------------------------------------------\n";
 }
 
 int VeterinarianView::getVeterinarianId() {

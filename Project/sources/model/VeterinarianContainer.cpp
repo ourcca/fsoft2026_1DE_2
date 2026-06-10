@@ -57,16 +57,16 @@ int VeterinarianContainer::getNextId() {
     return maxId + 1;
 }
 
-Veterinarian* VeterinarianContainer::edit(const int id, const std::string& name, int age,const std::string& specialty){
+Veterinarian* VeterinarianContainer::edit(int id, const std::string& name, int age,const std::string& specialty) {
     Veterinarian* veterinarian = get(id);
 
-    if (veterinarian != NULL){
-        veterinarian->setName(name);
-        veterinarian->setAge(age);
-        veterinarian->setSpecialty(specialty);
-
-        return veterinarian;
-    } else {
-        throw NoDataException("Veterinário não existe")
+    if (veterinarian == nullptr) {
+        throw NoDataException("Veterinário não existe.");
     }
+
+    veterinarian->setName(name);
+    veterinarian->setAge(age);
+    veterinarian->setSpecialty(specialty);
+
+    return veterinarian;
 }

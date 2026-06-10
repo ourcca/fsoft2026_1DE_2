@@ -19,7 +19,9 @@ public:
     int getVeterinarianId();
 
     void showVeterinarianCreated();
+    void showVeterinarianUpdated();
     void printVeterinarians(const std::vector<VeterinarianOutDTO>& veterinarians);
+    void printVeterinarian(const VeterinarianOutDTO& veterinarian);
 };
 
 #endif

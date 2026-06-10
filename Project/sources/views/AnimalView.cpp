@@ -36,6 +36,10 @@ void AnimalView::showAnimalCreated() {
     std::cout << "Animal registado com sucesso.\n";
 }
 
+void AnimalView::showAnimalUpdated() {
+    std::cout << "Animal editado com sucesso.\n";
+}
+
 void AnimalView::printAnimals(const std::vector<AnimalOutDTO>& animals) {
     if (animals.empty()) {
         std::cout << "Nao existem animais registados.\n";

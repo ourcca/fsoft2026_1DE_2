@@ -82,7 +82,17 @@ void Controller::runAnimals() {
                 }
             case 4:{
                         int id = animalView.getAnimalId();
+
                         AnimalOutDTO animal = animalService.getAnimalById(id);
+                        animalView.printAnimal(animal);
+
+                        AnimalInDTO dto = animalView.getAnimal();
+                        animalService.editAnimal(id, dto);
+
+                        repository.save();
+                        animalView.showAnimalUpdated();
+
+                        break;
             }
                 case 0:
                     break;
@@ -129,7 +139,18 @@ void Controller::runVeterinarians() {
                     break;
                 }
                 case 4: {
+                        int id = veterinarianView.getVeterinarianId();
 
+                        VeterinarianOutDTO veterinarian = veterinarianService.getVeterinarianById(id);
+                        veterinarianView.printVeterinarian(veterinarian);
+
+                        VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                        veterinarianService.editVeterinarian(id, dto);
+
+                        repository.save();
+                        veterinarianView.showVeterinarianUpdated();
+
+                        break;
                     }
                 case 0:
                     break;

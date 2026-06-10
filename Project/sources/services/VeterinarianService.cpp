@@ -7,6 +7,7 @@ Created on: 16/05/2026
 
 #include "model/Veterinarian.h"
 #include "mappers/VeterinarianMapper.h"
+#include "exceptions/NoDataException.h"
 #include "exceptions/InvalidDataException.h"
 
 VeterinarianService::VeterinarianService(Clinic& clinic) : clinic(clinic) {}
@@ -22,8 +23,29 @@ std::vector<VeterinarianOutDTO> VeterinarianService::getAllVeterinarians() {
     return VeterinarianMapper::toDTOList(veterinarians);
 }
 
-void VeterinarianService::edit(int id, const VeterinarianInDTO& dto) {
+VeterinarianOutDTO VeterinarianService::getVeterinarianById(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(id);
-    Veterinarian veterinarian(id, dto.name, dto.age, dto.specialty);
-    VeterinarianContainer::edit(veterinarian);
+
+    if (veterinarian == nullptr) {
+        throw NoDataException("Veterinário não encontrado.");
+    }
+
+    return VeterinarianMapper::toDTO(*veterinarian);
+}
+
+void VeterinarianService::editVeterinarian(int id, const VeterinarianInDTO& dto) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
+    clinic.getVeterinarianContainer().edit(
+        id,
+        dto.name,
+        dto.age,
+        dto.specialty
+    );
 }
