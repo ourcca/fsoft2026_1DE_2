@@ -21,3 +21,9 @@ std::vector<VeterinarianOutDTO> VeterinarianService::getAllVeterinarians() {
     auto& veterinarians = clinic.getVeterinarianContainer().getAll();
     return VeterinarianMapper::toDTOList(veterinarians);
 }
+
+void VeterinarianService::edit(int id, const VeterinarianInDTO& dto) {
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(id);
+    Veterinarian veterinarian(id, dto.name, dto.age, dto.specialty);
+    VeterinarianContainer::edit(veterinarian);
+}

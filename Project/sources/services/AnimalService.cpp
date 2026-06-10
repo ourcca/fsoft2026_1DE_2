@@ -31,3 +31,9 @@ AnimalOutDTO AnimalService::getAnimalById(int id) {
 
     return AnimalMapper::toDTO(*animal);
 }
+
+void AnimalService::edit(int id const AnimalInDTO& dto) {
+    Animal* animal = clinic.getAnimalContainer().get(id);
+    Animal animal(id, dto.name, dto.species, dto.breed, dto.weight, dto.age);
+    AnimalContainer::edit(animal);
+}

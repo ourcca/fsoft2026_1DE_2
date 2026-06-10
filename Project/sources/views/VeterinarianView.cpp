@@ -14,6 +14,7 @@ int VeterinarianView::menu() {
     std::cout << "1. Registar Veterinario\n";
     std::cout << "2. Listar Veterinarios\n";
     std::cout << "3. Consultar Servicos de Veterinario\n";
+    std::cout << "4. Editar Veterinario\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");

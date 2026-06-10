@@ -7,6 +7,8 @@ VeterinarianlContainer.cpp
 #include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
+#include "exceptions/NoDataException.h"
+
 std::deque<Veterinarian>::iterator VeterinarianContainer::findByID(int id) {
     return std::find_if(veterinarians.begin(), veterinarians.end(),
         [id](const Veterinarian& v) {
@@ -53,4 +55,18 @@ int VeterinarianContainer::getNextId() {
     }
 
     return maxId + 1;
+}
+
+Veterinarian* VeterinarianContainer::edit(const int id, const std::string& name, int age,const std::string& specialty){
+    Veterinarian* veterinarian = get(id);
+
+    if (veterinarian != NULL){
+        veterinarian->setName(name);
+        veterinarian->setAge(age);
+        veterinarian->setSpecialty(specialty);
+
+        return veterinarian;
+    } else {
+        throw NoDataException("Veterinário não existe")
+    }
 }

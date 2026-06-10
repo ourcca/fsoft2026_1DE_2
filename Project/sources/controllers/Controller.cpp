@@ -80,6 +80,10 @@ void Controller::runAnimals() {
                     animalView.printAnimal(animal);
                     break;
                 }
+            case 4:{
+                        int id = animalView.getAnimalId();
+                        AnimalOutDTO animal = animalService.getAnimalById(id);
+            }
                 case 0:
                     break;
                 default:
@@ -124,6 +128,9 @@ void Controller::runVeterinarians() {
 
                     break;
                 }
+                case 4: {
+
+                    }
                 case 0:
                     break;
                 default:

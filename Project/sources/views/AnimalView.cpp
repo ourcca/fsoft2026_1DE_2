@@ -13,6 +13,7 @@ int AnimalView::menu() {
     std::cout << "1. Registar Animal\n";
     std::cout << "2. Listar Animais\n";
     std::cout << "3. Consultar Animal por ID\n";
+    std::cout << "4. Editar Animal\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");

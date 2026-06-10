@@ -19,6 +19,9 @@ class  AnimalContainer {
         Animal* get(int id);
         std::deque<Animal>& getAll();
         int getNextId();
+        Animal* edit(int id, const std::string& name, const std::string& species, const std::string& breed,
+                     float weight,
+                     int age);
 };
 
 #endif
