@@ -18,7 +18,7 @@ void AnimalService::addAnimal(const AnimalInDTO& dto) const {
 }
 
 std::vector<AnimalOutDTO> AnimalService::getAllAnimals() const {
-    std::vector<Animal>& animals = clinic.getAnimalContainer().getAll();
+    auto& animals = clinic.getAnimalContainer().getAll();
     return AnimalMapper::toDTOList(animals);
 }
 

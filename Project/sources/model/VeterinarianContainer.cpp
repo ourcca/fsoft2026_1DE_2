@@ -7,7 +7,7 @@ VeterinarianlContainer.cpp
 #include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
-std::vector<Veterinarian>::iterator VeterinarianContainer::findByID(int id) {
+std::deque<Veterinarian>::iterator VeterinarianContainer::findByID(int id) {
     return std::find_if(veterinarians.begin(), veterinarians.end(),
         [id](const Veterinarian& v) {
             return v.getId() == id;
@@ -39,7 +39,7 @@ Veterinarian* VeterinarianContainer::get(int id) {
     return nullptr;
 }
 
-std::vector<Veterinarian>& VeterinarianContainer::getAll() {
+std::deque<Veterinarian>& VeterinarianContainer::getAll() {
     return veterinarians;
 }
 

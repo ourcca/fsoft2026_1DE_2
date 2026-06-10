@@ -16,7 +16,7 @@ VeterinarianOutDTO VeterinarianMapper::toDTO(const Veterinarian& veterinarian) {
     return dto;
 }
 
-std::vector<VeterinarianOutDTO> VeterinarianMapper::toDTOList(const std::vector<Veterinarian>& veterinarians) {
+std::vector<VeterinarianOutDTO> VeterinarianMapper::toDTOList(const std::deque<Veterinarian>& veterinarians) {
     std::vector<VeterinarianOutDTO> dtos;
 
     for (const Veterinarian& veterinarian : veterinarians) {

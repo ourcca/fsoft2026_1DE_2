@@ -7,7 +7,7 @@ Created on: 15/05/2026
 #include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
-std::vector<Animal>::iterator AnimalContainer::findByID(int id) {
+std::deque<Animal>::iterator AnimalContainer::findByID(int id) {
     return std::find_if(animals.begin(), animals.end(),
         [id](const Animal& animal) {
             return animal.getId() == id;
@@ -29,7 +29,7 @@ void AnimalContainer::remove(int id) {
     }
 }
 
-std::vector<Animal>& AnimalContainer::getAll() {
+std::deque<Animal>& AnimalContainer::getAll() {
     return animals;
 }
 

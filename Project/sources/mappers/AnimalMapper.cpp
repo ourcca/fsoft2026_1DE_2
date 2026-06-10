@@ -18,7 +18,7 @@ AnimalOutDTO AnimalMapper::toDTO(const Animal& animal) {
     return dto;
 }
 
-std::vector<AnimalOutDTO> AnimalMapper::toDTOList(const std::vector<Animal>& animals) {
+std::vector<AnimalOutDTO> AnimalMapper::toDTOList(std::deque<Animal>& animals) {
     std::vector<AnimalOutDTO> dtos;
 
     for (const Animal& animal : animals) {

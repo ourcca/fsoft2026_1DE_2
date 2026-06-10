@@ -10,6 +10,4 @@ file(GLOB_RECURSE SOURCES
         "main.cpp"
 )
 
-add_executable(VeterinaryClinic ${SOURCES}
-        headers/exceptions/DataConsistencyException.h
-        sources/exceptions/DataConsistencyException.cpp)
+add_executable(VeterinaryClinic ${SOURCES})

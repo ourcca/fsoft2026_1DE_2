@@ -6,18 +6,18 @@ VeterinarianlContainer.h
 #ifndef HEADERS_MODEL_VETERINARIANCONTAINER_H_
 #define HEADERS_MODEL_VETERINARIANCONTAINER_H_
 
-#include <vector>
+#include <deque>
 #include "Veterinarian.h"
 
 class VeterinarianContainer {
     private:
-        std::vector<Veterinarian> veterinarians;
-        std::vector<Veterinarian>::iterator findByID(int id);
+        std::deque<Veterinarian> veterinarians;
+        std::deque<Veterinarian>::iterator findByID(int id);
     public:
         void add(const Veterinarian& veterinarian);
         void remove(int id);
         Veterinarian* get(int id);
-        std::vector<Veterinarian>& getAll();
+        std::deque<Veterinarian>& getAll();
         int getNextId();
 };
 

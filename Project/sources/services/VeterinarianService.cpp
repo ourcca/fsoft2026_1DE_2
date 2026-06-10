@@ -18,6 +18,6 @@ void VeterinarianService::addVeterinarian(const VeterinarianInDTO& dto) {
 }
 
 std::vector<VeterinarianOutDTO> VeterinarianService::getAllVeterinarians() {
-    std::vector<Veterinarian>& veterinarians = clinic.getVeterinarianContainer().getAll();
+    auto& veterinarians = clinic.getVeterinarianContainer().getAll();
     return VeterinarianMapper::toDTOList(veterinarians);
 }
