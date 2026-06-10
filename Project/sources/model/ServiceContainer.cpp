@@ -17,7 +17,7 @@ std::vector<Service>::iterator ServiceContainer::findByID(int id) {
 
 void ServiceContainer::add(const Service& service) {
     if (get(service.getId()) != nullptr)
-        throw DuplicatedDataException("Service already exists.");
+        throw DuplicatedDataException("Serviço já existe.");
     services.push_back(service);
 }
 

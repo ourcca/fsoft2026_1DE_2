@@ -18,7 +18,7 @@ void PrescriptionService::addPrescription(const PrescriptionInDTO& dto) {
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
 
     if (animal == nullptr || veterinarian == nullptr) {
-        throw DataConsistencyException("Animal ou veterinario nao existe.");
+        throw DataConsistencyException("Animal ou Veterinário não existe.");
     }
 
     int id = clinic.getPrescriptionContainer().getNextId();

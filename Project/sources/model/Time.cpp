@@ -18,7 +18,7 @@ bool Time::isValid(int hour, int minute) {
 void Time::setTime(int hour, int minute) {
     if (!isValid(hour, minute))
     {
-        throw InvalidDataException("Invalid time.");
+        throw InvalidDataException("Hora inválida.");
     }
 
     this->hour = hour;

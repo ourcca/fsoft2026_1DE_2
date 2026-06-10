@@ -17,7 +17,7 @@ std::vector<Prescription>::iterator PrescriptionContainer::findByID(int id) {
 
 void PrescriptionContainer::add(const Prescription& prescription) {
     if (get(prescription.getId()) != nullptr)
-        throw DuplicatedDataException("Prescription already exists.");
+        throw DuplicatedDataException("Prescrição já existe.");
     prescriptions.push_back(prescription);
 }
 

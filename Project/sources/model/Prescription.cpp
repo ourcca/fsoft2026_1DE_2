@@ -4,6 +4,7 @@ Prescription.cpp
 Created on: 16/05/2026
 */
 #include "model/Prescription.h"
+#include "exceptions/InvalidDataException.h"
 
 Prescription::Prescription(int id, std::string medication, std::string quantity, std::string duration, Animal* animal, Veterinarian* veterinarian) {
     this->id = id;
@@ -28,14 +29,23 @@ void Prescription::setId(int id) {
 }
 
 void Prescription::setMedication(std::string medication) {
+    if (medication.empty()) {
+        throw InvalidDataException("Medicamento da Prescrição não pode estar vazio.");
+    }
     this->medication = medication;
 }
 
 void Prescription::setQuantity(std::string quantity) {
+    if (quantity.empty()) {
+        throw InvalidDataException("Quantidade de medicamento da Prescrição não pode estar vazio.");
+    }
     this->quantity = quantity;
 }
 
 void Prescription::setDuration(std::string duration) {
+    if (duration.empty()) {
+        throw InvalidDataException("Duração da Prescrição não pode estar vazio.");
+    }
     this->duration = duration;
 }
 

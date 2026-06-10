@@ -44,7 +44,7 @@ bool Date::isValid(int day, int month, int year) {
 void Date::setDate(int day, int month, int year) {
     if (!isValid(day, month, year))
     {
-        throw InvalidDataException("Invalid date.");
+        throw InvalidDataException("Data inválida.");
     }
 
     this->day = day;

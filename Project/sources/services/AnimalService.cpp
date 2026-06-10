@@ -13,13 +13,13 @@ AnimalService::AnimalService(Clinic& clinic) : clinic(clinic) {}
 
 void AnimalService::addAnimal(const AnimalInDTO& dto) const {
     if (dto.name.empty())
-        throw InvalidDataException("Animal name cannot be empty.");
+        throw InvalidDataException("Nome de Animal não pode estar vazio.");
     if (dto.species.empty())
-        throw InvalidDataException("Animal species cannot be empty.");
+        throw InvalidDataException("Espécie de Animal não pode estar vazio.");
     if (dto.weight <= 0)
-        throw InvalidDataException("Animal weight must be positive.");
+        throw InvalidDataException("Peso do Animal tem de ser positivo.");
     if (dto.age < 0)
-        throw InvalidDataException("Animal age cannot be negative.");
+        throw InvalidDataException("Idade de Animal não pode ser negativa.");
     int id = clinic.getAnimalContainer().getNextId();
     Animal animal(id, dto.name, dto.species, dto.breed, dto.weight, dto.age);
     clinic.getAnimalContainer().add(animal);
@@ -34,7 +34,7 @@ AnimalOutDTO AnimalService::getAnimalById(int id) {
     Animal* animal = clinic.getAnimalContainer().get(id);
 
     if (animal == nullptr) {
-        throw NoDataException("Animal not found.");
+        throw NoDataException("Animal não encontrado.");
     }
 
     return AnimalMapper::toDTO(*animal);

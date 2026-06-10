@@ -17,7 +17,7 @@ std::vector<Veterinarian>::iterator VeterinarianContainer::findByID(int id) {
 
 void VeterinarianContainer::add(const Veterinarian& veterinarian) {
     if (get(veterinarian.getId()) != nullptr)
-        throw DuplicatedDataException("Veterinarian already exists.");
+        throw DuplicatedDataException("Veterinário já existe.");
     veterinarians.push_back(veterinarian);
 }
 

@@ -4,6 +4,7 @@
     Created on: 15/05/2026
  */
 #include "model/Animal.h"
+#include "exceptions/InvalidDataException.h"
 
 Animal::Animal(const int id, const std::string &name, const std::string &species, const std::string &breed, const float weight, const int age) {
     this->id = id;
@@ -28,10 +29,16 @@ void Animal::setId(int id) {
 }
 
 void Animal::setName(std::string name) {
+    if (name.empty()) {
+        throw InvalidDataException("Nome de Animal não pode estar vazio.");
+    }
     this->name = name;
 }
 
 void Animal::setSpecies(std::string species) {
+    if (species.empty()) {
+        throw InvalidDataException("Espécie de Animal não pode estar vazia.");
+    }
     this->species = species;
 }
 
@@ -40,10 +47,16 @@ void Animal::setBreed(std::string breed) {
 }
 
 void Animal::setWeight(float weight) {
+    if (weight <= 0) {
+        throw InvalidDataException("Peso de Animal tem de ser positivo.");
+    }
     this->weight = weight;
 }
 
 void Animal::setAge(int age) {
+    if (age < 0) {
+        throw InvalidDataException("Idade de Animal não pode ser negativa.");
+    }
     this->age = age;
 }
 

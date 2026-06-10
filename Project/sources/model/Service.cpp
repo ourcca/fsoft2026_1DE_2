@@ -4,6 +4,7 @@ Service.cpp
 Created on: 16/05/2026
 */
 #include "model/Service.h"
+#include "exceptions/InvalidDataException.h"
 
 Service::Service(int id, std::string type, float cost, Date date, Time time,
                  Animal* animal, Veterinarian* veterinarian) {
@@ -31,10 +32,16 @@ void Service::setId(int id) {
 }
 
 void Service::setType(std::string type) {
+    if (type.empty()) {
+        throw InvalidDataException("Tipo de Serviço não pode estar vazio.");
+    }
     this->type = type;
 }
 
 void Service::setCost(float cost) {
+    if (cost <= 0) {
+        throw InvalidDataException("Custo de Serviço tem de ser positivo.");
+    }
     this->cost = cost;
 }
 

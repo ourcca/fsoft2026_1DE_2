@@ -4,6 +4,7 @@ Veterinarian.cpp
 Created on: 16/05/2026
 */
 #include "model/Veterinarian.h"
+#include "exceptions/InvalidDataException.h"
 
 Veterinarian::Veterinarian(const int id, const std::string name, int age,const std::string specialty) {
     this->id = id;
@@ -24,14 +25,23 @@ void Veterinarian::setId(int id) {
 }
 
 void Veterinarian::setName(std::string name) {
+    if (name.empty()) {
+        throw InvalidDataException("Nome de Veterinário não pode estar vazio.");
+    }
     this->name = name;
 }
 
 void Veterinarian::setSpecialty(std::string specialty) {
+    if (specialty.empty()) {
+        throw InvalidDataException("Especialidade de Veterinário não pode estar vazia.");
+    }
     this->specialty = specialty;
 }
 
 void Veterinarian::setAge(int age) {
+    if (age < 18) {
+        throw InvalidDataException("Idade de Veterinaário inválida.");
+    }
     this->age = age;
 }
 

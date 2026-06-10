@@ -19,7 +19,7 @@ void ServiceService::addService(const ServiceInDTO& dto) {
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
 
     if (animal == nullptr || veterinarian == nullptr) {
-        throw DataConsistencyException("Animal ou veterinario nao existe.");
+        throw DataConsistencyException("Animal ou Veterinario não existe.");
     }
 
     int id = clinic.getServiceContainer().getNextId();
@@ -27,14 +27,14 @@ void ServiceService::addService(const ServiceInDTO& dto) {
     int day, month, year;
     if (sscanf(dto.date.c_str(), "%d/%d/%d",
            &day, &month, &year) != 3) {
-        throw InvalidDataException("Invalid date format.");
+        throw InvalidDataException("Formato de Data inválido.");
     }
     Date date(day, month, year);
 
     int hour, minute;
     if (sscanf(dto.time.c_str(), "%d:%d",
         &hour, &minute) != 2) {
-        throw InvalidDataException("Invalid time format.");
+        throw InvalidDataException("Formato de Hora inválido.");
     }
     Time time(hour, minute);
 
