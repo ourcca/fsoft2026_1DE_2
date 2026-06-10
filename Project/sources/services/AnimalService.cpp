@@ -12,14 +12,6 @@ Created on: 15/05/2026
 AnimalService::AnimalService(Clinic& clinic) : clinic(clinic) {}
 
 void AnimalService::addAnimal(const AnimalInDTO& dto) const {
-    if (dto.name.empty())
-        throw InvalidDataException("Nome de Animal não pode estar vazio.");
-    if (dto.species.empty())
-        throw InvalidDataException("Espécie de Animal não pode estar vazio.");
-    if (dto.weight <= 0)
-        throw InvalidDataException("Peso do Animal tem de ser positivo.");
-    if (dto.age < 0)
-        throw InvalidDataException("Idade de Animal não pode ser negativa.");
     int id = clinic.getAnimalContainer().getNextId();
     Animal animal(id, dto.name, dto.species, dto.breed, dto.weight, dto.age);
     clinic.getAnimalContainer().add(animal);

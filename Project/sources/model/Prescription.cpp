@@ -7,12 +7,12 @@ Created on: 16/05/2026
 #include "exceptions/InvalidDataException.h"
 
 Prescription::Prescription(int id, std::string medication, std::string quantity, std::string duration, Animal* animal, Veterinarian* veterinarian) {
-    this->id = id;
-    this->medication = medication;
-    this->quantity = quantity;
-    this->duration = duration;
-    this->animal = animal;
-    this->veterinarian = veterinarian;
+    setId(id);
+    setMedication(medication);
+    setQuantity(quantity);
+    setDuration(duration);
+    setAnimal(animal);
+    setVeterinarian(veterinarian);
 }
 
 Prescription::Prescription(const Prescription &prescription) {

@@ -7,12 +7,12 @@
 #include "exceptions/InvalidDataException.h"
 
 Animal::Animal(const int id, const std::string &name, const std::string &species, const std::string &breed, const float weight, const int age) {
-    this->id = id;
-    this->name = name;
-    this->species = species;
-    this->breed = breed;
-    this->weight = weight;
-    this->age = age;
+    setId(id);
+    setName(name);
+    setSpecies(species);
+    setBreed(breed);
+    setWeight(weight);
+    setAge(age);
 }
 
 Animal::Animal(const Animal& animal) {

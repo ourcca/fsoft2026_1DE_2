@@ -7,10 +7,10 @@ Created on: 16/05/2026
 #include "exceptions/InvalidDataException.h"
 
 Veterinarian::Veterinarian(const int id, const std::string name, int age,const std::string specialty) {
-    this->id = id;
-    this->name = name;
-    this->specialty = specialty;
-    this->age = age;
+    setId(id);
+    setName(name);
+    setAge(age);
+    setSpecialty(specialty);
 }
 
 Veterinarian::Veterinarian(const Veterinarian &veterinarian) {
@@ -40,7 +40,7 @@ void Veterinarian::setSpecialty(std::string specialty) {
 
 void Veterinarian::setAge(int age) {
     if (age < 18) {
-        throw InvalidDataException("Idade de Veterinaário inválida.");
+        throw InvalidDataException("Idade de Veterinário inválida.");
     }
     this->age = age;
 }

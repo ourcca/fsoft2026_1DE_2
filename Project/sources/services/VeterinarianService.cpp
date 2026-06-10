@@ -12,12 +12,6 @@ Created on: 16/05/2026
 VeterinarianService::VeterinarianService(Clinic& clinic) : clinic(clinic) {}
 
 void VeterinarianService::addVeterinarian(const VeterinarianInDTO& dto) {
-    if (dto.name.empty())
-        throw InvalidDataException("Nome de Veterinário não pode estar vazio.");
-    if (dto.specialty.empty())
-        throw InvalidDataException("Especialidade de Veterinário não pode estar vazia.");
-    if (dto.age < 18)
-        throw InvalidDataException("Idade de Veterinário inválida.");
     int id = clinic.getVeterinarianContainer().getNextId();
     Veterinarian veterinarian(id, dto.name, dto.age, dto.specialty);
     clinic.getVeterinarianContainer().add(veterinarian);

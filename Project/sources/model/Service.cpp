@@ -8,13 +8,13 @@ Created on: 16/05/2026
 
 Service::Service(int id, std::string type, float cost, Date date, Time time,
                  Animal* animal, Veterinarian* veterinarian) {
-    this->id = id;
-    this->type = type;
-    this->cost = cost;
-    this->date = date;
-    this->time = time;
-    this->animal = animal;
-    this->veterinarian = veterinarian;
+    setId(id);
+    setType(type);
+    setCost(cost);
+    setDate(date);
+    setTime(time);
+    setAnimal(animal);
+    setVeterinarian(veterinarian);
 }
 
 Service::Service(const Service& service) {
