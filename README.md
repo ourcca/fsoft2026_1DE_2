@@ -2,23 +2,20 @@
 
 Aplicação de consola desenvolvida em C++ para a gestão básica de uma clínica veterinária.
 
-O sistema permite registar e consultar animais, veterinários, serviços e prescrições, seguindo uma arquitetura inspirada no exemplo da aplicação *School Application*, com separação entre View, Controller, Services, DTOs, Mappers, Model e Containers.
+O sistema permite registar, consultar e gerir animais, veterinários, serviços e prescrições, seguindo uma arquitetura inspirada no exemplo da aplicação *School Application*, com separação entre View, Controller, Services, DTOs, Mappers, Model, Containers, Repository e Exceptions.
 
 ---
 
 <!-- INDICE -->
+
 <details>
   <summary>Índice</summary>
   <ol>
-    <li>
-      <a href="#sobre-o-projeto">Sobre o Projeto</a>
-    </li>
-    <li>
-      <a href="#arquitetura">Arquitetura</a>
-    </li>
-    <li>
-      <a href="#estrutura-do-projeto">Estrutura do Projeto</a>
-    </li>
+    <li><a href="#sobre-o-projeto">Sobre o Projeto</a></li>
+    <li><a href="#arquitetura">Arquitetura</a></li>
+    <li><a href="#persistência-de-dados">Persistência de Dados</a></li>
+    <li><a href="#testes">Testes</a></li>
+    <li><a href="#estrutura-do-projeto">Estrutura do Projeto</a></li>
     <li>
       <a href="#como-executar">Como Executar</a>
       <ul>
@@ -35,44 +32,126 @@ O sistema permite registar e consultar animais, veterinários, serviços e presc
 
 ---
 
-<!-- SOBRE O PROJETO -->
 ## Sobre o Projeto
 
 Este projeto tem como objetivo desenvolver uma aplicação de software para gerir uma clínica veterinária.
 
 A aplicação permite gerir informação relacionada com:
 
-- Animais registados na clínica
-- Veterinários
-- Serviços realizados ou agendados
-- Prescrições emitidas para animais
+* Animais registados na clínica
+* Veterinários
+* Serviços realizados ou agendados
+* Prescrições emitidas para animais
 
-O sistema utiliza uma interface baseada em consola. Nesta fase, os dados são mantidos em memória durante a execução da aplicação. Numa fase futura, será implementada persistência em ficheiros binários.
+O sistema utiliza uma interface baseada em consola e permite guardar os dados em ficheiro binário, de forma a manter a informação entre execuções da aplicação.
 
 ---
 
-<!-- ARQUITETURA -->
 ## Arquitetura
 
 A aplicação está organizada em camadas, seguindo uma estrutura semelhante ao exemplo da *School Application*.
 
-- **View**: responsável pela interação com o utilizador através da consola.
-- **Controller**: coordena os menus e chama os serviços necessários.
-- **Services**: contêm a lógica principal da aplicação.
-- **DTOs**: transportam dados entre camadas.
-- **Mappers**: convertem objetos do Model em DTOs.
-- **Model**: contém as entidades principais do domínio.
-- **Containers**: gerem coleções de objetos do Model.
+* **View**: responsável pela interação com o utilizador através da consola.
+* **Controller**: coordena os menus e chama os serviços necessários.
+* **Services**: contêm a lógica principal da aplicação.
+* **DTOs**: transportam dados entre camadas.
+* **Mappers**: convertem objetos do Model em DTOs.
+* **Model**: contém as entidades principais do domínio.
+* **Containers**: gerem coleções de objetos do Model.
+* **Repository**: responsável por guardar e carregar os dados da aplicação.
+* **Exceptions**: usadas para representar erros e situações inválidas.
 
-Atualmente, os `Services` acedem diretamente à classe `Clinic`. Numa fase futura, será adicionada uma camada `Repository` para tratar da persistência dos dados.
+A classe `Clinic` funciona como objeto principal do domínio, agregando os vários containers da aplicação:
+
+* `AnimalContainer`
+* `VeterinarianContainer`
+* `ServiceContainer`
+* `PrescriptionContainer`
+
+O `Controller` utiliza um `ClinicRepositoryBinary`, e os `Services` acedem à `Clinic` através de `repository.getClinic()`.
 
 No `Model`, as relações entre entidades são representadas através de apontadores/referências para objetos. Por exemplo, um `Service` guarda apontadores para o `Animal` e para o `Veterinarian` associados, em vez de guardar apenas os seus IDs.
 
 Os IDs continuam a existir como identificadores das entidades e são usados na interface/DTOs para o utilizador selecionar objetos existentes.
 
+Para evitar problemas com apontadores inválidos, os containers de `Animal` e `Veterinarian` usam `std::deque`, permitindo maior estabilidade dos objetos em memória quando são adicionados novos elementos.
+
 ---
 
-<!-- ESTRUTURA DO PROJETO -->
+## Persistência de Dados
+
+A persistência foi implementada através da camada `Repository`.
+
+Atualmente existem as seguintes classes:
+
+* `IClinicRepository`
+* `ClinicRepositoryMemory`
+* `ClinicRepositoryBinary`
+
+A aplicação utiliza o `ClinicRepositoryBinary`, que guarda e carrega os dados através de um ficheiro binário.
+
+O ficheiro usado para guardar os dados é:
+
+```text
+clinic.dat
+```
+
+Quando a aplicação inicia, o repository chama `load()` para carregar os dados existentes. Sempre que é criada uma nova entidade, o `Controller` chama `save()` para guardar o estado atual da clínica.
+
+A persistência inclui:
+
+* Animais
+* Veterinários
+* Serviços
+* Prescrições
+
+Para entidades simples, como `Animal` e `Veterinarian`, os campos são guardados diretamente no ficheiro.
+
+Para entidades com relações, como `Service` e `Prescription`, não são guardados os apontadores em ficheiro. Em vez disso, são guardados os IDs do animal e do veterinário associados. Durante o `load()`, estes IDs são usados para reconstruir os apontadores em memória.
+
+Assim, em memória as relações continuam orientadas a objetos, mas no ficheiro são guardados dados simples e seguros.
+
+---
+
+## Testes
+
+Foi criado um projeto separado para testes, usando Google Test, inspirado no tester da *School Application*.
+
+O tester cobre atualmente:
+
+* `Animal`
+* `AnimalContainer`
+* `Veterinarian`
+* `VeterinarianContainer`
+* `Service`
+* `ServiceContainer`
+* `Prescription`
+* `PrescriptionContainer`
+* `Date`
+* `Time`
+* Algumas situações com exceptions e regras de consistência
+
+Atualmente, o tester executa com sucesso:
+
+```text
+48 tests passed
+```
+
+Além dos testes automáticos, foi também feito teste manual da persistência binária:
+
+1. Criar animal
+2. Criar veterinário
+3. Criar serviço
+4. Criar prescrição
+5. Fechar a aplicação
+6. Abrir a aplicação novamente
+7. Confirmar que os dados continuam disponíveis
+8. Listar animais, veterinários, serviços e prescrições
+9. Consultar serviços de um veterinário
+10. Consultar prescrições de um animal
+
+---
+
 ## Estrutura do Projeto
 
 ```text
@@ -99,11 +178,9 @@ Project/
 │
 ├── main.cpp
 └── CMakeLists.txt
-````
+```
 
 ---
-
-<!-- COMO EXECUTAR -->
 
 ## Como Executar
 
@@ -139,8 +216,6 @@ No CLion:
 * Executar o target `VeterinaryClinic`
 
 ---
-
-<!-- COMO USAR -->
 
 ## Como Usar
 
@@ -194,54 +269,67 @@ Exemplo do menu de prescrições:
 ========== Gestao de Prescricoes ==========
 1. Emitir Prescricao
 2. Listar Prescricoes
+3. Consultar Prescricoes de Animal
 0. Voltar
 ```
 
 ---
 
-<!-- PROGRESSO -->
-
 ## Progresso
 
-| UCs                                         | Estado                    | Comentários                                                                 |
+| UC                                          | Estado                    | Comentários                                                                 |
 | ------------------------------------------- | ------------------------- | --------------------------------------------------------------------------- |
-| UC1 - Registar Animal                       | Implementado              | Falta adicionar exceptions, validações completas e persistência de dados    |
-| UC2 - Registar Veterinário                  | Implementado              | Falta adicionar exceptions, validações completas e persistência de dados    |
-| UC3 - Definir Serviço                       | Implementado              | Serviço já pode ser registado e listado                                     |
-| UC4 - Marcar Consulta / Serviço             | Parcialmente implementado | A marcação foi simplificada como um tipo de serviço com data e hora         |
+| UC1 - Registar Animal                       | Implementado              | Registo com ID automático, validações básicas e persistência binária        |
+| UC2 - Registar Veterinário                  | Implementado              | Registo com ID automático, validações básicas e persistência binária        |
+| UC3 - Definir Serviço                       | Implementado              | Serviço pode ser registado, listado e persistido                            |
+| UC4 - Marcar Consulta / Serviço             | Parcialmente implementado | A marcação foi simplificada como um serviço com data e hora                 |
 | UC5 - Consultar Marcações / Serviços        | Parcialmente implementado | Atualmente é possível listar serviços                                       |
 | UC6 - Consultar Histórico Geral de Serviços | Parcialmente implementado | Atualmente é possível listar todos os serviços                              |
-| UC7 - Consultar Serviços de um Veterinário  | Implementado              | Consulta feita através do ID do veterinário introduzido na interface        |
-| UC8 - Emitir Prescrição                     | Implementado              | Falta melhorar validações e tratamento de erros                             |
-| UC9 - Consultar Prescrições                 | Implementado | Atualmente é possível listar todas as prescrições e de um animal específico |
-| UC10 - Consultar Animal                     | Implementado              | Consulta feita através do ID do animal introduzido na interface             |
+| UC7 - Consultar Serviços de um Veterinário  | Implementado              | Consulta feita através do ID do veterinário                                 |
+| UC8 - Emitir Prescrição                     | Implementado              | Prescrição associada a animal e veterinário, com persistência binária       |
+| UC9 - Consultar Prescrições                 | Implementado              | É possível listar todas as prescrições e consultar prescrições de um animal |
+| UC10 - Consultar Animal                     | Implementado              | Consulta feita através do ID do animal                                      |
 
 ---
 
-### Melhorias/Alterações Adicionais
+## Melhorias/Alterações Adicionais
 
-Funcionalidades e melhorias planeadas:
+Funcionalidades já implementadas:
 
-* Implementar persistência em ficheiros binários.
-* Implementar a camada `Repository`.
-* Adicionar exceptions:
+* Geração automática de IDs.
+* Relações no Model através de apontadores/referências.
+* DTOs para transportar dados entre camadas.
+* Mappers para converter objetos do Model em DTOs.
+* Containers para gerir coleções de entidades.
+* Exceptions principais:
 
   * `InvalidDataException`
   * `DuplicatedDataException`
   * `NoDataException`
   * `DataConsistencyException`
-* Validar dados introduzidos pelo utilizador.
-* Validar se os objetos associados existem ao criar serviços e prescrições.
-* Implementar geração automática de IDs.
-* Garantir que as relações no Model usam apontadores/referências, e não IDs.
-* Melhorar mensagens de erro na interface.
-* Adicionar filtros nas listagens.
-* Consultar prescrições de um animal específico.
+* Validação da existência de objetos associados ao criar serviços e prescrições.
+* Persistência em ficheiros binários.
+* Camada `Repository`.
+* Reconstrução de apontadores no carregamento dos dados.
+* Tester com Google Test.
+* Alteração de containers de `Animal` e `Veterinarian` para `std::deque`, para melhorar a estabilidade dos apontadores.
+
+Funcionalidades em desenvolvimento ou planeadas:
+
+* Melhorar validações finais dos dados introduzidos.
+* Validar serviços de acordo com a especialidade do veterinário.
+* Remover serviços.
+* Remover prescrições.
+* Editar animais.
+* Editar veterinários.
+* Editar serviços.
+* Editar prescrições.
+* Remover animais e veterinários com validação de dependências.
+* Adicionar testes ao Repository.
 * Atualizar os diagramas de classes conforme a implementação final.
+* Melhorar mensagens de erro na interface.
 
 ---
-
-<!-- CREDITOS -->
 
 ## Créditos
 
@@ -251,4 +339,6 @@ Recursos usados como referência:
 
 * Material disponibilizado pelo docente
 * Exemplo *School Application*
-* [https://github.com/othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+* Google Test
+* Documentação de C++ sobre ficheiros binários
+* https://github.com/othneildrew/Best-README-Template
