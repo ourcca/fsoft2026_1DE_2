@@ -3,6 +3,13 @@
 #include <fstream>
 #include <string>
 
+#include "model/Animal.h"
+#include "model/Veterinarian.h"
+#include "model/Service.h"
+#include "model/Prescription.h"
+#include "model/Date.h"
+#include "model/Time.h"
+
 static void writeString(std::ofstream& file, const std::string& value) {
     int size = value.size();
     file.write(reinterpret_cast<const char*>(&size), sizeof(size));
@@ -65,6 +72,59 @@ void ClinicRepositoryBinary::save() {
         writeString(file, veterinarian.getSpecialty());
     }
 
+    auto& services = clinic.getServiceContainer().getAll();
+    int serviceCount = services.size();
+    file.write(reinterpret_cast<const char*>(&serviceCount), sizeof(serviceCount));
+
+    for (const Service& service : services) {
+        int id = service.getId();
+        float cost = service.getCost();
+
+        int day;
+        int month;
+        int year;
+        service.getDate().getDate(day, month, year);
+
+        int hour;
+        int minute;
+        service.getTime().getTime(hour, minute);
+
+        int animalId = service.getAnimal()->getId();
+        int veterinarianId = service.getVeterinarian()->getId();
+
+        file.write(reinterpret_cast<const char*>(&id), sizeof(id));
+        writeString(file, service.getType());
+        file.write(reinterpret_cast<const char*>(&cost), sizeof(cost));
+
+        file.write(reinterpret_cast<const char*>(&day), sizeof(day));
+        file.write(reinterpret_cast<const char*>(&month), sizeof(month));
+        file.write(reinterpret_cast<const char*>(&year), sizeof(year));
+
+        file.write(reinterpret_cast<const char*>(&hour), sizeof(hour));
+        file.write(reinterpret_cast<const char*>(&minute), sizeof(minute));
+
+        file.write(reinterpret_cast<const char*>(&animalId), sizeof(animalId));
+        file.write(reinterpret_cast<const char*>(&veterinarianId), sizeof(veterinarianId));
+    }
+    auto& prescriptions = clinic.getPrescriptionContainer().getAll();
+    int prescriptionCount = prescriptions.size();
+    file.write(reinterpret_cast<const char*>(&prescriptionCount), sizeof(prescriptionCount));
+
+    for (const Prescription& prescription : prescriptions) {
+        int id = prescription.getId();
+
+        int animalId = prescription.getAnimal()->getId();
+        int veterinarianId = prescription.getVeterinarian()->getId();
+
+        file.write(reinterpret_cast<const char*>(&id), sizeof(id));
+        writeString(file, prescription.getMedication());
+        writeString(file, prescription.getQuantity());
+        writeString(file, prescription.getDuration());
+
+        file.write(reinterpret_cast<const char*>(&animalId), sizeof(animalId));
+        file.write(reinterpret_cast<const char*>(&veterinarianId), sizeof(veterinarianId));
+    }
+
     file.close();
 }
 
@@ -113,6 +173,79 @@ void ClinicRepositoryBinary::load() {
 
         Veterinarian veterinarian(id, name, age, specialty);
         clinic.getVeterinarianContainer().add(veterinarian);
+    }
+
+    int serviceCount;
+    file.read(reinterpret_cast<char*>(&serviceCount), sizeof(serviceCount));
+
+    for (int i = 0; i < serviceCount; i++) {
+        int id;
+        float cost;
+        std::string type;
+
+        int day;
+        int month;
+        int year;
+
+        int hour;
+        int minute;
+
+        int animalId;
+        int veterinarianId;
+
+        file.read(reinterpret_cast<char*>(&id), sizeof(id));
+        type = readString(file);
+        file.read(reinterpret_cast<char*>(&cost), sizeof(cost));
+
+        file.read(reinterpret_cast<char*>(&day), sizeof(day));
+        file.read(reinterpret_cast<char*>(&month), sizeof(month));
+        file.read(reinterpret_cast<char*>(&year), sizeof(year));
+
+        file.read(reinterpret_cast<char*>(&hour), sizeof(hour));
+        file.read(reinterpret_cast<char*>(&minute), sizeof(minute));
+
+        file.read(reinterpret_cast<char*>(&animalId), sizeof(animalId));
+        file.read(reinterpret_cast<char*>(&veterinarianId), sizeof(veterinarianId));
+
+        Animal* animal = clinic.getAnimalContainer().get(animalId);
+        Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+        if (animal != nullptr && veterinarian != nullptr) {
+            Date date(day, month, year);
+            Time time(hour, minute);
+
+            Service service(id, type, cost, date, time, animal, veterinarian);
+            clinic.getServiceContainer().add(service);
+        }
+    }
+
+    int prescriptionCount;
+    file.read(reinterpret_cast<char*>(&prescriptionCount), sizeof(prescriptionCount));
+
+    for (int i = 0; i < prescriptionCount; i++) {
+        int id;
+        std::string medication;
+        std::string quantity;
+        std::string duration;
+
+        int animalId;
+        int veterinarianId;
+
+        file.read(reinterpret_cast<char*>(&id), sizeof(id));
+        medication = readString(file);
+        quantity = readString(file);
+        duration = readString(file);
+
+        file.read(reinterpret_cast<char*>(&animalId), sizeof(animalId));
+        file.read(reinterpret_cast<char*>(&veterinarianId), sizeof(veterinarianId));
+
+        Animal* animal = clinic.getAnimalContainer().get(animalId);
+        Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+        if (animal != nullptr && veterinarian != nullptr) {
+            Prescription prescription(id, medication, quantity, duration, animal, veterinarian);
+            clinic.getPrescriptionContainer().add(prescription);
+        }
     }
 
     file.close();
