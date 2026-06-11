@@ -20,7 +20,7 @@ namespace {
     }
 }
 
-Animal::Animal(const int id, const std::string &name, const std::string &species, const std::string &breed, const float weight, const int age) {
+Animal::Animal(int id, const std::string &name, const std::string &species, const std::string &breed, float weight, int age) {
     setId(id);
     setName(name);
     setSpecies(species);
@@ -30,34 +30,39 @@ Animal::Animal(const int id, const std::string &name, const std::string &species
 }
 
 Animal::Animal(const Animal& animal) {
-    this->id = animal.id;
-    this->name = animal.name;
-    this->species = animal.species;
-    this->breed = animal.breed;
-    this->weight = animal.weight;
-    this->age = animal.age;
+    setId(animal.id);
+    setName(animal.name);
+    setSpecies(animal.species);
+    setBreed(animal.breed);
+    setWeight(animal.weight);
+    setAge(animal.age);
 }
 
 void Animal::setId(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("Id de Animal tem de ser positiva");
+    }
     this->id = id;
 }
 
 void Animal::setName(const std::string& name) {
-    if (name.empty()) {
+    std::string trimmed_name = trim(name);
+    if (trimmed_name.empty()) {
         throw InvalidDataException("Nome de Animal não pode estar vazio.");
     }
-    this->name = name;
+    this->name = trimmed_name;
 }
 
 void Animal::setSpecies(const std::string& species) {
-    if (species.empty()) {
+    std::string trimmed_species = trim(species);
+    if (trimmed_species.empty()) {
         throw InvalidDataException("Espécie de Animal não pode estar vazia.");
     }
-    this->species = species;
+    this->species = trimmed_species;
 }
 
 void Animal::setBreed(const std::string& breed) {
-    this->breed = breed;
+    this->breed = trim(breed);
 }
 
 void Animal::setWeight(float weight) {
@@ -74,7 +79,7 @@ void Animal::setAge(int age) {
     this->age = age;
 }
 
-const int& Animal::getId() const {
+int Animal::getId() const {
     return this->id;
 }
 
@@ -90,7 +95,7 @@ const std::string& Animal::getBreed() const {
     return this->breed;
 }
 
-const float& Animal::getWeight() const {
+float Animal::getWeight() const {
     return this->weight;
 }
 

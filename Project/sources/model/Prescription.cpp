@@ -30,50 +30,62 @@ Prescription::Prescription(int id,const std::string& medication,const std::strin
 }
 
 Prescription::Prescription(const Prescription &prescription) {
-    this->id = prescription.id;
-    this->medication = prescription.medication;
-    this->quantity = prescription.quantity;
-    this->duration = prescription.duration;
-    this->animal = prescription.animal;
-    this->veterinarian = prescription.veterinarian;
+    setId(prescription.id);
+    setMedication(prescription.medication);
+    setQuantity(prescription.quantity);
+    setDuration(prescription.duration);
+    setAnimal(prescription.animal);
+    setVeterinarian(prescription.veterinarian);
 }
 
 void Prescription::setId(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("Id de Prescrição tem de ser positivo.");
+    }
     this->id = id;
 }
 
 void Prescription::setMedication(const std::string& medication) {
-    if (medication.empty()) {
+    std::string trimmed_medication = trim(medication);
+    if (trimmed_medication.empty()) {
         throw InvalidDataException("Medicamento da Prescrição não pode estar vazio.");
     }
-    this->medication = medication;
+    this->medication = trimmed_medication;
 }
 
 void Prescription::setQuantity(const std::string& quantity) {
-    if (quantity.empty()) {
+    std::string trimmed_quantity = trim(quantity);
+    if (trimmed_quantity.empty()) {
         throw InvalidDataException("Quantidade de medicamento da Prescrição não pode estar vazio.");
     }
-    this->quantity = quantity;
+    this->quantity = trimmed_quantity;
 }
 
 void Prescription::setDuration(const std::string& duration) {
-    if (duration.empty()) {
+    std::string trimmed_duration = trim(duration);
+    if (trimmed_duration.empty()) {
         throw InvalidDataException("Duração da Prescrição não pode estar vazio.");
     }
-    this->duration = duration;
+    this->duration = trimmed_duration;
 }
 
 void Prescription::setAnimal(Animal* animal) {
+    if (animal == nullptr) {
+        throw InvalidDataException("Prescrição de ser associada a um Animal.");
+    }
     this->animal = animal;
 }
 
 void Prescription::setVeterinarian(Veterinarian* veterinarian) {
+    if (veterinarian == nullptr) {
+        throw InvalidDataException("Prescrição tem de ser feita por um Veterinário.");
+    }
     this->veterinarian = veterinarian;
 }
 
 
 
-const int& Prescription::getId() const {
+int Prescription::getId() const {
     return this->id;
 }
 

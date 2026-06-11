@@ -22,7 +22,7 @@ class Veterinarian {
         void setName(const std::string& name);
         void setSpecialty(const std::string& specialty);
         void setAge(int age);
-        const int& getId() const;
+        int getId() const;
         const std::string& getName() const;
         const std::string& getSpecialty() const;
         int getAge() const;

@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 Date::Date() {
+    setDate(1, 1, 1900);
 }
 
 Date::Date(int day, int month, int year) {
@@ -13,9 +14,7 @@ Date::Date(int day, int month, int year) {
 }
 
 Date::Date(const Date& date) {
-    this->day = date.day;
-    this->month = date.month;
-    this->year = date.year;
+    setDate(date.day, date.month, date.year);
 }
 
 bool Date::isLeapYear(int year) {

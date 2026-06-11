@@ -23,6 +23,10 @@ std::vector<AnimalOutDTO> AnimalService::getAllAnimals() const {
 }
 
 AnimalOutDTO AnimalService::getAnimalById(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
     Animal* animal = clinic.getAnimalContainer().get(id);
 
     if (animal == nullptr) {

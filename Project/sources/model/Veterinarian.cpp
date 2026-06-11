@@ -20,7 +20,7 @@ namespace {
     }
 }
 
-Veterinarian::Veterinarian(const int id, const std::string& name, int age,const std::string& specialty) {
+Veterinarian::Veterinarian(int id, const std::string& name, int age,const std::string& specialty) {
     setId(id);
     setName(name);
     setAge(age);
@@ -28,28 +28,33 @@ Veterinarian::Veterinarian(const int id, const std::string& name, int age,const 
 }
 
 Veterinarian::Veterinarian(const Veterinarian &veterinarian) {
-    this->id = veterinarian.id;
-    this->name = veterinarian.name;
-    this->age = veterinarian.age;
-    this->specialty = veterinarian.specialty;
+    setId(veterinarian.id);
+    setName(veterinarian.name);
+    setAge(veterinarian.age);
+    setSpecialty(veterinarian.specialty);
 }
 
 void Veterinarian::setId(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Veterinário tem de ser positivo.");
+    }
     this->id = id;
 }
 
 void Veterinarian::setName(const std::string& name) {
-    if (name.empty()) {
+    std::string trimmed_name = trim(name);
+    if (trimmed_name.empty()) {
         throw InvalidDataException("Nome de Veterinário não pode estar vazio.");
     }
-    this->name = name;
+    this->name = trimmed_name;
 }
 
 void Veterinarian::setSpecialty(const std::string& specialty) {
-    if (specialty.empty()) {
+    std::string trimmed_specialty = trim(specialty);
+    if (trimmed_specialty.empty()) {
         throw InvalidDataException("Especialidade de Veterinário não pode estar vazia.");
     }
-    this->specialty = specialty;
+    this->specialty = trimmed_specialty;
 }
 
 void Veterinarian::setAge(int age) {
@@ -59,8 +64,8 @@ void Veterinarian::setAge(int age) {
     this->age = age;
 }
 
-const int& Veterinarian::getId() const {
-    return this-> id;
+int Veterinarian::getId() const {
+    return this->id;
 }
 
 const std::string& Veterinarian::getName() const {

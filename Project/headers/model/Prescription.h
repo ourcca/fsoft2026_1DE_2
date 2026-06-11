@@ -32,7 +32,7 @@ class Prescription {
         void setAnimal(Animal* animal);
         void setVeterinarian(Veterinarian* veterinarian);
 
-        const int& getId() const;
+        int getId() const;
         const std::string& getMedication() const;
         const std::string& getQuantity() const;
         const std::string& getDuration() const;
