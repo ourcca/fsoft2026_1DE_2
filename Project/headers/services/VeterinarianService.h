@@ -21,6 +21,8 @@ public:
 
     void addVeterinarian(const VeterinarianInDTO& dto);
     std::vector<VeterinarianOutDTO> getAllVeterinarians();
+    VeterinarianOutDTO getVeterinarianById(int id);
+    void editVeterinarian(int id, const VeterinarianInDTO& dto);
 };
 
 #endif

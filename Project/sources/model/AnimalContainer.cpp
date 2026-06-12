@@ -7,6 +7,8 @@ Created on: 15/05/2026
 #include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
 
+#include "exceptions/NoDataException.h"
+
 std::deque<Animal>::iterator AnimalContainer::findByID(int id) {
     return std::find_if(animals.begin(), animals.end(),
         [id](const Animal& animal) {
@@ -53,4 +55,20 @@ int AnimalContainer::getNextId() {
     }
 
     return maxId + 1;
+}
+
+Animal* AnimalContainer::edit(int id, const std::string& name, const std::string& species,const std::string& breed, float weight, int age) {
+    Animal* animal = get(id);
+
+    if (animal == nullptr) {
+        throw NoDataException("Animal não existe.");
+    }
+
+    animal->setName(name);
+    animal->setSpecies(species);
+    animal->setBreed(breed);
+    animal->setWeight(weight);
+    animal->setAge(age);
+
+    return animal;
 }

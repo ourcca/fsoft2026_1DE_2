@@ -23,6 +23,10 @@ std::vector<AnimalOutDTO> AnimalService::getAllAnimals() const {
 }
 
 AnimalOutDTO AnimalService::getAnimalById(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
     Animal* animal = clinic.getAnimalContainer().get(id);
 
     if (animal == nullptr) {
@@ -30,4 +34,19 @@ AnimalOutDTO AnimalService::getAnimalById(int id) {
     }
 
     return AnimalMapper::toDTO(*animal);
+}
+
+void AnimalService::editAnimal(int id, const AnimalInDTO& dto) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    clinic.getAnimalContainer().edit(
+        id,
+        dto.name,
+        dto.species,
+        dto.breed,
+        dto.weight,
+        dto.age
+    );
 }

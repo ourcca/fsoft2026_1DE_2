@@ -10,10 +10,20 @@ Created on: 16/05/2026
 #include "model/Veterinarian.h"
 #include "mappers/PrescriptionMapper.h"
 #include "exceptions/DataConsistencyException.h"
+#include "exceptions/NoDataException.h"
+#include "exceptions/InvalidDataException.h"
 
 PrescriptionService::PrescriptionService(Clinic& clinic) : clinic(clinic) {}
 
 void PrescriptionService::addPrescription(const PrescriptionInDTO& dto) {
+    if (dto.animalId <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    if (dto.veterinarianId <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
     Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
 
@@ -41,21 +51,23 @@ std::vector<PrescriptionOutDTO> PrescriptionService::getAllPrescriptions() {
 }
 
 std::vector<PrescriptionOutDTO> PrescriptionService::getPrescriptionsByAnimalId(int animalId) {
-    std::vector<PrescriptionOutDTO> result;
+    if (animalId <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
 
     Animal* animal = clinic.getAnimalContainer().get(animalId);
 
     if (animal == nullptr) {
-        return result;
+        throw NoDataException("Animal não encontrado.");
     }
 
+    std::vector<PrescriptionOutDTO> result;
     std::vector<Prescription>& prescriptions = clinic.getPrescriptionContainer().getAll();
 
     for (const Prescription& prescription : prescriptions) {
-        if (prescription.getAnimal() != nullptr &&
-            prescription.getAnimal() == animal) {
+        if (prescription.getAnimal() == animal) {
             result.push_back(PrescriptionMapper::toDTO(prescription));
-            }
+        }
     }
 
     return result;

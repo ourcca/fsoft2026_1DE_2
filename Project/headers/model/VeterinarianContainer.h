@@ -19,6 +19,7 @@ class VeterinarianContainer {
         Veterinarian* get(int id);
         std::deque<Veterinarian>& getAll();
         int getNextId();
+        Veterinarian* edit(int id, const std::string& name, int age, const std::string& specialty);
 };
 
 #endif

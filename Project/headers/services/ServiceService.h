@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_SERVICES_SERVICESERVICE_H_
 
 #include <vector>
+#include <string>
 
 #include "model/Clinic.h"
 #include "dto/ServiceInDTO.h"
@@ -18,6 +19,8 @@ private:
 
 public:
     ServiceService(Clinic& clinic);
+
+    void validateVeterinarianSpecialty(int veterinrianId, bool requiresSpecialty, const std::string& requiredSpecialty);
 
     void addService(const ServiceInDTO& dto);
     std::vector<ServiceOutDTO> getAllServices();

@@ -80,6 +80,20 @@ void Controller::runAnimals() {
                     animalView.printAnimal(animal);
                     break;
                 }
+            case 4:{
+                        int id = animalView.getAnimalId();
+
+                        AnimalOutDTO animal = animalService.getAnimalById(id);
+                        animalView.printAnimal(animal);
+
+                        AnimalInDTO dto = animalView.getAnimal();
+                        animalService.editAnimal(id, dto);
+
+                        repository.save();
+                        animalView.showAnimalUpdated();
+
+                        break;
+            }
                 case 0:
                     break;
                 default:
@@ -124,6 +138,20 @@ void Controller::runVeterinarians() {
 
                     break;
                 }
+                case 4: {
+                        int id = veterinarianView.getVeterinarianId();
+
+                        VeterinarianOutDTO veterinarian = veterinarianService.getVeterinarianById(id);
+                        veterinarianView.printVeterinarian(veterinarian);
+
+                        VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                        veterinarianService.editVeterinarian(id, dto);
+
+                        repository.save();
+                        veterinarianView.showVeterinarianUpdated();
+
+                        break;
+                    }
                 case 0:
                     break;
                 default:
@@ -144,7 +172,16 @@ void Controller::runServices() {
             switch (option) {
                 case 1: {
 
-                    ServiceInDTO dto = serviceView.getService();
+                    ServiceInDTO dto = serviceView.getServiceStart();
+
+                    serviceService.validateVeterinarianSpecialty(
+                        dto.veterinarianId,
+                        dto.requiresVeterinarianSpecialty,
+                        dto.requiredVeterinarianSpecialty
+                    );
+
+                    dto = serviceView.getServiceDetails(dto);
+
                     serviceService.addService(dto);
                     repository.save();
                     serviceView.showServiceCreated();

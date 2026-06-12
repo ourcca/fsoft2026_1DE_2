@@ -19,6 +19,7 @@ public:
     void addAnimal(const AnimalInDTO& dto) const;
     std::vector<AnimalOutDTO> getAllAnimals() const;
     AnimalOutDTO getAnimalById(int id);
+    void editAnimal(int id, const AnimalInDTO& dto);
 };
 
 #endif

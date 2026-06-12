@@ -37,9 +37,9 @@ public:
     void setAnimal(Animal* animal);
     void setVeterinarian(Veterinarian* veterinarian);
 
-    const int& getId() const;
+    int getId() const;
     const std::string& getType() const;
-    const float& getCost() const;
+    float getCost() const;
     const Date& getDate() const;
     const Time& getTime() const;
     Animal* getAnimal() const;

@@ -15,7 +15,8 @@ class ServiceView {
 public:
     int menu();
 
-    ServiceInDTO getService();
+    ServiceInDTO getServiceStart();
+    ServiceInDTO getServiceDetails(const ServiceInDTO& dto);
 
     void showServiceCreated();
     void printServices(const std::vector<ServiceOutDTO>& services);

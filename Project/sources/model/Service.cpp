@@ -32,24 +32,28 @@ Service::Service(int id,const std::string& type, float cost,const Date& date,con
 }
 
 Service::Service(const Service& service) {
-    this->id = service.id;
-    this->type = service.type;
-    this->cost = service.cost;
-    this->date = service.date;
-    this->time = service.time;
-    this->animal = service.animal;
-    this->veterinarian = service.veterinarian;
+    setId(service.id);
+    setType(service.type);
+    setCost(service.cost);
+    setDate(service.date);
+    setTime(service.time);
+    setAnimal(service.animal);
+    setVeterinarian(service.veterinarian);
 }
 
 void Service::setId(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("Service Id tem de ser positivo.");
+    }
     this->id = id;
 }
 
 void Service::setType(const std::string& type) {
-    if (type.empty()) {
+    std::string trimmed_type = trim(type);
+    if (trimmed_type.empty()) {
         throw InvalidDataException("Tipo de Serviço não pode estar vazio.");
     }
-    this->type = type;
+    this->type = trimmed_type;
 }
 
 void Service::setCost(float cost) {
@@ -68,14 +72,20 @@ void Service::setTime(const Time& time) {
 }
 
 void Service::setAnimal(Animal*animal) {
+    if (animal == nullptr) {
+        throw InvalidDataException("Serviço tem de ter um Animal.");
+    }
     this->animal = animal;
 }
 
 void Service::setVeterinarian(Veterinarian*veterinarian) {
+    if (veterinarian == nullptr) {
+        throw InvalidDataException("Serviço tem de ter um Veterinário.");
+    }
     this->veterinarian = veterinarian;
 }
 
-const int& Service::getId() const {
+int Service::getId() const {
     return this->id;
 }
 
@@ -83,7 +93,7 @@ const std::string& Service::getType() const {
     return this->type;
 }
 
-const float& Service::getCost() const {
+float Service::getCost() const {
     return this->cost;
 }
 

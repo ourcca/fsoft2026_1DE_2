@@ -15,6 +15,8 @@ struct ServiceInDTO {
     std::string time;
     int animalId;
     int veterinarianId;
+    bool requiresVeterinarianSpecialty{};
+    std::string requiredVeterinarianSpecialty;
 };
 
 #endif

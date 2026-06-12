@@ -4,7 +4,9 @@
 #include "model/Time.h"
 #include "exceptions/InvalidDataException.h"
 
-Time::Time() : hour(0), minute(0) {}
+Time::Time() {
+    setTime(0, 0);
+}
 
 Time::Time(int hour, int minute) {
     setTime(hour, minute);

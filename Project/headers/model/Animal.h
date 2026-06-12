@@ -25,11 +25,11 @@ class Animal {
         void setBreed(const std::string& breed);
         void setWeight(float weight);
         void setAge(int age);
-        const int& getId() const;
+        int getId() const;
         const std::string& getName() const;
         const std::string& getSpecies() const;
         const std::string& getBreed() const;
-        const float& getWeight() const;
+        float getWeight() const;
         int getAge() const;
 
         bool operator == (const Animal& obj) const;
