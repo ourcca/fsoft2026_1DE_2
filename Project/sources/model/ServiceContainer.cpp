@@ -6,6 +6,7 @@ Created on: 16/05/2026
 #include "model/ServiceContainer.h"
 #include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
+#include "exceptions/NoDataException.h"
 
 std::vector<Service>::iterator ServiceContainer::findByID(int id) {
     return std::find_if(services.begin(), services.end(),
@@ -53,4 +54,21 @@ int ServiceContainer::getNextId() {
     }
 
     return maxId + 1;
+}
+
+Service* ServiceContainer::edit(int id,const std::string& type,float cost,const Date& date,const Time& time,Animal* animal, Veterinarian* veterinarian) {
+    Service* service = get(id);
+
+    if (service == nullptr) {
+        throw NoDataException("Serviço não existe.");
+    }
+
+    service->setType(type);
+    service->setCost(cost);
+    service->setDate(date);
+    service->setTime(time);
+    service->setAnimal(animal);
+    service->setVeterinarian(veterinarian);
+
+    return service;
 }

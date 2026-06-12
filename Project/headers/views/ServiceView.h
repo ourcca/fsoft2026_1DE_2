@@ -18,8 +18,12 @@ public:
     ServiceInDTO getServiceStart();
     ServiceInDTO getServiceDetails(const ServiceInDTO& dto);
 
+    int getServiceId();
+
     void showServiceCreated();
+    void showServiceUpdated();
     void printServices(const std::vector<ServiceOutDTO>& services);
+    void printService(const ServiceOutDTO& service);
 };
 
 #endif

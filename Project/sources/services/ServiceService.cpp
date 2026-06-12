@@ -66,6 +66,29 @@ namespace {
 
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
 
+void ServiceService::validateServiceStart(const ServiceInDTO& dto) {
+    if (dto.animalId <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    if (dto.veterinarianId <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
+    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
+
+    if (animal == nullptr || veterinarian == nullptr) {
+        throw DataConsistencyException("Animal ou Veterinário não existe.");
+    }
+
+    validateVeterinarianSpecialty(
+        dto.veterinarianId,
+        dto.requiresVeterinarianSpecialty,
+        dto.requiredVeterinarianSpecialty
+    );
+}
+
 void ServiceService::validateVeterinarianSpecialty(int veterinrianId, bool requiresSpecialty,
     const std::string &requiredSpecialty) {
 
@@ -129,6 +152,20 @@ std::vector<ServiceOutDTO> ServiceService::getAllServices() {
     return ServiceMapper::toDTOList(services);
 }
 
+ServiceOutDTO ServiceService::getServiceById(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Serviço inválido.");
+    }
+
+    Service* service = clinic.getServiceContainer().get(id);
+
+    if (service == nullptr) {
+        throw NoDataException("Serviço não encontrado.");
+    }
+
+    return ServiceMapper::toDTO(*service);
+}
+
 std::vector<ServiceOutDTO> ServiceService::getServicesByVeterinarianId(int veterinarianId) {
     if (veterinarianId <= 0) {
         throw InvalidDataException("ID de Veterinário inválido.");
@@ -150,4 +187,28 @@ std::vector<ServiceOutDTO> ServiceService::getServicesByVeterinarianId(int veter
     }
 
     return result;
+}
+
+void ServiceService::editService(int id, const ServiceInDTO& dto) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Serviço inválido.");
+    }
+
+    validateServiceStart(dto);
+
+    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
+
+    Date date = parseDate(dto.date);
+    Time time = parseTime(dto.time);
+
+    clinic.getServiceContainer().edit(
+        id,
+        dto.type,
+        dto.cost,
+        date,
+        time,
+        animal,
+        veterinarian
+    );
 }

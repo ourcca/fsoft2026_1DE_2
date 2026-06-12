@@ -13,6 +13,7 @@ int ServiceView::menu() {
     std::cout << "\n========== Gestao de Servicos ==========\n";
     std::cout << "1. Registar Servico\n";
     std::cout << "2. Listar Servicos\n";
+    std::cout << "3. Editar Servico\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");
@@ -55,8 +56,28 @@ ServiceInDTO ServiceView::getServiceDetails(const ServiceInDTO& dto) {
     return completedDto;
 }
 
+int ServiceView::getServiceId() {
+    return Utils::getNumber("ID do servico: ");
+}
+
 void ServiceView::showServiceCreated() {
     std::cout << "Servico registado com sucesso.\n";
+}
+
+void ServiceView::showServiceUpdated() {
+    std::cout << "Serviço editado com sucesso.\n";
+}
+
+void ServiceView::printService(const ServiceOutDTO& service) {
+    std::cout << "\n========== Dados do Servico ==========\n";
+    std::cout << "ID: " << service.id << "\n";
+    std::cout << "Tipo: " << service.type << "\n";
+    std::cout << "Custo: " << service.cost << "\n";
+    std::cout << "Data: " << service.date << "\n";
+    std::cout << "Hora: " << service.time << "\n";
+    std::cout << "ID Animal: " << service.animalId << "\n";
+    std::cout << "ID Veterinario: " << service.veterinarianId << "\n";
+    std::cout << "--------------------------------------\n";
 }
 
 void ServiceView::printServices(const std::vector<ServiceOutDTO>& services) {

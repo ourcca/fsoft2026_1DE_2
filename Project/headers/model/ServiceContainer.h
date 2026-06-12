@@ -21,6 +21,7 @@ public:
     Service* get(int id);
     std::vector<Service>& getAll();
     int getNextId();
+    Service* edit(int id,const std::string& type,float cost,const Date& date,const Time& time,Animal* animal, Veterinarian* veterinarian);
 };
 
 #endif

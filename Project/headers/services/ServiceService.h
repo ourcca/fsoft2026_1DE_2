@@ -20,11 +20,14 @@ private:
 public:
     ServiceService(Clinic& clinic);
 
+    void validateServiceStart(const ServiceInDTO& dto);
     void validateVeterinarianSpecialty(int veterinrianId, bool requiresSpecialty, const std::string& requiredSpecialty);
 
     void addService(const ServiceInDTO& dto);
     std::vector<ServiceOutDTO> getAllServices();
+    ServiceOutDTO getServiceById(int id);
     std::vector<ServiceOutDTO> getServicesByVeterinarianId(int veterinarianId);
+    void editService(int id,const ServiceInDTO& dto);
 };
 
 #endif

@@ -174,11 +174,7 @@ void Controller::runServices() {
 
                     ServiceInDTO dto = serviceView.getServiceStart();
 
-                    serviceService.validateVeterinarianSpecialty(
-                        dto.veterinarianId,
-                        dto.requiresVeterinarianSpecialty,
-                        dto.requiredVeterinarianSpecialty
-                    );
+                        serviceService.validateServiceStart(dto);
 
                     dto = serviceView.getServiceDetails(dto);
 
@@ -192,6 +188,23 @@ void Controller::runServices() {
                     std::vector<ServiceOutDTO> services = serviceService.getAllServices();
                     serviceView.printServices(services);
                     break;
+                }
+            case 3: {
+                        int id = serviceView.getServiceId();
+
+                        ServiceOutDTO service = serviceService.getServiceById(id);
+                        serviceView.printService(service);
+
+                        ServiceInDTO dto = serviceView.getServiceStart();
+                        serviceService.validateServiceStart(dto);
+
+                        dto = serviceView.getServiceDetails(dto);
+
+                        serviceService.editService(id, dto);
+                        repository.save();
+                        serviceView.showServiceUpdated();
+
+                        break;
                 }
                 case 0:
                     break;
