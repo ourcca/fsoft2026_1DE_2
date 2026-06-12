@@ -41,6 +41,9 @@ set(PROJECT_SOURCE_FILES
         ${PROJECT_SOURCES_DIR}/exceptions/DuplicatedDataException.cpp
         ${PROJECT_SOURCES_DIR}/exceptions/NoDataException.cpp
 
+        ${PROJECT_SOURCES_DIR}/repo/ClinicRepositoryBinary.cpp
+        ${PROJECT_SOURCES_DIR}/repo/ClinicRepositoryMemory.cpp
+
         main.cpp
 )
 
