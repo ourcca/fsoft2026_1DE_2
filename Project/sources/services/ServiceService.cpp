@@ -4,6 +4,8 @@ ServiceService.cpp
 Created on: 16/05/2026
 */
 #include <cstdio>
+#include <algorithm>
+#include <cctype>
 #include "services/ServiceService.h"
 #include "model/Service.h"
 #include "mappers/ServiceMapper.h"
@@ -49,9 +51,48 @@ namespace {
 
         return Time(hour, minute);
     }
+
+    std::string normalize(const std::string& value) {
+        std::string normalized = trim(value);
+
+        std::transform(normalized.begin(), normalized.end(), normalized.begin(),
+            [](unsigned char character) {
+                return static_cast<char>(std::tolower(character));
+            });
+
+        return normalized;
+    }
 }
 
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
+
+void ServiceService::validateVeterinarianSpecialty(int veterinrianId, bool requiresSpecialty,
+    const std::string &requiredSpecialty) {
+
+    if (!requiresSpecialty) {
+        return;
+    }
+
+    if (veterinrianId <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
+    const std::string normalizedRequiredSpecialty = normalize(requiredSpecialty);
+
+    if (normalizedRequiredSpecialty.empty()) {
+        throw InvalidDataException("Especialidade necessária não pode estar vazia.");
+    }
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinrianId);
+
+    if (veterinarian == nullptr) {
+        throw DataConsistencyException("Veterinário não existe.");
+    }
+
+    if (normalize(veterinarian->getSpecialty()) != normalizedRequiredSpecialty) {
+        throw DataConsistencyException("Veterinário sem especificação necessária.");
+    }
+}
 
 void ServiceService::addService(const ServiceInDTO& dto) {
     if (dto.animalId <= 0) {
@@ -68,6 +109,12 @@ void ServiceService::addService(const ServiceInDTO& dto) {
     if (animal == nullptr || veterinarian == nullptr) {
         throw DataConsistencyException("Animal ou Veterinário não existe.");
     }
+
+    validateVeterinarianSpecialty(
+        dto.veterinarianId,
+        dto.requiresVeterinarianSpecialty,
+        dto.requiredVeterinarianSpecialty
+        );
 
     int id = clinic.getServiceContainer().getNextId();
     Date date = parseDate(dto.date);

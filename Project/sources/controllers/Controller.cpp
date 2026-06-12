@@ -172,7 +172,16 @@ void Controller::runServices() {
             switch (option) {
                 case 1: {
 
-                    ServiceInDTO dto = serviceView.getService();
+                    ServiceInDTO dto = serviceView.getServiceStart();
+
+                    serviceService.validateVeterinarianSpecialty(
+                        dto.veterinarianId,
+                        dto.requiresVeterinarianSpecialty,
+                        dto.requiredVeterinarianSpecialty
+                    );
+
+                    dto = serviceView.getServiceDetails(dto);
+
                     serviceService.addService(dto);
                     repository.save();
                     serviceView.showServiceCreated();

@@ -18,17 +18,41 @@ int ServiceView::menu() {
     return Utils::getNumber("Escolha uma opcao: ");
 }
 
-ServiceInDTO ServiceView::getService() {
+ServiceInDTO ServiceView::getServiceStart() {
     ServiceInDTO dto{};
 
-    dto.type = Utils::getString("Tipo de servico: ");
-    dto.cost = static_cast<float>(Utils::getNumber("Custo: "));
-    dto.date = Utils::getString("Data (dd/mm/aaaa): ");
-    dto.time = Utils::getString("Hora (hh:mm): ");
     dto.animalId = Utils::getNumber("ID do animal: ");
     dto.veterinarianId = Utils::getNumber("ID do veterinario: ");
 
+    std::string answer;
+
+    do {
+        answer = Utils::getString("O servico precisa de uma especialidade especifica do veterinario? (s/n): ");
+
+        if (answer != "s" && answer != "S" && answer != "n" && answer != "N") {
+            std::cout << "Opcao invalida. Escreva s ou n.\n";
+        }
+
+    } while (answer != "s" && answer != "S" && answer != "n" && answer != "N");
+
+    dto.requiresVeterinarianSpecialty = answer == "s" || answer == "S";
+
+    if (dto.requiresVeterinarianSpecialty) {
+        dto.requiredVeterinarianSpecialty = Utils::getString("Especialidade necessaria: ");
+    }
+
     return dto;
+}
+
+ServiceInDTO ServiceView::getServiceDetails(const ServiceInDTO& dto) {
+    ServiceInDTO completedDto = dto;
+
+    completedDto.type = Utils::getString("Tipo de servico: ");
+    completedDto.cost = static_cast<float>(Utils::getNumber("Custo: "));
+    completedDto.date = Utils::getString("Data (dd/mm/aaaa): ");
+    completedDto.time = Utils::getString("Hora (hh:mm): ");
+
+    return completedDto;
 }
 
 void ServiceView::showServiceCreated() {
