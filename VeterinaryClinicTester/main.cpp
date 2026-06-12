@@ -15,6 +15,7 @@
 #include "prescription_service_test.cpp"
 #include "animal_service_test.cpp"
 #include "clinic_repository_binary_test.cpp"
+#include "veterinarian_service_test.cpp"
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

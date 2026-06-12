@@ -128,3 +128,16 @@ TEST(ClinicRepositoryBinaryTest, SaveAndLoadPrescriptionWithPointers) {
     std::remove(fileName.c_str());
 }
 
+TEST(ClinicRepositoryBinaryTest, LoadNonExistingFileDoesNotCrash) {
+    std::string fileName = "file_that_does_not_exist.dat";
+    std::remove(fileName.c_str());
+
+    ClinicRepositoryBinary repo(fileName);
+
+    EXPECT_NO_THROW(repo.load());
+    EXPECT_EQ(repo.getClinic().getAnimalContainer().getAll().size(), 0);
+    EXPECT_EQ(repo.getClinic().getVeterinarianContainer().getAll().size(), 0);
+    EXPECT_EQ(repo.getClinic().getServiceContainer().getAll().size(), 0);
+    EXPECT_EQ(repo.getClinic().getPrescriptionContainer().getAll().size(), 0);
+}
+

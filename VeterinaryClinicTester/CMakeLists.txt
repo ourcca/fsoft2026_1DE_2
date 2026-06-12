@@ -31,10 +31,12 @@ set(PROJECT_SOURCE_FILES
         ${PROJECT_SOURCES_DIR}/services/AnimalService.cpp
         ${PROJECT_SOURCES_DIR}/services/ServiceService.cpp
         ${PROJECT_SOURCES_DIR}/services/PrescriptionService.cpp
+        ${PROJECT_SOURCES_DIR}/services/VeterinarianService.cpp
 
         ${PROJECT_SOURCES_DIR}/mappers/AnimalMapper.cpp
         ${PROJECT_SOURCES_DIR}/mappers/ServiceMapper.cpp
         ${PROJECT_SOURCES_DIR}/mappers/PrescriptionMapper.cpp
+        ${PROJECT_SOURCES_DIR}/mappers/VeterinarianMapper.cpp
 
         ${PROJECT_SOURCES_DIR}/exceptions/InvalidDataException.cpp
         ${PROJECT_SOURCES_DIR}/exceptions/DataConsistencyException.cpp
@@ -45,6 +47,7 @@ set(PROJECT_SOURCE_FILES
         ${PROJECT_SOURCES_DIR}/repo/ClinicRepositoryMemory.cpp
 
         main.cpp
+
 )
 
 set(GOOGLE_TEST_LIB
