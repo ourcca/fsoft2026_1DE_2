@@ -6,6 +6,7 @@ Created on: 16/05/2026
 #include "model/PrescriptionContainer.h"
 #include "exceptions/DuplicatedDataException.h"
 #include <algorithm>
+#include "exceptions/NoDataException.h"
 
 std::vector<Prescription>::iterator PrescriptionContainer::findByID(int id) {
     return std::find_if(prescriptions.begin(), prescriptions.end(),
@@ -53,4 +54,20 @@ int PrescriptionContainer::getNextId() {
     }
 
     return maxId + 1;
+}
+
+Prescription* PrescriptionContainer::edit(int id,const std::string& medication,const std::string& quantity,const std::string& duration, Animal* animal, Veterinarian* veterinarian) {
+    Prescription* prescription = get(id);
+
+    if (prescription == nullptr) {
+        throw NoDataException("Serviço não existe.");
+    }
+
+    prescription->setMedication(medication);
+    prescription->setQuantity(quantity);
+    prescription->setDuration(duration);
+    prescription->setAnimal(animal);
+    prescription->setVeterinarian(veterinarian);
+
+    return prescription;
 }

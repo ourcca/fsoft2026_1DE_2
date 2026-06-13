@@ -20,6 +20,7 @@ public:
     Prescription* get(int id);
     std::vector<Prescription>& getAll();
     int getNextId();
+    Prescription* edit(int id,const std::string& medication,const std::string& quantity,const std::string& duration, Animal* animal, Veterinarian* veterinarian);
 
 };
 

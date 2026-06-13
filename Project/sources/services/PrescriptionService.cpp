@@ -50,6 +50,44 @@ std::vector<PrescriptionOutDTO> PrescriptionService::getAllPrescriptions() {
     return PrescriptionMapper::toDTOList(prescriptions);
 }
 
+PrescriptionOutDTO PrescriptionService::getPrescriptionById(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Prescrição inválido.");
+    }
+
+    Prescription* prescription = clinic.getPrescriptionContainer().get(id);
+
+    if (prescription == nullptr) {
+        throw NoDataException("Prescrição não encontrada.");
+    }
+
+    return PrescriptionMapper::toDTO(*prescription);
+}
+
+void PrescriptionService::editPrescription(int id, const PrescriptionInDTO& dto) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Prescrição inválido.");
+    }
+
+    validateAnimalExists(dto.animalId);
+    validateVeterinarianExists(dto.veterinarianId);
+    validateMedication(dto.medication);
+    validateQuantity(dto.quantity);
+    validateDuration(dto.duration);
+
+    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
+
+    clinic.getPrescriptionContainer().edit(
+        id,
+        dto.medication,
+        dto.quantity,
+        dto.duration,
+        animal,
+        veterinarian
+    );
+}
+
 std::vector<PrescriptionOutDTO> PrescriptionService::getPrescriptionsByAnimalId(int animalId) {
     if (animalId <= 0) {
         throw InvalidDataException("ID de Animal inválido.");

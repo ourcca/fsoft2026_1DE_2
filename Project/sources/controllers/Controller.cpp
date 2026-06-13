@@ -367,6 +367,35 @@ void Controller::runPrescriptions() {
                     prescriptionView.printPrescriptions(prescriptions);
                     break;
                 }
+            case 4: {
+                        int id = prescriptionView.getPrescriptionId();
+
+                        PrescriptionOutDTO prescription = prescriptionService.getPrescriptionById(id);
+                        prescriptionView.printPrescription(prescription);
+
+                        PrescriptionInDTO dto{};
+
+                        dto.animalId = prescriptionView.getAnimalId();
+                        prescriptionService.validateAnimalExists(dto.animalId);
+
+                        dto.veterinarianId = prescriptionView.getVeterinarianId();
+                        prescriptionService.validateVeterinarianExists(dto.veterinarianId);
+
+                        dto.medication = prescriptionView.getMedication();
+                        prescriptionService.validateMedication(dto.medication);
+
+                        dto.quantity = prescriptionView.getQuantity();
+                        prescriptionService.validateQuantity(dto.quantity);
+
+                        dto.duration = prescriptionView.getDuration();
+                        prescriptionService.validateDuration(dto.duration);
+
+                        prescriptionService.editPrescription(id, dto);
+                        repository.save();
+                        prescriptionView.showPrescriptionUpdated();
+
+                        break;
+                    }
                 case 0:
                     break;
                 default:
