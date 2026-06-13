@@ -207,12 +207,14 @@ void ServiceService::editService(int id, const ServiceInDTO& dto) {
     }
 
     validateServiceStart(dto);
-
-    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
-    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
+    validateType(dto.type);
+    validateCost(dto.cost);
 
     Date date = parseDate(dto.date);
     Time time = parseTime(dto.time);
+
+    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
 
     clinic.getServiceContainer().edit(
         id,
