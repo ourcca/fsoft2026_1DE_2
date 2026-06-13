@@ -30,6 +30,7 @@ public:
     std::vector<PrescriptionOutDTO> getPrescriptionsByAnimalId(int animalId);
     PrescriptionOutDTO getPrescriptionById(int id);
     void editPrescription(int id, const PrescriptionInDTO& dto);
+    void removePrescription(int id);
 };
 
 #endif

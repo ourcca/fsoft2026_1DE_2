@@ -21,6 +21,7 @@ public:
     void printPrescriptions(const std::vector<PrescriptionOutDTO>& prescriptions);
     int getAnimalId();
     void showPrescriptionUpdated();
+    void showPrescriptionRemoved();
     void printPrescription(const PrescriptionOutDTO& prescription);
     int getPrescriptionId();
 

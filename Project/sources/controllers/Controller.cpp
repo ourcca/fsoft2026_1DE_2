@@ -396,6 +396,15 @@ void Controller::runPrescriptions() {
 
                         break;
                     }
+            case 5: {
+                        int id = prescriptionView.getPrescriptionId();
+
+                        prescriptionService.removePrescription(id);
+                        repository.save();
+                        prescriptionView.showPrescriptionRemoved();
+
+                        break;
+                    }
                 case 0:
                     break;
                 default:
