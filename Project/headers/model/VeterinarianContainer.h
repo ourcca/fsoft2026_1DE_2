@@ -7,6 +7,7 @@ VeterinarianlContainer.h
 #define HEADERS_MODEL_VETERINARIANCONTAINER_H_
 
 #include <deque>
+#include <string>
 #include "Veterinarian.h"
 
 class VeterinarianContainer {

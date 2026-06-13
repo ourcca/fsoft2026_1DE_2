@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_VIEWS_VETERINARIANVIEW_H_
 
 #include <vector>
+#include <string>
 
 #include "dto/VeterinarianInDTO.h"
 #include "dto/VeterinarianOutDTO.h"
@@ -17,6 +18,9 @@ public:
 
     VeterinarianInDTO getVeterinarian();
     int getVeterinarianId();
+    std::string getName();
+    int getAge();
+    std::string getSpecialty();
 
     void showVeterinarianCreated();
     void showVeterinarianUpdated();

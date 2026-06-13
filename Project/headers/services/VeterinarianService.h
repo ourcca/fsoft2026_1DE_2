@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_SERVICES_VETERINARIANSERVICE_H_
 
 #include <vector>
+#include <string>
 
 #include "model/Clinic.h"
 #include "dto/VeterinarianInDTO.h"
@@ -19,6 +20,9 @@ private:
 public:
     VeterinarianService(Clinic& clinic);
 
+    void validateName(const std::string& name);
+    void validateAge(int age);
+    void validateSpecialty(const std::string& specialty);
     void addVeterinarian(const VeterinarianInDTO& dto);
     std::vector<VeterinarianOutDTO> getAllVeterinarians();
     VeterinarianOutDTO getVeterinarianById(int id);

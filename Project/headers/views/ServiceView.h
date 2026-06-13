@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_VIEWS_SERVICEVIEW_H_
 
 #include <vector>
+#include <string>
 
 #include "dto/ServiceInDTO.h"
 #include "dto/ServiceOutDTO.h"
@@ -15,15 +16,21 @@ class ServiceView {
 public:
     int menu();
 
-    ServiceInDTO getServiceStart();
-    ServiceInDTO getServiceDetails(const ServiceInDTO& dto);
-
+    int getAnimalId();
+    int getVeterinarianId();
     int getServiceId();
+    std::string getType();
+    float getCost();
+    std::string getDate();
+    std::string getTime();
+
+    ServiceInDTO getVeterinarianSpecialtyRequirement(const ServiceInDTO& dto);
 
     void showServiceCreated();
     void showServiceUpdated();
-    void printServices(const std::vector<ServiceOutDTO>& services);
+
     void printService(const ServiceOutDTO& service);
+    void printServices(const std::vector<ServiceOutDTO>& services);
 };
 
 #endif

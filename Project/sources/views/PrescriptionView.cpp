@@ -10,50 +10,54 @@ Created on: 16/05/2026
 #include <iostream>
 
 int PrescriptionView::menu() {
-    std::cout << "\n========== Gestao de Prescricoes ==========\n";
-    std::cout << "1. Emitir Prescricao\n";
-    std::cout << "2. Listar Prescricoes\n";
-    std::cout << "3. Consultar Prescricoes de Animal\n";
+    std::cout << "\n========== Gestão de Prescrições ==========\n";
+    std::cout << "1. Emitir Prescrição\n";
+    std::cout << "2. Listar Prescrições\n";
+    std::cout << "3. Consultar Prescrições de Animal\n";
     std::cout << "0. Voltar\n";
 
-    return Utils::getNumber("Escolha uma opcao: ");
-}
-
-PrescriptionInDTO PrescriptionView::getPrescription() {
-    PrescriptionInDTO dto{};
-
-    dto.medication = Utils::getString("Medicamento: ");
-    dto.quantity = Utils::getString("Quantidade: ");
-    dto.duration = Utils::getString("Duracao: ");
-    dto.animalId = Utils::getNumber("ID do animal: ");
-    dto.veterinarianId = Utils::getNumber("ID do veterinario: ");
-
-    return dto;
+    return Utils::getNumber("Escolha uma opção: ");
 }
 
 void PrescriptionView::showPrescriptionCreated() {
-    std::cout << "Prescricao registada com sucesso.\n";
+    std::cout << "Prescrição registada com sucesso.\n";
 }
 
 void PrescriptionView::printPrescriptions(const std::vector<PrescriptionOutDTO>& prescriptions) {
     if (prescriptions.empty()) {
-        std::cout << "Nao existem prescricoes registadas.\n";
+        std::cout << "Não existem prescrições registadas.\n";
         return;
     }
 
-    std::cout << "\n========== Lista de Prescricoes ==========\n";
+    std::cout << "\n========== Lista de Prescrições ==========\n";
 
     for (const PrescriptionOutDTO& prescription : prescriptions) {
         std::cout << "ID: " << prescription.id << "\n";
         std::cout << "Medicamento: " << prescription.medication << "\n";
         std::cout << "Quantidade: " << prescription.quantity << "\n";
-        std::cout << "Duracao: " << prescription.duration << "\n";
+        std::cout << "Duração: " << prescription.duration << "\n";
         std::cout << "ID Animal: " << prescription.animalId << "\n";
-        std::cout << "ID Veterinario: " << prescription.veterinarianId << "\n";
+        std::cout << "ID Veterinário: " << prescription.veterinarianId << "\n";
         std::cout << "------------------------------------------\n";
     }
 }
 
+std::string PrescriptionView::getMedication() {
+    return Utils::getString("Medicamento: ");
+}
+
+std::string PrescriptionView::getQuantity() {
+    return Utils::getString("Quantidade: ");
+}
+
+std::string PrescriptionView::getDuration() {
+    return Utils::getString("Duração: ");
+}
+
 int PrescriptionView::getAnimalId() {
     return Utils::getNumber("ID do animal: ");
+}
+
+int PrescriptionView::getVeterinarianId() {
+    return Utils::getNumber("ID do veterinário: ");
 }

@@ -67,20 +67,8 @@ namespace {
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
 
 void ServiceService::validateServiceStart(const ServiceInDTO& dto) {
-    if (dto.animalId <= 0) {
-        throw InvalidDataException("ID de Animal inválido.");
-    }
-
-    if (dto.veterinarianId <= 0) {
-        throw InvalidDataException("ID de Veterinário inválido.");
-    }
-
-    Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
-    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
-
-    if (animal == nullptr || veterinarian == nullptr) {
-        throw DataConsistencyException("Animal ou Veterinário não existe.");
-    }
+    validateAnimalExists(dto.animalId);
+    validateVeterinarianExists(dto.veterinarianId);
 
     validateVeterinarianSpecialty(
         dto.veterinarianId,
@@ -89,14 +77,38 @@ void ServiceService::validateServiceStart(const ServiceInDTO& dto) {
     );
 }
 
-void ServiceService::validateVeterinarianSpecialty(int veterinrianId, bool requiresSpecialty,
-    const std::string &requiredSpecialty) {
+void ServiceService::validateAnimalExists(int animalId) {
+    if (animalId <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    Animal* animal = clinic.getAnimalContainer().get(animalId);
+
+    if (animal == nullptr) {
+        throw DataConsistencyException("Animal não existe.");
+    }
+}
+
+void ServiceService::validateVeterinarianExists(int veterinarianId) {
+    if (veterinarianId <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+    if (veterinarian == nullptr) {
+        throw DataConsistencyException("Veterinário não existe.");
+    }
+}
+
+void ServiceService::validateVeterinarianSpecialty(int veterinarianId, bool requiresSpecialty,
+    const std::string& requiredSpecialty) {
 
     if (!requiresSpecialty) {
         return;
     }
 
-    if (veterinrianId <= 0) {
+    if (veterinarianId <= 0) {
         throw InvalidDataException("ID de Veterinário inválido.");
     }
 
@@ -106,7 +118,7 @@ void ServiceService::validateVeterinarianSpecialty(int veterinrianId, bool requi
         throw InvalidDataException("Especialidade necessária não pode estar vazia.");
     }
 
-    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinrianId);
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
 
     if (veterinarian == nullptr) {
         throw DataConsistencyException("Veterinário não existe.");
@@ -211,4 +223,32 @@ void ServiceService::editService(int id, const ServiceInDTO& dto) {
         animal,
         veterinarian
     );
+}
+
+void ServiceService::validateType(const std::string& type) {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Date date(1, 1, 1900);
+    Time time(0, 0);
+
+    Service service(1, "Consulta", 1.0f, date, time, &animal, &veterinarian);
+    service.setType(type);
+}
+
+void ServiceService::validateCost(float cost) {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Date date(1, 1, 1900);
+    Time time(0, 0);
+
+    Service service(1, "Consulta", 1.0f, date, time, &animal, &veterinarian);
+    service.setCost(cost);
+}
+
+void ServiceService::validateDateText(const std::string& dateText) {
+    parseDate(dateText);
+}
+
+void ServiceService::validateTimeText(const std::string& timeText) {
+    parseTime(timeText);
 }

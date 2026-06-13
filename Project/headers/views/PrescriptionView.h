@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_VIEWS_PRESCRIPTIONVIEW_H_
 
 #include <vector>
+#include <string>
 
 #include "dto/PrescriptionInDTO.h"
 #include "dto/PrescriptionOutDTO.h"
@@ -19,7 +20,12 @@ public:
 
     void showPrescriptionCreated();
     void printPrescriptions(const std::vector<PrescriptionOutDTO>& prescriptions);
+
     int getAnimalId();
+    std::string getMedication();
+    std::string getQuantity();
+    std::string getDuration();
+    int getVeterinarianId();
 };
 
 #endif

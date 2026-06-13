@@ -10,58 +10,68 @@ Created on: 16/05/2026
 #include <iostream>
 
 int ServiceView::menu() {
-    std::cout << "\n========== Gestao de Servicos ==========\n";
-    std::cout << "1. Registar Servico\n";
-    std::cout << "2. Listar Servicos\n";
-    std::cout << "3. Editar Servico\n";
+    std::cout << "\n========== Gestão de Serviços ==========\n";
+    std::cout << "1. Registar Serviço\n";
+    std::cout << "2. Listar Serviços\n";
+    std::cout << "3. Editar Serviço\n";
     std::cout << "0. Voltar\n";
 
-    return Utils::getNumber("Escolha uma opcao: ");
+    return Utils::getNumber("Escolha uma opção: ");
 }
 
-ServiceInDTO ServiceView::getServiceStart() {
-    ServiceInDTO dto{};
+int ServiceView::getAnimalId() {
+    return Utils::getNumber("ID do animal: ");
+}
 
-    dto.animalId = Utils::getNumber("ID do animal: ");
-    dto.veterinarianId = Utils::getNumber("ID do veterinario: ");
+int ServiceView::getVeterinarianId() {
+    return Utils::getNumber("ID do veterinário: ");
+}
+
+ServiceInDTO ServiceView::getVeterinarianSpecialtyRequirement(const ServiceInDTO& dto) {
+    ServiceInDTO completedDto = dto;
 
     std::string answer;
 
     do {
-        answer = Utils::getString("O servico precisa de uma especialidade especifica do veterinario? (s/n): ");
+        answer = Utils::getString("O serviço precisa de uma especialidade específica do veterinário? (s/n): ");
 
         if (answer != "s" && answer != "S" && answer != "n" && answer != "N") {
-            std::cout << "Opcao invalida. Escreva s ou n.\n";
+            std::cout << "Opção inválida. Escreva s ou n.\n";
         }
 
     } while (answer != "s" && answer != "S" && answer != "n" && answer != "N");
 
-    dto.requiresVeterinarianSpecialty = answer == "s" || answer == "S";
+    completedDto.requiresVeterinarianSpecialty = answer == "s" || answer == "S";
 
-    if (dto.requiresVeterinarianSpecialty) {
-        dto.requiredVeterinarianSpecialty = Utils::getString("Especialidade necessaria: ");
+    if (completedDto.requiresVeterinarianSpecialty) {
+        completedDto.requiredVeterinarianSpecialty = Utils::getString("Especialidade necessária: ");
     }
-
-    return dto;
-}
-
-ServiceInDTO ServiceView::getServiceDetails(const ServiceInDTO& dto) {
-    ServiceInDTO completedDto = dto;
-
-    completedDto.type = Utils::getString("Tipo de servico: ");
-    completedDto.cost = static_cast<float>(Utils::getNumber("Custo: "));
-    completedDto.date = Utils::getString("Data (dd/mm/aaaa): ");
-    completedDto.time = Utils::getString("Hora (hh:mm): ");
 
     return completedDto;
 }
 
 int ServiceView::getServiceId() {
-    return Utils::getNumber("ID do servico: ");
+    return Utils::getNumber("ID do serviço: ");
+}
+
+std::string ServiceView::getType() {
+    return Utils::getString("Tipo de serviço: ");
+}
+
+float ServiceView::getCost() {
+    return Utils::getFloat("Custo: ");
+}
+
+std::string ServiceView::getDate() {
+    return Utils::getString("Data (dd/mm/aaaa): ");
+}
+
+std::string ServiceView::getTime() {
+    return Utils::getString("Hora (hh:mm): ");
 }
 
 void ServiceView::showServiceCreated() {
-    std::cout << "Servico registado com sucesso.\n";
+    std::cout << "Serviço registado com sucesso.\n";
 }
 
 void ServiceView::showServiceUpdated() {
@@ -69,24 +79,24 @@ void ServiceView::showServiceUpdated() {
 }
 
 void ServiceView::printService(const ServiceOutDTO& service) {
-    std::cout << "\n========== Dados do Servico ==========\n";
+    std::cout << "\n========== Dados do Serviço ==========\n";
     std::cout << "ID: " << service.id << "\n";
     std::cout << "Tipo: " << service.type << "\n";
     std::cout << "Custo: " << service.cost << "\n";
     std::cout << "Data: " << service.date << "\n";
     std::cout << "Hora: " << service.time << "\n";
     std::cout << "ID Animal: " << service.animalId << "\n";
-    std::cout << "ID Veterinario: " << service.veterinarianId << "\n";
+    std::cout << "ID Veterinário: " << service.veterinarianId << "\n";
     std::cout << "--------------------------------------\n";
 }
 
 void ServiceView::printServices(const std::vector<ServiceOutDTO>& services) {
     if (services.empty()) {
-        std::cout << "Nao existem servicos registados.\n";
+        std::cout << "Não existem serviços registados.\n";
         return;
     }
 
-    std::cout << "\n========== Lista de Servicos ==========\n";
+    std::cout << "\n========== Lista de Serviços ==========\n";
 
     for (const ServiceOutDTO& service : services) {
         std::cout << "ID: " << service.id << "\n";
@@ -95,7 +105,7 @@ void ServiceView::printServices(const std::vector<ServiceOutDTO>& services) {
         std::cout << "Data: " << service.date << "\n";
         std::cout << "Hora: " << service.time << "\n";
         std::cout << "ID Animal: " << service.animalId << "\n";
-        std::cout << "ID Veterinario: " << service.veterinarianId << "\n";
+        std::cout << "ID Veterinário: " << service.veterinarianId << "\n";
         std::cout << "--------------------------------------\n";
     }
 }

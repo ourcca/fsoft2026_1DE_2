@@ -9,21 +9,52 @@
 #include "model/Prescription.h"
 #include "model/Date.h"
 #include "model/Time.h"
+#include "exceptions/DataConsistencyException.h"
+#include "exceptions/InvalidDataException.h"
 
-static void writeString(std::ofstream& file, const std::string& value) {
-    int size = value.size();
-    file.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    file.write(value.c_str(), size);
-}
+namespace {
+    constexpr int MAX_STRING_SIZE = 10000;
+    constexpr int MAX_RECORD_COUNT = 100000;
 
-static std::string readString(std::ifstream& file) {
-    int size;
-    file.read(reinterpret_cast<char*>(&size), sizeof(size));
+    template <typename T>
+    void readValue(std::ifstream& file, T& value, const std::string& fieldName) {
+        if (!file.read(reinterpret_cast<char*>(&value), sizeof(value))) {
+            throw InvalidDataException("Erro ao ler " + fieldName + " do ficheiro binário.");
+        }
+    }
 
-    std::string value(size, ' ');
-    file.read(&value[0], size);
+    void validateCount(int count, const std::string& fieldName) {
+        if (count < 0 || count > MAX_RECORD_COUNT) {
+            throw InvalidDataException("Número inválido de " + fieldName + " no ficheiro binário.");
+        }
+    }
 
-    return value;
+    static void writeString(std::ofstream& file, const std::string& value) {
+        if (value.size() > MAX_STRING_SIZE) {
+            throw InvalidDataException("String demasiado grande para guardar no ficheiro binário.");
+        }
+
+        int size = static_cast<int>(value.size());
+        file.write(reinterpret_cast<const char*>(&size), sizeof(size));
+        file.write(value.c_str(), size);
+    }
+
+    static std::string readString(std::ifstream& file) {
+        int size = 0;
+        readValue(file, size, "tamanho da string");
+
+        if (size < 0 || size > MAX_STRING_SIZE) {
+            throw InvalidDataException("Tamanho de string inválido no ficheiro binário.");
+        }
+
+        std::string value(size, ' ');
+
+        if (size > 0 && !file.read(&value[0], size)) {
+            throw InvalidDataException("Erro ao ler string do ficheiro binário.");
+        }
+
+        return value;
+    }
 }
 
 ClinicRepositoryBinary::ClinicRepositoryBinary(const std::string& fileName) {
@@ -135,118 +166,146 @@ void ClinicRepositoryBinary::load() {
         return;
     }
 
-    int animalCount;
-    file.read(reinterpret_cast<char*>(&animalCount), sizeof(animalCount));
+    Clinic loadedClinic;
+
+    int animalCount = 0;
+    readValue(file, animalCount, "número de animais");
+    validateCount(animalCount, "animais");
 
     for (int i = 0; i < animalCount; i++) {
         int id;
         int age;
         float weight;
-        std::string name;
-        std::string species;
-        std::string breed;
 
-        file.read(reinterpret_cast<char*>(&id), sizeof(id));
-        name = readString(file);
-        species = readString(file);
-        breed = readString(file);
-        file.read(reinterpret_cast<char*>(&weight), sizeof(weight));
-        file.read(reinterpret_cast<char*>(&age), sizeof(age));
+        readValue(file, id, "ID do animal");
+        std::string name = readString(file);
+        std::string species = readString(file);
+        std::string breed = readString(file);
+        readValue(file, weight, "peso do animal");
+        readValue(file, age, "idade do animal");
 
         Animal animal(id, name, species, breed, weight, age);
-        clinic.getAnimalContainer().add(animal);
+        loadedClinic.getAnimalContainer().add(animal);
     }
 
-    int veterinarianCount;
-    file.read(reinterpret_cast<char*>(&veterinarianCount), sizeof(veterinarianCount));
+    int veterinarianCount = 0;
+    readValue(file, veterinarianCount, "número de veterinários");
+    validateCount(veterinarianCount, "veterinários");
 
     for (int i = 0; i < veterinarianCount; i++) {
         int id;
         int age;
-        std::string name;
-        std::string specialty;
 
-        file.read(reinterpret_cast<char*>(&id), sizeof(id));
-        name = readString(file);
-        file.read(reinterpret_cast<char*>(&age), sizeof(age));
-        specialty = readString(file);
+        readValue(file, id, "ID do veterinário");
+        std::string name = readString(file);
+        readValue(file, age, "idade do veterinário");
+        std::string specialty = readString(file);
 
         Veterinarian veterinarian(id, name, age, specialty);
-        clinic.getVeterinarianContainer().add(veterinarian);
+        loadedClinic.getVeterinarianContainer().add(veterinarian);
     }
 
-    int serviceCount;
-    file.read(reinterpret_cast<char*>(&serviceCount), sizeof(serviceCount));
+    int serviceCount = 0;
+    readValue(file, serviceCount, "número de serviços");
+    validateCount(serviceCount, "serviços");
 
     for (int i = 0; i < serviceCount; i++) {
         int id;
         float cost;
-        std::string type;
-
         int day;
         int month;
         int year;
-
         int hour;
         int minute;
-
         int animalId;
         int veterinarianId;
 
-        file.read(reinterpret_cast<char*>(&id), sizeof(id));
-        type = readString(file);
-        file.read(reinterpret_cast<char*>(&cost), sizeof(cost));
+        readValue(file, id, "ID do serviço");
+        std::string type = readString(file);
+        readValue(file, cost, "custo do serviço");
 
-        file.read(reinterpret_cast<char*>(&day), sizeof(day));
-        file.read(reinterpret_cast<char*>(&month), sizeof(month));
-        file.read(reinterpret_cast<char*>(&year), sizeof(year));
+        readValue(file, day, "dia do serviço");
+        readValue(file, month, "mês do serviço");
+        readValue(file, year, "ano do serviço");
 
-        file.read(reinterpret_cast<char*>(&hour), sizeof(hour));
-        file.read(reinterpret_cast<char*>(&minute), sizeof(minute));
+        readValue(file, hour, "hora do serviço");
+        readValue(file, minute, "minuto do serviço");
 
-        file.read(reinterpret_cast<char*>(&animalId), sizeof(animalId));
-        file.read(reinterpret_cast<char*>(&veterinarianId), sizeof(veterinarianId));
+        readValue(file, animalId, "ID do animal do serviço");
+        readValue(file, veterinarianId, "ID do veterinário do serviço");
 
-        Animal* animal = clinic.getAnimalContainer().get(animalId);
-        Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+        Animal* animal = loadedClinic.getAnimalContainer().get(animalId);
+        Veterinarian* veterinarian = loadedClinic.getVeterinarianContainer().get(veterinarianId);
 
-        if (animal != nullptr && veterinarian != nullptr) {
-            Date date(day, month, year);
-            Time time(hour, minute);
-
-            Service service(id, type, cost, date, time, animal, veterinarian);
-            clinic.getServiceContainer().add(service);
+        if (animal == nullptr || veterinarian == nullptr) {
+            throw DataConsistencyException("Serviço no ficheiro binário referencia Animal ou Veterinário inexistente.");
         }
+
+        Date date(day, month, year);
+        Time time(hour, minute);
+
+        Service service(id, type, cost, date, time, animal, veterinarian);
+        loadedClinic.getServiceContainer().add(service);
     }
 
-    int prescriptionCount;
-    file.read(reinterpret_cast<char*>(&prescriptionCount), sizeof(prescriptionCount));
+    int prescriptionCount = 0;
+    readValue(file, prescriptionCount, "número de prescrições");
+    validateCount(prescriptionCount, "prescrições");
 
     for (int i = 0; i < prescriptionCount; i++) {
         int id;
-        std::string medication;
-        std::string quantity;
-        std::string duration;
-
         int animalId;
         int veterinarianId;
 
-        file.read(reinterpret_cast<char*>(&id), sizeof(id));
-        medication = readString(file);
-        quantity = readString(file);
-        duration = readString(file);
+        readValue(file, id, "ID da prescrição");
+        std::string medication = readString(file);
+        std::string quantity = readString(file);
+        std::string duration = readString(file);
 
-        file.read(reinterpret_cast<char*>(&animalId), sizeof(animalId));
-        file.read(reinterpret_cast<char*>(&veterinarianId), sizeof(veterinarianId));
+        readValue(file, animalId, "ID do animal da prescrição");
+        readValue(file, veterinarianId, "ID do veterinário da prescrição");
+
+        Animal* animal = loadedClinic.getAnimalContainer().get(animalId);
+        Veterinarian* veterinarian = loadedClinic.getVeterinarianContainer().get(veterinarianId);
+
+        if (animal == nullptr || veterinarian == nullptr) {
+            throw DataConsistencyException("Prescrição no ficheiro binário referencia Animal ou Veterinário inexistente.");
+        }
+
+        Prescription prescription(id, medication, quantity, duration, animal, veterinarian);
+        loadedClinic.getPrescriptionContainer().add(prescription);
+    }
+
+    clinic = loadedClinic;
+
+    for (Service& service : clinic.getServiceContainer().getAll()) {
+        int animalId = service.getAnimal()->getId();
+        int veterinarianId = service.getVeterinarian()->getId();
 
         Animal* animal = clinic.getAnimalContainer().get(animalId);
         Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
 
-        if (animal != nullptr && veterinarian != nullptr) {
-            Prescription prescription(id, medication, quantity, duration, animal, veterinarian);
-            clinic.getPrescriptionContainer().add(prescription);
+        if (animal == nullptr || veterinarian == nullptr) {
+            throw DataConsistencyException("Erro ao corrigir referências de Serviço após carregar ficheiro binário.");
         }
+
+        service.setAnimal(animal);
+        service.setVeterinarian(veterinarian);
     }
 
-    file.close();
+    for (Prescription& prescription : clinic.getPrescriptionContainer().getAll()) {
+        int animalId = prescription.getAnimal()->getId();
+        int veterinarianId = prescription.getVeterinarian()->getId();
+
+        Animal* animal = clinic.getAnimalContainer().get(animalId);
+        Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+        if (animal == nullptr || veterinarian == nullptr) {
+            throw DataConsistencyException("Erro ao corrigir referências de Prescrição após carregar ficheiro binário.");
+        }
+
+        prescription.setAnimal(animal);
+        prescription.setVeterinarian(veterinarian);
+
+    }
 }

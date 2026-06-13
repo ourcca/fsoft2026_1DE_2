@@ -56,7 +56,7 @@ void Prescription::setMedication(const std::string& medication) {
 void Prescription::setQuantity(const std::string& quantity) {
     std::string trimmed_quantity = trim(quantity);
     if (trimmed_quantity.empty()) {
-        throw InvalidDataException("Quantidade de medicamento da Prescrição não pode estar vazio.");
+        throw InvalidDataException("Quantidade de medicamento da Prescrição não pode estar vazia.");
     }
     this->quantity = trimmed_quantity;
 }
@@ -64,14 +64,14 @@ void Prescription::setQuantity(const std::string& quantity) {
 void Prescription::setDuration(const std::string& duration) {
     std::string trimmed_duration = trim(duration);
     if (trimmed_duration.empty()) {
-        throw InvalidDataException("Duração da Prescrição não pode estar vazio.");
+        throw InvalidDataException("Duração da Prescrição não pode estar vazia.");
     }
     this->duration = trimmed_duration;
 }
 
 void Prescription::setAnimal(Animal* animal) {
     if (animal == nullptr) {
-        throw InvalidDataException("Prescrição de ser associada a um Animal.");
+        throw InvalidDataException("Prescrição tem de estar associada a um Animal.");
     }
     this->animal = animal;
 }

@@ -50,3 +50,23 @@ void AnimalService::editAnimal(int id, const AnimalInDTO& dto) {
         dto.age
     );
 }
+
+void AnimalService::validateName(const std::string& name) const {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    animal.setName(name);
+}
+
+void AnimalService::validateSpecies(const std::string& species) const {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    animal.setSpecies(species);
+}
+
+void AnimalService::validateWeight(float weight) const {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    animal.setWeight(weight);
+}
+
+void AnimalService::validateAge(int age) const {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    animal.setAge(age);
+}

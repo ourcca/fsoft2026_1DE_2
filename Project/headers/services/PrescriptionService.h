@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_SERVICES_PRESCRIPTIONSERVICE_H_
 
 #include <vector>
+#include <string>
 
 #include "model/Clinic.h"
 #include "dto/PrescriptionInDTO.h"
@@ -19,6 +20,11 @@ private:
 public:
     PrescriptionService(Clinic& clinic);
 
+    void validateAnimalExists(int animalId);
+    void validateVeterinarianExists(int veterinarianId);
+    void validateMedication(const std::string& medication);
+    void validateQuantity(const std::string& quantity);
+    void validateDuration(const std::string& duration);
     void addPrescription(const PrescriptionInDTO& dto);
     std::vector<PrescriptionOutDTO> getAllPrescriptions();
     std::vector<PrescriptionOutDTO> getPrescriptionsByAnimalId(int animalId);

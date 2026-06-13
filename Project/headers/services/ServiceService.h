@@ -21,7 +21,13 @@ public:
     ServiceService(Clinic& clinic);
 
     void validateServiceStart(const ServiceInDTO& dto);
-    void validateVeterinarianSpecialty(int veterinrianId, bool requiresSpecialty, const std::string& requiredSpecialty);
+    void validateAnimalExists(int animalId);
+    void validateVeterinarianExists(int veterinarianId);
+    void validateVeterinarianSpecialty(int veterinarianId, bool requiresSpecialty, const std::string& requiredSpecialty);
+    void validateType(const std::string& type);
+    void validateCost(float cost);
+    void validateDateText(const std::string& dateText);
+    void validateTimeText(const std::string& timeText);
 
     void addService(const ServiceInDTO& dto);
     std::vector<ServiceOutDTO> getAllServices();

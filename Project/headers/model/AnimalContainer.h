@@ -7,6 +7,7 @@
 #define HEADERS_MODEL_ANIMALCONTAINER_H_
 
 #include <deque>
+#include <string>
 #include "Animal.h"
 
 class  AnimalContainer {

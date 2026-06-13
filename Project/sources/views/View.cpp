@@ -5,17 +5,17 @@
 
 int View::menu() {
     std::cout << "\n====================================\n";
-    std::cout << " Sistema de Gestao Clinica Veterinaria\n";
+    std::cout << " Sistema de Gestão Clínica Veterinária\n";
     std::cout << "====================================\n";
-    std::cout << "1. Gestao de Animais\n";
-    std::cout << "2. Gestao de Veterinarios\n";
-    std::cout << "3. Gestao de Servicos\n";
-    std::cout << "4. Gestao de Prescricoes\n";
+    std::cout << "1. Gestão de Animais\n";
+    std::cout << "2. Gestão de Veterinários\n";
+    std::cout << "3. Gestão de Serviços\n";
+    std::cout << "4. Gestão de Prescrições\n";
     std::cout << "0. Sair\n";
 
-    return Utils::getNumber("Escolha uma opcao: ");
+    return Utils::getNumber("Escolha uma opção: ");
 }
 
 void View::showExitMessage() {
-    std::cout << "A sair da aplicacao...\n";
+    std::cout << "A sair da aplicação...\n";
 }

@@ -6,6 +6,7 @@
 class Utils {
 public:
     static int getNumber(const std::string& label);
+    static float getFloat(const std::string& label);
     static std::string getString(const std::string& label);
 };
 

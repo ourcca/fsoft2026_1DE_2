@@ -7,6 +7,7 @@ Created on: 16/05/2026
 #define HEADERS_MODEL_SERVICECONTAINER_H_
 
 #include <vector>
+#include <string>
 
 #include "Service.h"
 

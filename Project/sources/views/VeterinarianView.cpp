@@ -10,41 +10,31 @@ Created on: 16/05/2026
 #include <iostream>
 
 int VeterinarianView::menu() {
-    std::cout << "\n========== Gestao de Veterinarios ==========\n";
-    std::cout << "1. Registar Veterinario\n";
-    std::cout << "2. Listar Veterinarios\n";
-    std::cout << "3. Consultar Servicos de Veterinario\n";
-    std::cout << "4. Editar Veterinario\n";
+    std::cout << "\n========== Gestão de Veterinários ==========\n";
+    std::cout << "1. Registar Veterinário\n";
+    std::cout << "2. Listar Veterinários\n";
+    std::cout << "3. Consultar Serviços de Veterinário\n";
+    std::cout << "4. Editar Veterinário\n";
     std::cout << "0. Voltar\n";
 
-    return Utils::getNumber("Escolha uma opcao: ");
-}
-
-VeterinarianInDTO VeterinarianView::getVeterinarian() {
-    VeterinarianInDTO dto{};
-
-    dto.name = Utils::getString("Nome: ");
-    dto.age = Utils::getNumber("Idade: ");
-    dto.specialty = Utils::getString("Especialidade: ");
-
-    return dto;
+    return Utils::getNumber("Escolha uma opção: ");
 }
 
 void VeterinarianView::showVeterinarianCreated() {
-    std::cout << "Veterinario registado com sucesso.\n";
+    std::cout << "Veterinário registado com sucesso.\n";
 }
 
 void VeterinarianView::showVeterinarianUpdated() {
-    std::cout << "Veterinario editado com sucesso.\n";
+    std::cout << "Veterinário editado com sucesso.\n";
 }
 
 void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>& veterinarians) {
     if (veterinarians.empty()) {
-        std::cout << "Nao existem veterinarios registados.\n";
+        std::cout << "Não existem veterinários registados.\n";
         return;
     }
 
-    std::cout << "\n========== Lista de Veterinarios ==========\n";
+    std::cout << "\n========== Lista de Veterinários ==========\n";
 
     for (const VeterinarianOutDTO& veterinarian : veterinarians) {
         std::cout << "ID: " << veterinarian.id << "\n";
@@ -56,7 +46,7 @@ void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>&
 }
 
 void VeterinarianView::printVeterinarian(const VeterinarianOutDTO& veterinarian) {
-    std::cout << "\n========== Dados do Veterinario ==========\n";
+    std::cout << "\n========== Dados do Veterinário ==========\n";
     std::cout << "ID: " << veterinarian.id << "\n";
     std::cout << "Nome: " << veterinarian.name << "\n";
     std::cout << "Idade: " << veterinarian.age << "\n";
@@ -65,5 +55,17 @@ void VeterinarianView::printVeterinarian(const VeterinarianOutDTO& veterinarian)
 }
 
 int VeterinarianView::getVeterinarianId() {
-    return Utils::getNumber("ID do veterinario: ");
+    return Utils::getNumber("ID do veterinário: ");
+}
+
+std::string VeterinarianView::getName() {
+    return Utils::getString("Nome: ");
+}
+
+int VeterinarianView::getAge() {
+    return Utils::getNumber("Idade: ");
+}
+
+std::string VeterinarianView::getSpecialty() {
+    return Utils::getString("Especialidade: ");
 }

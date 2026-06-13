@@ -72,3 +72,51 @@ std::vector<PrescriptionOutDTO> PrescriptionService::getPrescriptionsByAnimalId(
 
     return result;
 }
+
+void PrescriptionService::validateAnimalExists(int animalId) {
+    if (animalId <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    Animal* animal = clinic.getAnimalContainer().get(animalId);
+
+    if (animal == nullptr) {
+        throw DataConsistencyException("Animal não existe.");
+    }
+}
+
+void PrescriptionService::validateVeterinarianExists(int veterinarianId) {
+    if (veterinarianId <= 0) {
+        throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+    if (veterinarian == nullptr) {
+        throw DataConsistencyException("Veterinário não existe.");
+    }
+}
+
+void PrescriptionService::validateMedication(const std::string& medication) {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Prescription prescription(1, "Medicamento", "Quantidade", "Duração", &animal, &veterinarian);
+
+    prescription.setMedication(medication);
+}
+
+void PrescriptionService::validateQuantity(const std::string& quantity) {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Prescription prescription(1, "Medicamento", "Quantidade", "Duração", &animal, &veterinarian);
+
+    prescription.setQuantity(quantity);
+}
+
+void PrescriptionService::validateDuration(const std::string& duration) {
+    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Prescription prescription(1, "Medicamento", "Quantidade", "Duração", &animal, &veterinarian);
+
+    prescription.setDuration(duration);
+}

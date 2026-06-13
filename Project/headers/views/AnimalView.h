@@ -7,6 +7,7 @@ Created on: 15/05/2026
 #define HEADERS_VIEWS_ANIMALVIEW_H_
 
 #include <vector>
+#include <string>
 
 #include "dto/AnimalInDTO.h"
 #include "dto/AnimalOutDTO.h"
@@ -22,6 +23,16 @@ public:
     void showAnimalUpdated();
 
     void printAnimals(const std::vector<AnimalOutDTO>& animals);
+
+    std::string getName();
+
+    std::string getSpecies();
+
+    std::string getBreed();
+
+    float getWeight();
+
+    int getAge();
 
     int getAnimalId();
 

@@ -49,3 +49,18 @@ void VeterinarianService::editVeterinarian(int id, const VeterinarianInDTO& dto)
         dto.specialty
     );
 }
+
+void VeterinarianService::validateName(const std::string& name) {
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    veterinarian.setName(name);
+}
+
+void VeterinarianService::validateAge(int age) {
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    veterinarian.setAge(age);
+}
+
+void VeterinarianService::validateSpecialty(const std::string& specialty) {
+    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    veterinarian.setSpecialty(specialty);
+}

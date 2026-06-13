@@ -21,7 +21,12 @@ Controller::Controller()
       veterinarianService(repository.getClinic()),
       serviceService(repository.getClinic()),
       prescriptionService(repository.getClinic()) {
-    repository.load();
+    try {
+        repository.load();
+    } catch (const std::exception& e) {
+        std::cout << "Erro ao carregar clinic.dat: " << e.what() << "\n";
+        std::cout << "A iniciar com dados vazios.\n";
+    }
 }
 
 void Controller::run() {
@@ -47,7 +52,7 @@ void Controller::run() {
                 view.showExitMessage();
                 break;
             default:
-                std::cout << "Opcao invalida.\n";
+                std::cout << "Opção inválida.\n";
                 break;
         }
 
@@ -63,7 +68,22 @@ void Controller::runAnimals() {
         try {
             switch (option) {
                 case 1: {
-                    AnimalInDTO dto = animalView.getAnimal();
+                    AnimalInDTO dto{};
+
+                    dto.name = animalView.getName();
+                    animalService.validateName(dto.name);
+
+                    dto.species = animalView.getSpecies();
+                    animalService.validateSpecies(dto.species);
+
+                    dto.breed = animalView.getBreed();
+
+                    dto.weight = animalView.getWeight();
+                    animalService.validateWeight(dto.weight);
+
+                    dto.age = animalView.getAge();
+                    animalService.validateAge(dto.age);
+
                     animalService.addAnimal(dto);
                     repository.save();
                     animalView.showAnimalCreated();
@@ -81,23 +101,38 @@ void Controller::runAnimals() {
                     break;
                 }
             case 4:{
-                        int id = animalView.getAnimalId();
+                    int id = animalView.getAnimalId();
 
-                        AnimalOutDTO animal = animalService.getAnimalById(id);
-                        animalView.printAnimal(animal);
+                    AnimalOutDTO animal = animalService.getAnimalById(id);
+                    animalView.printAnimal(animal);
 
-                        AnimalInDTO dto = animalView.getAnimal();
-                        animalService.editAnimal(id, dto);
+                    AnimalInDTO dto{};
 
-                        repository.save();
-                        animalView.showAnimalUpdated();
+                    dto.name = animalView.getName();
+                    animalService.validateName(dto.name);
 
-                        break;
+                    dto.species = animalView.getSpecies();
+                    animalService.validateSpecies(dto.species);
+
+                    dto.breed = animalView.getBreed();
+
+                    dto.weight = animalView.getWeight();
+                    animalService.validateWeight(dto.weight);
+
+                    dto.age = animalView.getAge();
+                    animalService.validateAge(dto.age);
+
+                    animalService.editAnimal(id, dto);
+
+                    repository.save();
+                    animalView.showAnimalUpdated();
+
+                    break;
             }
                 case 0:
                     break;
                 default:
-                    std::cout << "Opcao invalida.\n";
+                    std::cout << "Opção inválida.\n";
                     break;
             }
         } catch (const std::exception& e) {
@@ -116,7 +151,17 @@ void Controller::runVeterinarians() {
             switch (option) {
                 case 1: {
 
-                    VeterinarianInDTO dto = veterinarianView.getVeterinarian();
+                    VeterinarianInDTO dto{};
+
+                    dto.name = veterinarianView.getName();
+                    veterinarianService.validateName(dto.name);
+
+                    dto.age = veterinarianView.getAge();
+                    veterinarianService.validateAge(dto.age);
+
+                    dto.specialty = veterinarianView.getSpecialty();
+                    veterinarianService.validateSpecialty(dto.specialty);
+
                     veterinarianService.addVeterinarian(dto);
                     repository.save();
                     veterinarianView.showVeterinarianCreated();
@@ -139,23 +184,33 @@ void Controller::runVeterinarians() {
                     break;
                 }
                 case 4: {
-                        int id = veterinarianView.getVeterinarianId();
+                    int id = veterinarianView.getVeterinarianId();
 
-                        VeterinarianOutDTO veterinarian = veterinarianService.getVeterinarianById(id);
-                        veterinarianView.printVeterinarian(veterinarian);
+                    VeterinarianOutDTO veterinarian = veterinarianService.getVeterinarianById(id);
+                    veterinarianView.printVeterinarian(veterinarian);
 
-                        VeterinarianInDTO dto = veterinarianView.getVeterinarian();
-                        veterinarianService.editVeterinarian(id, dto);
+                    VeterinarianInDTO dto{};
 
-                        repository.save();
-                        veterinarianView.showVeterinarianUpdated();
+                    dto.name = veterinarianView.getName();
+                    veterinarianService.validateName(dto.name);
 
-                        break;
+                    dto.age = veterinarianView.getAge();
+                    veterinarianService.validateAge(dto.age);
+
+                    dto.specialty = veterinarianView.getSpecialty();
+                    veterinarianService.validateSpecialty(dto.specialty);
+
+                    veterinarianService.editVeterinarian(id, dto);
+
+                    repository.save();
+                    veterinarianView.showVeterinarianUpdated();
+
+                    break;
                     }
                 case 0:
                     break;
                 default:
-                    std::cout << "Opcao invalida.\n";
+                    std::cout << "Opção inválida.\n";
                     break;
             }
         } catch (const std::exception& e) {
@@ -172,11 +227,33 @@ void Controller::runServices() {
             switch (option) {
                 case 1: {
 
-                    ServiceInDTO dto = serviceView.getServiceStart();
+                    ServiceInDTO dto{};
 
-                        serviceService.validateServiceStart(dto);
+                    dto.animalId = serviceView.getAnimalId();
+                    serviceService.validateAnimalExists(dto.animalId);
 
-                    dto = serviceView.getServiceDetails(dto);
+                    dto.veterinarianId = serviceView.getVeterinarianId();
+                    serviceService.validateVeterinarianExists(dto.veterinarianId);
+
+                    dto = serviceView.getVeterinarianSpecialtyRequirement(dto);
+
+                    serviceService.validateVeterinarianSpecialty(
+                        dto.veterinarianId,
+                        dto.requiresVeterinarianSpecialty,
+                        dto.requiredVeterinarianSpecialty
+                    );
+
+                    dto.type = serviceView.getType();
+                    serviceService.validateType(dto.type);
+
+                    dto.cost = serviceView.getCost();
+                    serviceService.validateCost(dto.cost);
+
+                    dto.date = serviceView.getDate();
+                    serviceService.validateDateText(dto.date);
+
+                    dto.time = serviceView.getTime();
+                    serviceService.validateTimeText(dto.time);
 
                     serviceService.addService(dto);
                     repository.save();
@@ -190,26 +267,50 @@ void Controller::runServices() {
                     break;
                 }
             case 3: {
-                        int id = serviceView.getServiceId();
+                    int id = serviceView.getServiceId();
 
-                        ServiceOutDTO service = serviceService.getServiceById(id);
-                        serviceView.printService(service);
+                    ServiceOutDTO service = serviceService.getServiceById(id);
+                    serviceView.printService(service);
 
-                        ServiceInDTO dto = serviceView.getServiceStart();
-                        serviceService.validateServiceStart(dto);
+                    ServiceInDTO dto{};
 
-                        dto = serviceView.getServiceDetails(dto);
+                    dto.animalId = serviceView.getAnimalId();
+                    serviceService.validateAnimalExists(dto.animalId);
 
-                        serviceService.editService(id, dto);
-                        repository.save();
-                        serviceView.showServiceUpdated();
+                    dto.veterinarianId = serviceView.getVeterinarianId();
+                    serviceService.validateVeterinarianExists(dto.veterinarianId);
 
-                        break;
+                    dto = serviceView.getVeterinarianSpecialtyRequirement(dto);
+
+                    serviceService.validateVeterinarianSpecialty(
+                        dto.veterinarianId,
+                        dto.requiresVeterinarianSpecialty,
+                        dto.requiredVeterinarianSpecialty
+                    );
+
+                    dto.type = serviceView.getType();
+                    serviceService.validateType(dto.type);
+
+                    dto.cost = serviceView.getCost();
+                    serviceService.validateCost(dto.cost);
+
+                    dto.date = serviceView.getDate();
+                    serviceService.validateDateText(dto.date);
+
+                    dto.time = serviceView.getTime();
+                    serviceService.validateTimeText(dto.time);
+
+                    serviceService.editService(id, dto);
+
+                    repository.save();
+                    serviceView.showServiceUpdated();
+
+                    break;
                 }
                 case 0:
                     break;
                 default:
-                    std::cout << "Opcao invalida.\n";
+                    std::cout << "Opção inválida.\n";
                     break;
             }
         } catch (const std::exception& e) {
@@ -227,7 +328,23 @@ void Controller::runPrescriptions() {
             switch (option) {
                 case 1: {
 
-                    PrescriptionInDTO dto = prescriptionView.getPrescription();
+                    PrescriptionInDTO dto{};
+
+                    dto.animalId = prescriptionView.getAnimalId();
+                    prescriptionService.validateAnimalExists(dto.animalId);
+
+                    dto.veterinarianId = prescriptionView.getVeterinarianId();
+                    prescriptionService.validateVeterinarianExists(dto.veterinarianId);
+
+                    dto.medication = prescriptionView.getMedication();
+                    prescriptionService.validateMedication(dto.medication);
+
+                    dto.quantity = prescriptionView.getQuantity();
+                    prescriptionService.validateQuantity(dto.quantity);
+
+                    dto.duration = prescriptionView.getDuration();
+                    prescriptionService.validateDuration(dto.duration);
+
                     prescriptionService.addPrescription(dto);
                     repository.save();
                     prescriptionView.showPrescriptionCreated();
@@ -253,7 +370,7 @@ void Controller::runPrescriptions() {
                 case 0:
                     break;
                 default:
-                    std::cout << "Opcao invalida.\n";
+                    std::cout << "Opção inválida.\n";
                     break;
             }
         } catch (const std::exception& e) {
