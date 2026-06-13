@@ -60,7 +60,7 @@ Prescription* PrescriptionContainer::edit(int id,const std::string& medication,c
     Prescription* prescription = get(id);
 
     if (prescription == nullptr) {
-        throw NoDataException("Serviço não existe.");
+        throw NoDataException("Prescrição não existe.");
     }
 
     prescription->setMedication(medication);
