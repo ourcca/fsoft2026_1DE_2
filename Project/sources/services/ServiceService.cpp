@@ -229,7 +229,7 @@ void ServiceService::editService(int id, const ServiceInDTO& dto) {
 
 void ServiceService::removeService(int id) {
     if (id <= 0) {
-        throw InvalidDataException("ID de Animal inválido.");
+        throw InvalidDataException("ID de Serviço inválido.");
     }
 
     Service* service = clinic.getServiceContainer().get(id);
