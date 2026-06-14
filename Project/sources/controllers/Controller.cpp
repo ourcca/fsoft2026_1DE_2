@@ -363,6 +363,17 @@ void Controller::runServices() {
 
                     break;
                 }
+            case 4: {
+                    int id = serviceView.getServiceId();
+                    ServiceOutDTO service = serviceService.getServiceById(id);
+                    serviceView.printService(service);
+
+                    serviceService.removeService(id);
+                    repository.save();
+                    serviceView.showServiceRemoved();
+
+                    break;
+                }
                 case 0:
                     break;
                 default:
