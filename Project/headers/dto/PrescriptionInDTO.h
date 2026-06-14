@@ -12,8 +12,8 @@ struct PrescriptionInDTO {
     std::string medication;
     std::string quantity;
     std::string duration;
-    int animalId;
-    int veterinarianId;
+    int animalId{};
+    int veterinarianId{};
 };
 
 #endif

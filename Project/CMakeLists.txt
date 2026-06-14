@@ -22,4 +22,6 @@ add_executable(VeterinaryClinic ${SOURCES}
         headers/services/ServiceCatalog.h
         sources/services/ServiceCatalog.cpp
         headers/services/AnimalCatalog.h
-        sources/services/AnimalCatalog.cpp)
+        sources/services/AnimalCatalog.cpp
+        headers/services/PrescriptionCatalog.h
+        sources/services/PrescriptionCatalog.cpp)

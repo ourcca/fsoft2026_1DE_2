@@ -13,6 +13,7 @@
 #include "exceptions/InvalidDataException.h"
 #include "services/ServiceCatalog.h"
 #include "services/AnimalCatalog.h"
+#include "services/PrescriptionCatalog.h"
 
 namespace {
     constexpr int MAX_STRING_SIZE = 10000;
@@ -331,6 +332,10 @@ void ClinicRepositoryBinary::load() {
 
         if (animal == nullptr || veterinarian == nullptr) {
             throw DataConsistencyException("Prescrição no ficheiro binário referencia Animal ou Veterinário inexistente.");
+        }
+
+        if (!PrescriptionCatalog::isValidMedication(medication)) {
+            throw InvalidDataException("Medicamento da Prescrição inválido no ficheiro binário.");
         }
 
         Prescription prescription(id, medication, quantity, duration, animal, veterinarian);

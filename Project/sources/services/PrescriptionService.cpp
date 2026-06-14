@@ -12,24 +12,19 @@ Created on: 16/05/2026
 #include "exceptions/DataConsistencyException.h"
 #include "exceptions/NoDataException.h"
 #include "exceptions/InvalidDataException.h"
+#include "services/PrescriptionCatalog.h"
 
 PrescriptionService::PrescriptionService(Clinic& clinic) : clinic(clinic) {}
 
 void PrescriptionService::addPrescription(const PrescriptionInDTO& dto) {
-    if (dto.animalId <= 0) {
-        throw InvalidDataException("ID de Animal inválido.");
-    }
-
-    if (dto.veterinarianId <= 0) {
-        throw InvalidDataException("ID de Veterinário inválido.");
-    }
+    validateAnimalExists(dto.animalId);
+    validateVeterinarianExists(dto.veterinarianId);
+    validateMedication(dto.medication);
+    validateQuantity(dto.quantity);
+    validateDuration(dto.duration);
 
     Animal* animal = clinic.getAnimalContainer().get(dto.animalId);
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(dto.veterinarianId);
-
-    if (animal == nullptr || veterinarian == nullptr) {
-        throw DataConsistencyException("Animal ou Veterinário não existe.");
-    }
 
     int id = clinic.getPrescriptionContainer().getNextId();
 
@@ -136,25 +131,29 @@ void PrescriptionService::validateVeterinarianExists(int veterinarianId) {
 }
 
 void PrescriptionService::validateMedication(const std::string& medication) {
-    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
-    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
-    Prescription prescription(1, "Medicamento", "Quantidade", "Duração", &animal, &veterinarian);
+    Animal animal(1, "Nome", "Cão", "Rafeiro", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Cirurgia");
+    Prescription prescription(1, "Amoxicilina", "Quantidade", "Duração", &animal, &veterinarian);
 
     prescription.setMedication(medication);
+
+    if (!PrescriptionCatalog::isValidMedication(medication)) {
+        throw InvalidDataException("Medicamento da Prescrição não existe.");
+    }
 }
 
 void PrescriptionService::validateQuantity(const std::string& quantity) {
-    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
-    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
-    Prescription prescription(1, "Medicamento", "Quantidade", "Duração", &animal, &veterinarian);
+    Animal animal(1, "Nome", "Cão", "Rafeiro", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Cirurgia");
+    Prescription prescription(1, "Amoxicilina", "Quantidade", "Duração", &animal, &veterinarian);
 
     prescription.setQuantity(quantity);
 }
 
 void PrescriptionService::validateDuration(const std::string& duration) {
-    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
-    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
-    Prescription prescription(1, "Medicamento", "Quantidade", "Duração", &animal, &veterinarian);
+    Animal animal(1, "Nome", "Cão", "Rafeiro", 1.0f, 0);
+    Veterinarian veterinarian(1, "Nome", 18, "Cirurgia");
+    Prescription prescription(1, "Amoxicilina", "Quantidade", "Duração", &animal, &veterinarian);
 
     prescription.setDuration(duration);
 }

@@ -4,9 +4,8 @@ PrescriptionView.cpp
 Created on: 16/05/2026
 */
 #include "views/PrescriptionView.h"
-
 #include "views/Utils.h"
-
+#include "services/PrescriptionCatalog.h"
 #include <iostream>
 
 int PrescriptionView::menu() {
@@ -72,6 +71,12 @@ int PrescriptionView::getAnimalId() {
 }
 
 std::string PrescriptionView::getMedication() {
+    std::cout << "\nMedicamentos disponíveis:\n";
+
+    for (const std::string& medication : PrescriptionCatalog::getMedications()) {
+        std::cout << "- " << medication << "\n";
+    }
+
     return Utils::getString("Medicamento: ");
 }
 
