@@ -26,9 +26,11 @@ void VeterinarianContainer::add(const Veterinarian& veterinarian) {
 void VeterinarianContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != veterinarians.end()) {
+    if (it == veterinarians.end()) {
         throw NoDataException("Veterinário não existe.");
     }
+
+    veterinarians.erase(it);
 }
 
 Veterinarian* VeterinarianContainer::get(int id) {

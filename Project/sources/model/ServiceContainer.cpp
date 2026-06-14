@@ -25,9 +25,11 @@ void ServiceContainer::add(const Service& service) {
 void ServiceContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != services.end()) {
+    if (it == services.end()) {
         throw NoDataException("Serviço não existe.");
     }
+
+    services.erase(it);
 }
 
 Service* ServiceContainer::get(int id) {

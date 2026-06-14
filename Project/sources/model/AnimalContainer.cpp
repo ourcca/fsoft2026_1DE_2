@@ -26,9 +26,11 @@ void AnimalContainer::add(const Animal& animal) {
 void AnimalContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != animals.end()) {
+    if (it == animals.end()) {
         throw NoDataException("Animal não existe.");
     }
+
+    animals.erase(it);
 }
 
 std::deque<Animal>& AnimalContainer::getAll() {

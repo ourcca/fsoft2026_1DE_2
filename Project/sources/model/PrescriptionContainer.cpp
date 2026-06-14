@@ -25,9 +25,11 @@ void PrescriptionContainer::add(const Prescription& prescription) {
 void PrescriptionContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != prescriptions.end()) {
+    if (it == prescriptions.end()) {
         throw NoDataException("Perscrição não existe.");
     }
+
+    prescriptions.erase(it);
 }
 
 Prescription* PrescriptionContainer::get(int id) {
