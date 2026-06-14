@@ -101,6 +101,3 @@ bool VeterinarianView::confirmRemoveAssociatedData(int prescriptionCount, int se
 
     return answer == "s" || answer == "S";
 }
-
-    return Utils::getString("Especialidade (deixe vazio se não tiver): ");
-}
