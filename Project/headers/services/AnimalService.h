@@ -26,6 +26,11 @@ public:
     std::vector<AnimalOutDTO> getAllAnimals() const;
     AnimalOutDTO getAnimalById(int id);
     void editAnimal(int id, const AnimalInDTO& dto);
+
+    int countPrescriptionsByAnimalId(int animalId) const;
+    int countServicesByAnimalId(int animalId) const;
+    bool hasAssociatedRecords(int animalId) const;
+    void removeAnimal(int id, bool removeAssociatedRecords);
 };
 
 #endif
