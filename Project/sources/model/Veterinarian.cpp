@@ -50,15 +50,12 @@ void Veterinarian::setName(const std::string& name) {
 }
 
 void Veterinarian::setSpecialty(const std::string& specialty) {
-    std::string trimmed_specialty = trim(specialty);
-    if (trimmed_specialty.empty()) {
-        throw InvalidDataException("Especialidade de Veterinário não pode estar vazia.");
-    }
-    this->specialty = trimmed_specialty;
+
+    this->specialty = trim(specialty);
 }
 
 void Veterinarian::setAge(int age) {
-    if (age < 18) {
+    if (age < 18 || age > 70) {
         throw InvalidDataException("Idade de Veterinário inválida.");
     }
     this->age = age;

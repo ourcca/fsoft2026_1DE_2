@@ -40,7 +40,9 @@ void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>&
         std::cout << "ID: " << veterinarian.id << "\n";
         std::cout << "Nome: " << veterinarian.name << "\n";
         std::cout << "Idade: " << veterinarian.age << "\n";
-        std::cout << "Especialidade: " << veterinarian.specialty << "\n";
+        std::cout << "Especialidade: "
+          << (veterinarian.specialty.empty() ? "Sem especialidade" : veterinarian.specialty)
+          << "\n";
         std::cout << "------------------------------------------\n";
     }
 }
@@ -50,7 +52,9 @@ void VeterinarianView::printVeterinarian(const VeterinarianOutDTO& veterinarian)
     std::cout << "ID: " << veterinarian.id << "\n";
     std::cout << "Nome: " << veterinarian.name << "\n";
     std::cout << "Idade: " << veterinarian.age << "\n";
-    std::cout << "Especialidade: " << veterinarian.specialty << "\n";
+    std::cout << "Especialidade: "
+          << (veterinarian.specialty.empty() ? "Sem especialidade" : veterinarian.specialty)
+          << "\n";
     std::cout << "------------------------------------------\n";
 }
 
@@ -67,5 +71,5 @@ int VeterinarianView::getAge() {
 }
 
 std::string VeterinarianView::getSpecialty() {
-    return Utils::getString("Especialidade: ");
+    return Utils::getString("Especialidade (deixe vazio se não tiver): ");
 }

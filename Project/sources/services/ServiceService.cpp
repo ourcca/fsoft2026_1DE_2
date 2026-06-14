@@ -104,18 +104,8 @@ void ServiceService::validateVeterinarianExists(int veterinarianId) {
 void ServiceService::validateVeterinarianSpecialty(int veterinarianId, bool requiresSpecialty,
     const std::string& requiredSpecialty) {
 
-    if (!requiresSpecialty) {
-        return;
-    }
-
     if (veterinarianId <= 0) {
         throw InvalidDataException("ID de Veterinário inválido.");
-    }
-
-    const std::string normalizedRequiredSpecialty = normalize(requiredSpecialty);
-
-    if (normalizedRequiredSpecialty.empty()) {
-        throw InvalidDataException("Especialidade necessária não pode estar vazia.");
     }
 
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
@@ -124,7 +114,23 @@ void ServiceService::validateVeterinarianSpecialty(int veterinarianId, bool requ
         throw DataConsistencyException("Veterinário não existe.");
     }
 
-    if (normalize(veterinarian->getSpecialty()) != normalizedRequiredSpecialty) {
+    const std::string normalizedVeterinarianSpecialty = normalize(veterinarian->getSpecialty());
+
+    if (!requiresSpecialty) {
+        if (!normalizedVeterinarianSpecialty.empty()) {
+            throw DataConsistencyException("Serviço sem especialização só pode ser realizado por Veterinário sem especialidade.");
+        }
+
+        return;
+    }
+
+    const std::string normalizedRequiredSpecialty = normalize(requiredSpecialty);
+
+    if (normalizedRequiredSpecialty.empty()) {
+        throw InvalidDataException("Especialidade necessária não pode estar vazia.");
+    }
+
+    if (normalizedVeterinarianSpecialty != normalizedRequiredSpecialty) {
         throw DataConsistencyException("Veterinário sem especificação necessária.");
     }
 }
