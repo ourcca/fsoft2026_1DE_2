@@ -139,7 +139,7 @@ O tester cobre atualmente:
 Atualmente, o tester executa com sucesso:
 
 ```text
-62 tests passed
+201 tests passed
 ```
 
 Além dos testes automáticos, foi também feito teste manual da aplicação e da persistência binária:
