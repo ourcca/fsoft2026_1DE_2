@@ -50,7 +50,9 @@ void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>&
         std::cout << "ID: " << veterinarian.id << "\n";
         std::cout << "Nome: " << veterinarian.name << "\n";
         std::cout << "Idade: " << veterinarian.age << "\n";
-        std::cout << "Especialidade: " << veterinarian.specialty << "\n";
+        std::cout << "Especialidade: "
+          << (veterinarian.specialty.empty() ? "Sem especialidade" : veterinarian.specialty)
+          << "\n";
         std::cout << "------------------------------------------\n";
     }
 }
@@ -60,7 +62,9 @@ void VeterinarianView::printVeterinarian(const VeterinarianOutDTO& veterinarian)
     std::cout << "ID: " << veterinarian.id << "\n";
     std::cout << "Nome: " << veterinarian.name << "\n";
     std::cout << "Idade: " << veterinarian.age << "\n";
-    std::cout << "Especialidade: " << veterinarian.specialty << "\n";
+    std::cout << "Especialidade: "
+          << (veterinarian.specialty.empty() ? "Sem especialidade" : veterinarian.specialty)
+          << "\n";
     std::cout << "------------------------------------------\n";
 }
 
@@ -77,7 +81,7 @@ int VeterinarianView::getAge() {
 }
 
 std::string VeterinarianView::getSpecialty() {
-    return Utils::getString("Especialidade: ");
+    return Utils::getString("Especialidade (deixe vazio se nao tiver): ");
 }
 
 bool VeterinarianView::confirmRemoveAssociatedData(int prescriptionCount, int serviceCount) {
@@ -96,4 +100,7 @@ bool VeterinarianView::confirmRemoveAssociatedData(int prescriptionCount, int se
     } while (answer != "s" && answer != "S" && answer != "n" && answer != "N");
 
     return answer == "s" || answer == "S";
+}
+
+    return Utils::getString("Especialidade (deixe vazio se não tiver): ");
 }

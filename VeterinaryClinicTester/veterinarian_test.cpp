@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "model/Veterinarian.h"
+#include "exceptions/InvalidDataException.h"
 
 TEST(VeterinarianConstructorTest, ValidVeterinarian) {
     // Arrange + Act
@@ -34,4 +35,18 @@ TEST(VeterinarianOperatorEqualTest, DifferentVeterinarians) {
 
     // Assert
     EXPECT_FALSE(result);
+}
+
+TEST(VeterinarianValidationTest, InvalidVeterinarianFieldsThrowException) {
+    EXPECT_THROW(Veterinarian(0, "Joao", 35, "Surgery"), InvalidDataException);
+    EXPECT_THROW(Veterinarian(1, " ", 35, "Surgery"), InvalidDataException);
+    EXPECT_THROW(Veterinarian(1, "Joao", 17, "Surgery"), InvalidDataException);
+    EXPECT_THROW(Veterinarian(1, "Joao", 71, "Surgery"), InvalidDataException);
+}
+
+TEST(VeterinarianValidationTest, TextFieldsAreTrimmed) {
+    Veterinarian veterinarian(1, " Joao ", 35, " Surgery ");
+
+    EXPECT_EQ(veterinarian.getName(), "Joao");
+    EXPECT_EQ(veterinarian.getSpecialty(), "Surgery");
 }

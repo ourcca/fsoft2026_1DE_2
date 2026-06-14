@@ -59,18 +59,23 @@ int AnimalContainer::getNextId() {
     return maxId + 1;
 }
 
-Animal* AnimalContainer::edit(int id, const std::string& name, const std::string& species,const std::string& breed, float weight, int age) {
+Animal* AnimalContainer::edit(int id, const std::string& name, const std::string& species, const std::string& breed,
+    float weight, int age) {
     Animal* animal = get(id);
 
     if (animal == nullptr) {
         throw NoDataException("Animal não existe.");
     }
 
-    animal->setName(name);
-    animal->setSpecies(species);
-    animal->setBreed(breed);
-    animal->setWeight(weight);
-    animal->setAge(age);
+    Animal updated(*animal);
+
+    updated.setName(name);
+    updated.setSpecies(species);
+    updated.setBreed(breed);
+    updated.setWeight(weight);
+    updated.setAge(age);
+
+    *animal = updated;
 
     return animal;
 }

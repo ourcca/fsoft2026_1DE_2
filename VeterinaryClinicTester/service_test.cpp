@@ -5,6 +5,7 @@
 #include "model/Veterinarian.h"
 #include "model/Date.h"
 #include "model/Time.h"
+#include "exceptions/InvalidDataException.h"
 
 TEST(ServiceConstructorTest, ValidService) {
     Animal animal(1, "Rex", "Dog", "Labrador", 20.5, 4);
@@ -41,4 +42,34 @@ TEST(ServiceOperatorEqualTest, DifferentServices) {
     Service service2(2, "Vaccine", 20.0, Date(21, 5, 2026), Time(15, 0), &animal, &veterinarian);
 
     EXPECT_FALSE(service1 == service2);
+}
+
+TEST(ServiceValidationTest, InvalidServiceFieldsThrowException) {
+    Animal animal(1, "Rex", "Dog", "Labrador", 20.5f, 4);
+    Veterinarian veterinarian(1, "Joao", 35, "Surgery");
+    Date date(20, 5, 2026);
+    Time time(14, 30);
+
+    EXPECT_THROW(Service(0, "Consultation", 30.0f, date, time, &animal, &veterinarian), InvalidDataException);
+    EXPECT_THROW(Service(1, " ", 30.0f, date, time, &animal, &veterinarian), InvalidDataException);
+    EXPECT_THROW(Service(1, "Consultation", 0.0f, date, time, &animal, &veterinarian), InvalidDataException);
+    EXPECT_THROW(Service(1, "Consultation", 30.0f, date, time, nullptr, &veterinarian), InvalidDataException);
+    EXPECT_THROW(Service(1, "Consultation", 30.0f, date, time, &animal, nullptr), InvalidDataException);
+}
+
+TEST(ServiceValidationTest, TypeIsTrimmed) {
+    Animal animal(1, "Rex", "Dog", "Labrador", 20.5f, 4);
+    Veterinarian veterinarian(1, "Joao", 35, "Surgery");
+
+    Service service(
+        1,
+        " Consultation ",
+        30.0f,
+        Date(20, 5, 2026),
+        Time(14, 30),
+        &animal,
+        &veterinarian
+    );
+
+    EXPECT_EQ(service.getType(), "Consultation");
 }

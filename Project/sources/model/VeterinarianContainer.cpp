@@ -66,9 +66,12 @@ Veterinarian* VeterinarianContainer::edit(int id, const std::string& name, int a
         throw NoDataException("Veterinário não existe.");
     }
 
-    veterinarian->setName(name);
-    veterinarian->setAge(age);
-    veterinarian->setSpecialty(specialty);
+    Veterinarian updated(*veterinarian);
+    updated.setName(name);
+    updated.setAge(age);
+    updated.setSpecialty(specialty);
+
+    *veterinarian = updated;
 
     return veterinarian;
 }
