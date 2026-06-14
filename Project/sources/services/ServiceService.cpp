@@ -260,7 +260,7 @@ void ServiceService::validateCost(float cost) {
     Date date(1, 1, 1900);
     Time time(0, 0);
 
-    Service service(1, "Consulta", 1.0f, date, time, &animal, &veterinarian);
+    Service service(1, "Consulta Geral", 1.0f, date, time, &animal, &veterinarian);
     service.setCost(cost);
 }
 

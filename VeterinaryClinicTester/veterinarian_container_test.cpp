@@ -77,3 +77,11 @@ TEST(VeterinarianContainerRemoveTest, RemoveNonExistingVeterinarianThrowsExcepti
 
     EXPECT_THROW(container.remove(1), NoDataException);
 }
+
+TEST(VeterinarianContainerGetTest, GetNonExistingVeterinarianReturnsNullptr) {
+    VeterinarianContainer container;
+
+    Veterinarian* result = container.get(99);
+
+    EXPECT_EQ(result, nullptr);
+}

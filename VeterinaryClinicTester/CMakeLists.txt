@@ -33,6 +33,10 @@ set(PROJECT_SOURCE_FILES
         ${PROJECT_SOURCES_DIR}/services/PrescriptionService.cpp
         ${PROJECT_SOURCES_DIR}/services/VeterinarianService.cpp
 
+        ${PROJECT_SOURCES_DIR}/services/AnimalCatalog.cpp
+        ${PROJECT_SOURCES_DIR}/services/ServiceCatalog.cpp
+        ${PROJECT_SOURCES_DIR}/services/PrescriptionCatalog.cpp
+
         ${PROJECT_SOURCES_DIR}/mappers/AnimalMapper.cpp
         ${PROJECT_SOURCES_DIR}/mappers/ServiceMapper.cpp
         ${PROJECT_SOURCES_DIR}/mappers/PrescriptionMapper.cpp
