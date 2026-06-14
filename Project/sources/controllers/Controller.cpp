@@ -234,6 +234,35 @@ void Controller::runVeterinarians() {
 
                     break;
                     }
+                case 5: {
+                    int id = veterinarianView.getVeterinarianId();
+
+                    VeterinarianOutDTO veterinarian = veterinarianService.getVeterinarianById(id);
+                    veterinarianView.printVeterinarian(veterinarian);
+
+                    int prescriptionCount = veterinarianService.countPrescriptionsByVeterinarianId(id);
+                    int serviceCount = veterinarianService.countServicesByVeterinarianId(id);
+
+                    bool removeAssociatedRecords = false;
+
+                    if (prescriptionCount > 0 || serviceCount > 0) {
+                        removeAssociatedRecords = veterinarianView.confirmRemoveAssociatedData(
+                            prescriptionCount,
+                            serviceCount
+                        );
+
+                        if (!removeAssociatedRecords) {
+                            veterinarianView.showVeterinarianRemoveCancelled();
+                            break;
+                        }
+                    }
+
+                    veterinarianService.removeVeterinarian(id, removeAssociatedRecords);
+                    repository.save();
+                    veterinarianView.showVeterinarianRemoved();
+
+                    break;
+                }
                 case 0:
                     break;
                 default:
