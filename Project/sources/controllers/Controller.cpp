@@ -291,16 +291,8 @@ void Controller::runServices() {
                     dto.veterinarianId = serviceView.getVeterinarianId();
                     serviceService.validateVeterinarianExists(dto.veterinarianId);
 
-                    dto = serviceView.getVeterinarianSpecialtyRequirement(dto);
-
-                    serviceService.validateVeterinarianSpecialty(
-                        dto.veterinarianId,
-                        dto.requiresVeterinarianSpecialty,
-                        dto.requiredVeterinarianSpecialty
-                    );
-
                     dto.type = serviceView.getType();
-                    serviceService.validateType(dto.type);
+                    serviceService.validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
 
                     dto.cost = serviceView.getCost();
                     serviceService.validateCost(dto.cost);
@@ -336,16 +328,9 @@ void Controller::runServices() {
                     dto.veterinarianId = serviceView.getVeterinarianId();
                     serviceService.validateVeterinarianExists(dto.veterinarianId);
 
-                    dto = serviceView.getVeterinarianSpecialtyRequirement(dto);
-
-                    serviceService.validateVeterinarianSpecialty(
-                        dto.veterinarianId,
-                        dto.requiresVeterinarianSpecialty,
-                        dto.requiredVeterinarianSpecialty
-                    );
 
                     dto.type = serviceView.getType();
-                    serviceService.validateType(dto.type);
+                    serviceService.validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
 
                     dto.cost = serviceView.getCost();
                     serviceService.validateCost(dto.cost);

@@ -18,4 +18,6 @@ file(GLOB_RECURSE SOURCES
         "main.cpp"
 )
 
-add_executable(VeterinaryClinic ${SOURCES})
+add_executable(VeterinaryClinic ${SOURCES}
+        headers/services/ServiceCatalog.h
+        sources/services/ServiceCatalog.cpp)

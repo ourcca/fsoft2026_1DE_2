@@ -11,6 +11,7 @@
 #include "model/Time.h"
 #include "exceptions/DataConsistencyException.h"
 #include "exceptions/InvalidDataException.h"
+#include "services/ServiceCatalog.h"
 
 namespace {
     constexpr int MAX_STRING_SIZE = 10000;
@@ -54,6 +55,41 @@ namespace {
         }
 
         return value;
+    }
+
+    void validateLoadedServiceCatalogRule(const std::string& serviceType, const Veterinarian* veterinarian) {
+        if (!ServiceCatalog::isValidServiceType(serviceType)) {
+            throw InvalidDataException("Tipo de Serviço inválido no ficheiro binário.");
+        }
+
+        if (veterinarian == nullptr) {
+            throw DataConsistencyException("Serviço no ficheiro binário tem Veterinário inválido.");
+        }
+
+        const std::string veterinarianSpecialtyKey =
+            ServiceCatalog::normalizeKey(veterinarian->getSpecialty());
+
+        const std::string requiredSpecialty =
+            ServiceCatalog::requiredSpecialtyForService(serviceType);
+
+        const std::string requiredSpecialtyKey =
+            ServiceCatalog::normalizeKey(requiredSpecialty);
+
+        if (requiredSpecialtyKey.empty()) {
+            if (!veterinarianSpecialtyKey.empty()) {
+                throw DataConsistencyException("Serviço sem especialidade no ficheiro binário está associado a Veterinário com especialidade.");
+            }
+
+            return;
+        }
+
+        if (veterinarianSpecialtyKey.empty()) {
+            throw DataConsistencyException("Serviço com especialidade no ficheiro binário está associado a Veterinário sem especialidade.");
+        }
+
+        if (veterinarianSpecialtyKey != requiredSpecialtyKey) {
+            throw DataConsistencyException("Serviço no ficheiro binário está associado a Veterinário com especialidade errada.");
+        }
     }
 }
 
@@ -201,6 +237,10 @@ void ClinicRepositoryBinary::load() {
         readValue(file, age, "idade do veterinário");
         std::string specialty = readString(file);
 
+        if (!ServiceCatalog::isValidSpecialty(specialty)) {
+            throw InvalidDataException("Especialidade de Veterinário inválida no ficheiro binário.");
+        }
+
         Veterinarian veterinarian(id, name, age, specialty);
         loadedClinic.getVeterinarianContainer().add(veterinarian);
     }
@@ -240,6 +280,8 @@ void ClinicRepositoryBinary::load() {
         if (animal == nullptr || veterinarian == nullptr) {
             throw DataConsistencyException("Serviço no ficheiro binário referencia Animal ou Veterinário inexistente.");
         }
+
+        validateLoadedServiceCatalogRule(type, veterinarian);
 
         Date date(day, month, year);
         Time time(hour, minute);

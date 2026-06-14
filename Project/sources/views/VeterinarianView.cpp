@@ -4,9 +4,8 @@ VeterinarianView.cpp
 Created on: 16/05/2026
 */
 #include "views/VeterinarianView.h"
-
 #include "views/Utils.h"
-
+#include "services/ServiceCatalog.h"
 #include <iostream>
 
 int VeterinarianView::menu() {
@@ -81,7 +80,14 @@ int VeterinarianView::getAge() {
 }
 
 std::string VeterinarianView::getSpecialty() {
-    return Utils::getString("Especialidade (deixe vazio se nao tiver): ");
+    std::cout << "\nEspecialidades disponíveis:\n";
+    std::cout << "- Sem especialidade (deixe vazio)\n";
+
+    for (const std::string& specialty : ServiceCatalog::getSpecialties()) {
+        std::cout << "- " << specialty << "\n";
+    }
+
+    return Utils::getString("Especialidade: ");
 }
 
 bool VeterinarianView::confirmRemoveAssociatedData(int prescriptionCount, int serviceCount) {

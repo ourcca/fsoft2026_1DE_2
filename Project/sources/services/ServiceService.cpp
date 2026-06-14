@@ -4,8 +4,6 @@ ServiceService.cpp
 Created on: 16/05/2026
 */
 #include <cstdio>
-#include <algorithm>
-#include <cctype>
 #include "services/ServiceService.h"
 #include "model/Service.h"
 #include "mappers/ServiceMapper.h"
@@ -14,6 +12,7 @@ Created on: 16/05/2026
 #include "exceptions/NoDataException.h"
 #include "model/Date.h"
 #include "model/Time.h"
+#include "services/ServiceCatalog.h"
 
 namespace {
     std::string trim(const std::string& value) {
@@ -52,16 +51,6 @@ namespace {
         return Time(hour, minute);
     }
 
-    std::string normalize(const std::string& value) {
-        std::string normalized = trim(value);
-
-        std::transform(normalized.begin(), normalized.end(), normalized.begin(),
-            [](unsigned char character) {
-                return static_cast<char>(std::tolower(character));
-            });
-
-        return normalized;
-    }
 }
 
 ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
@@ -69,12 +58,6 @@ ServiceService::ServiceService(Clinic& clinic) : clinic(clinic) {}
 void ServiceService::validateServiceStart(const ServiceInDTO& dto) {
     validateAnimalExists(dto.animalId);
     validateVeterinarianExists(dto.veterinarianId);
-
-    validateVeterinarianSpecialty(
-        dto.veterinarianId,
-        dto.requiresVeterinarianSpecialty,
-        dto.requiredVeterinarianSpecialty
-    );
 }
 
 void ServiceService::validateAnimalExists(int animalId) {
@@ -101,37 +84,35 @@ void ServiceService::validateVeterinarianExists(int veterinarianId) {
     }
 }
 
-void ServiceService::validateVeterinarianSpecialty(int veterinarianId, bool requiresSpecialty,
-    const std::string& requiredSpecialty) {
-
-    if (veterinarianId <= 0) {
-        throw InvalidDataException("ID de Veterinário inválido.");
-    }
+void ServiceService::validateVeterinarianCanDoService(int veterinarianId, const std::string& serviceType) {
+    validateVeterinarianExists(veterinarianId);
+    validateType(serviceType);
 
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
 
-    if (veterinarian == nullptr) {
-        throw DataConsistencyException("Veterinário não existe.");
-    }
+    const std::string veterinarianSpecialtyKey =
+        ServiceCatalog::normalizeKey(veterinarian->getSpecialty());
 
-    const std::string normalizedVeterinarianSpecialty = normalize(veterinarian->getSpecialty());
+    const std::string requiredSpecialty =
+        ServiceCatalog::requiredSpecialtyForService(serviceType);
 
-    if (!requiresSpecialty) {
-        if (!normalizedVeterinarianSpecialty.empty()) {
-            throw DataConsistencyException("Serviço sem especialização só pode ser realizado por Veterinário sem especialidade.");
+    const std::string requiredSpecialtyKey =
+        ServiceCatalog::normalizeKey(requiredSpecialty);
+
+    if (requiredSpecialtyKey.empty()) {
+        if (!veterinarianSpecialtyKey.empty()) {
+            throw DataConsistencyException("Serviço sem especialidade só pode ser realizado por Veterinário sem especialidade.");
         }
 
         return;
     }
 
-    const std::string normalizedRequiredSpecialty = normalize(requiredSpecialty);
-
-    if (normalizedRequiredSpecialty.empty()) {
-        throw InvalidDataException("Especialidade necessária não pode estar vazia.");
+    if (veterinarianSpecialtyKey.empty()) {
+        throw DataConsistencyException("Veterinário sem especialização necessária.");
     }
 
-    if (normalizedVeterinarianSpecialty != normalizedRequiredSpecialty) {
-        throw DataConsistencyException("Veterinário sem especificação necessária.");
+    if (veterinarianSpecialtyKey != requiredSpecialtyKey) {
+        throw DataConsistencyException("Veterinário sem especialização necessária.");
     }
 }
 
@@ -151,11 +132,7 @@ void ServiceService::addService(const ServiceInDTO& dto) {
         throw DataConsistencyException("Animal ou Veterinário não existe.");
     }
 
-    validateVeterinarianSpecialty(
-        dto.veterinarianId,
-        dto.requiresVeterinarianSpecialty,
-        dto.requiredVeterinarianSpecialty
-        );
+    validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
 
     int id = clinic.getServiceContainer().getNextId();
     Date date = parseDate(dto.date);
@@ -214,6 +191,7 @@ void ServiceService::editService(int id, const ServiceInDTO& dto) {
 
     validateServiceStart(dto);
     validateType(dto.type);
+    validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
     validateCost(dto.cost);
 
     Date date = parseDate(dto.date);
@@ -249,12 +227,16 @@ void ServiceService::removeService(int id) {
 
 void ServiceService::validateType(const std::string& type) {
     Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
-    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Veterinarian veterinarian(1, "Nome", 18, "Cirurgia");
     Date date(1, 1, 1900);
     Time time(0, 0);
 
-    Service service(1, "Consulta", 1.0f, date, time, &animal, &veterinarian);
+    Service service(1, "Consulta Geral", 1.0f, date, time, &animal, &veterinarian);
     service.setType(type);
+
+    if (!ServiceCatalog::isValidServiceType(type)) {
+        throw InvalidDataException("Tipo de Serviço não existe.");
+    }
 }
 
 void ServiceService::validateCost(float cost) {

@@ -13,10 +13,8 @@ struct ServiceInDTO {
     float cost;
     std::string date;
     std::string time;
-    int animalId;
-    int veterinarianId;
-    bool requiresVeterinarianSpecialty{};
-    std::string requiredVeterinarianSpecialty;
+    int animalId{};
+    int veterinarianId{};
 };
 
 #endif

@@ -12,7 +12,7 @@ Created on: 16/05/2026
 #include "exceptions/DataConsistencyException.h"
 #include "model/Prescription.h"
 #include "model/Service.h"
-
+#include "services/ServiceCatalog.h"
 
 VeterinarianService::VeterinarianService(Clinic& clinic) : clinic(clinic) {}
 
@@ -156,6 +156,10 @@ void VeterinarianService::validateAge(int age) {
 }
 
 void VeterinarianService::validateSpecialty(const std::string& specialty) {
-    Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
+    Veterinarian veterinarian(1, "Nome", 18, "Cirurgia");
     veterinarian.setSpecialty(specialty);
+
+    if (!ServiceCatalog::isValidSpecialty(specialty)) {
+        throw InvalidDataException("Especialidade de Veterinário não existe.");
+    }
 }

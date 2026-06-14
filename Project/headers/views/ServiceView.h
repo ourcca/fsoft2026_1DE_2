@@ -24,7 +24,6 @@ public:
     std::string getDate();
     std::string getTime();
 
-    ServiceInDTO getVeterinarianSpecialtyRequirement(const ServiceInDTO& dto);
 
     void showServiceCreated();
     void showServiceUpdated();

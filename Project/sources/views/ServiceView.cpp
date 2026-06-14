@@ -4,8 +4,8 @@ ServiceView.h
 Created on: 16/05/2026
 */
 #include "views/ServiceView.h"
-
 #include "views/Utils.h"
+#include "services/ServiceCatalog.h"
 
 #include <iostream>
 
@@ -28,34 +28,18 @@ int ServiceView::getVeterinarianId() {
     return Utils::getNumber("ID do veterinário: ");
 }
 
-ServiceInDTO ServiceView::getVeterinarianSpecialtyRequirement(const ServiceInDTO& dto) {
-    ServiceInDTO completedDto = dto;
-
-    std::string answer;
-
-    do {
-        answer = Utils::getString("O serviço precisa de uma especialidade específica do veterinário? (s/n): ");
-
-        if (answer != "s" && answer != "S" && answer != "n" && answer != "N") {
-            std::cout << "Opção inválida. Escreva s ou n.\n";
-        }
-
-    } while (answer != "s" && answer != "S" && answer != "n" && answer != "N");
-
-    completedDto.requiresVeterinarianSpecialty = answer == "s" || answer == "S";
-
-    if (completedDto.requiresVeterinarianSpecialty) {
-        completedDto.requiredVeterinarianSpecialty = Utils::getString("Especialidade necessária: ");
-    }
-
-    return completedDto;
-}
 
 int ServiceView::getServiceId() {
     return Utils::getNumber("ID do serviço: ");
 }
 
 std::string ServiceView::getType() {
+    std::cout << "\nTipos de serviço disponíveis:\n";
+
+    for (const std::string& serviceType : ServiceCatalog::getServiceTypes()) {
+        std::cout << "- " << serviceType << "\n";
+    }
+
     return Utils::getString("Tipo de serviço: ");
 }
 
