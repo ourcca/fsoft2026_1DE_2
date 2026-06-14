@@ -26,7 +26,7 @@ void PrescriptionContainer::remove(int id) {
     auto it = findByID(id);
 
     if (it != prescriptions.end()) {
-        prescriptions.erase(it);
+        throw NoDataException("Perscrição não existe.");
     }
 }
 

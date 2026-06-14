@@ -27,7 +27,7 @@ void VeterinarianContainer::remove(int id) {
     auto it = findByID(id);
 
     if (it != veterinarians.end()) {
-        veterinarians.erase(it);
+        throw NoDataException("Veterinário não existe.");
     }
 }
 

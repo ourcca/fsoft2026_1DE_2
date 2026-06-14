@@ -26,7 +26,7 @@ void ServiceContainer::remove(int id) {
     auto it = findByID(id);
 
     if (it != services.end()) {
-        services.erase(it);
+        throw NoDataException("Serviço não existe.");
     }
 }
 
