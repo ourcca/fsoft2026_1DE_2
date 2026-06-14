@@ -27,7 +27,7 @@ void AnimalContainer::remove(int id) {
     auto it = findByID(id);
 
     if (it != animals.end()) {
-        animals.erase(it);
+        throw NoDataException("Animal não existe.");
     }
 }
 

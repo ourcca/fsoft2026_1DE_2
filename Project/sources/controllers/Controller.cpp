@@ -129,6 +129,33 @@ void Controller::runAnimals() {
 
                     break;
             }
+            case 5: {
+                    int id = animalView.getAnimalId();
+
+                    AnimalOutDTO animal = animalService.getAnimalById(id);
+                    animalView.printAnimal(animal);
+
+                    int prescriptionCount = animalService.countPrescriptionsByAnimalId(id);
+                    int serviceCount = animalService.countServicesByAnimalId(id);
+
+                    bool removeAssociatedRecords = false;
+
+                    if (prescriptionCount > 0 || serviceCount > 0) {
+                        removeAssociatedRecords = animalView.confirmRemoveAssociatedData(prescriptionCount,serviceCount);
+
+                        if (!removeAssociatedRecords) {
+                            animalView.showAnimalRemoveCancelled();
+                            break;
+                        }
+                    }
+
+                    animalService.removeAnimal(id, removeAssociatedRecords);
+                    repository.save();
+                    animalView.showAnimalRemoved();
+
+                    break;
+                }
+
                 case 0:
                     break;
                 default:
@@ -393,6 +420,15 @@ void Controller::runPrescriptions() {
                         prescriptionService.editPrescription(id, dto);
                         repository.save();
                         prescriptionView.showPrescriptionUpdated();
+
+                        break;
+                    }
+            case 5: {
+                        int id = prescriptionView.getPrescriptionId();
+
+                        prescriptionService.removePrescription(id);
+                        repository.save();
+                        prescriptionView.showPrescriptionRemoved();
 
                         break;
                     }
