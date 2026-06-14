@@ -12,6 +12,7 @@
 #include "exceptions/DataConsistencyException.h"
 #include "exceptions/InvalidDataException.h"
 #include "services/ServiceCatalog.h"
+#include "services/AnimalCatalog.h"
 
 namespace {
     constexpr int MAX_STRING_SIZE = 10000;
@@ -57,14 +58,24 @@ namespace {
         return value;
     }
 
-    void validateLoadedServiceCatalogRule(const std::string& serviceType, const Veterinarian* veterinarian) {
+    void validateLoadedServiceCatalogRule(const std::string& serviceType, const Animal* animal,
+                                      const Veterinarian* veterinarian) {
         if (!ServiceCatalog::isValidServiceType(serviceType)) {
             throw InvalidDataException("Tipo de Serviço inválido no ficheiro binário.");
+        }
+
+        if (animal == nullptr) {
+            throw DataConsistencyException("Serviço no ficheiro binário tem Animal inválido.");
         }
 
         if (veterinarian == nullptr) {
             throw DataConsistencyException("Serviço no ficheiro binário tem Veterinário inválido.");
         }
+
+        if (ServiceCatalog::requiresExoticAnimal(serviceType) &&
+            !AnimalCatalog::isExoticSpecies(animal->getSpecies())) {
+            throw DataConsistencyException("Serviço de animais exóticos no ficheiro binário está associado a Animal não exótico.");
+            }
 
         const std::string veterinarianSpecialtyKey =
             ServiceCatalog::normalizeKey(veterinarian->getSpecialty());
@@ -220,6 +231,14 @@ void ClinicRepositoryBinary::load() {
         readValue(file, weight, "peso do animal");
         readValue(file, age, "idade do animal");
 
+        if (!AnimalCatalog::isValidSpecies(species)) {
+            throw InvalidDataException("Espécie de Animal inválida no ficheiro binário.");
+        }
+
+        if (!AnimalCatalog::isValidBreedForSpecies(species, breed)) {
+            throw InvalidDataException("Raça de Animal inválida para a espécie no ficheiro binário.");
+        }
+
         Animal animal(id, name, species, breed, weight, age);
         loadedClinic.getAnimalContainer().add(animal);
     }
@@ -281,7 +300,7 @@ void ClinicRepositoryBinary::load() {
             throw DataConsistencyException("Serviço no ficheiro binário referencia Animal ou Veterinário inexistente.");
         }
 
-        validateLoadedServiceCatalogRule(type, veterinarian);
+        validateLoadedServiceCatalogRule(type, animal, veterinarian);
 
         Date date(day, month, year);
         Time time(hour, minute);

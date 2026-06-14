@@ -16,8 +16,6 @@ class AnimalView {
 public:
     static int menu();
 
-    AnimalInDTO getAnimal();
-
     void showAnimalCreated();
 
     void showAnimalUpdated();
@@ -35,6 +33,8 @@ public:
     std::string getSpecies();
 
     std::string getBreed();
+
+    std::string getBreed(const std::string& species);
 
     float getWeight();
 

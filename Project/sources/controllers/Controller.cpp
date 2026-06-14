@@ -76,7 +76,8 @@ void Controller::runAnimals() {
                     dto.species = animalView.getSpecies();
                     animalService.validateSpecies(dto.species);
 
-                    dto.breed = animalView.getBreed();
+                    dto.breed = animalView.getBreed(dto.species);
+                    animalService.validateBreedForSpecies(dto.species, dto.breed);
 
                     dto.weight = animalView.getWeight();
                     animalService.validateWeight(dto.weight);
@@ -100,7 +101,7 @@ void Controller::runAnimals() {
                     animalView.printAnimal(animal);
                     break;
                 }
-            case 4:{
+                case 4:{
                     int id = animalView.getAnimalId();
 
                     AnimalOutDTO animal = animalService.getAnimalById(id);
@@ -114,7 +115,8 @@ void Controller::runAnimals() {
                     dto.species = animalView.getSpecies();
                     animalService.validateSpecies(dto.species);
 
-                    dto.breed = animalView.getBreed();
+                    dto.breed = animalView.getBreed(dto.species);
+                    animalService.validateBreedForSpecies(dto.species, dto.breed);
 
                     dto.weight = animalView.getWeight();
                     animalService.validateWeight(dto.weight);
@@ -128,8 +130,8 @@ void Controller::runAnimals() {
                     animalView.showAnimalUpdated();
 
                     break;
-            }
-            case 5: {
+                }
+                case 5: {
                     int id = animalView.getAnimalId();
 
                     AnimalOutDTO animal = animalService.getAnimalById(id);
@@ -161,7 +163,7 @@ void Controller::runAnimals() {
                 default:
                     std::cout << "Opção inválida.\n";
                     break;
-            }
+                }
         } catch (const std::exception& e) {
             std::cout << e.what() << "\n";
         }
@@ -274,6 +276,7 @@ void Controller::runVeterinarians() {
         }
     } while (option != 0);
 }
+
 void Controller::runServices() {
     int option;
 
@@ -292,6 +295,7 @@ void Controller::runServices() {
                     serviceService.validateVeterinarianExists(dto.veterinarianId);
 
                     dto.type = serviceView.getType();
+                    serviceService.validateAnimalCanDoService(dto.animalId, dto.type);
                     serviceService.validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
 
                     dto.cost = serviceView.getCost();
@@ -330,6 +334,8 @@ void Controller::runServices() {
 
 
                     dto.type = serviceView.getType();
+                    serviceService.validateType(dto.type);
+                    serviceService.validateAnimalCanDoService(dto.animalId, dto.type);
                     serviceService.validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
 
                     dto.cost = serviceView.getCost();

@@ -22,6 +22,8 @@ public:
     AnimalService(Clinic& clinic);
     void validateName(const std::string& name) const;
     void validateSpecies(const std::string& species) const;
+    void validateBreedForSpecies(const std::string& species, const std::string& breed) const;
+    bool speciesRequiresBreed(const std::string& species) const;
     void validateWeight(float weight) const;
     void validateAge(int age) const;
     void addAnimal(const AnimalInDTO& dto) const;

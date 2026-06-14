@@ -13,6 +13,7 @@ namespace ServiceCatalog {
 
     bool isValidSpecialty(const std::string& specialty);
     bool isValidServiceType(const std::string& serviceType);
+    bool requiresExoticAnimal(const std::string& serviceType);
 
     std::string requiredSpecialtyForService(const std::string& serviceType);
 

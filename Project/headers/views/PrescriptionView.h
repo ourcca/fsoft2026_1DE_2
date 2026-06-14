@@ -16,8 +16,6 @@ class PrescriptionView {
 public:
     int menu();
 
-    PrescriptionInDTO getPrescription();
-
     void showPrescriptionCreated();
     void printPrescriptions(const std::vector<PrescriptionOutDTO>& prescriptions);
     int getAnimalId();

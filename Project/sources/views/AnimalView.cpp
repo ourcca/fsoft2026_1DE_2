@@ -5,7 +5,7 @@ Created on: 15/05/2026
 */
 #include "views/AnimalView.h"
 #include "views/Utils.h"
-
+#include "services/AnimalCatalog.h"
 #include <iostream>
 
 int AnimalView::menu() {
@@ -25,10 +25,37 @@ std::string AnimalView::getName() {
 }
 
 std::string AnimalView::getSpecies() {
+    std::cout << "\nEspécies comuns disponíveis:\n";
+
+    for (const std::string& species : AnimalCatalog::getCommonPetSpecies()) {
+        std::cout << "- " << species << "\n";
+    }
+
+    std::cout << "\nEspécies exóticas disponíveis:\n";
+
+    for (const std::string& species : AnimalCatalog::getExoticSpecies()) {
+        std::cout << "- " << species << "\n";
+    }
+
     return Utils::getString("Espécie: ");
 }
 
 std::string AnimalView::getBreed() {
+    return Utils::getString("Raça: ");
+}
+
+std::string AnimalView::getBreed(const std::string& species) {
+    if (AnimalCatalog::isExoticSpecies(species)) {
+        std::cout << "Animal exótico selecionado. A raça não será pedida.\n";
+        return "";
+    }
+
+    std::cout << "\nRaças disponíveis para esta espécie:\n";
+
+    for (const std::string& breed : AnimalCatalog::getBreedsForSpecies(species)) {
+        std::cout << "- " << breed << "\n";
+    }
+
     return Utils::getString("Raça: ");
 }
 

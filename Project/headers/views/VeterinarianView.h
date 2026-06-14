@@ -16,7 +16,6 @@ class VeterinarianView {
 public:
     int menu();
 
-    VeterinarianInDTO getVeterinarian();
     int getVeterinarianId();
     std::string getName();
     int getAge();

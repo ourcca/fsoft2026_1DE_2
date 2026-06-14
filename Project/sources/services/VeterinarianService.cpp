@@ -17,6 +17,10 @@ Created on: 16/05/2026
 VeterinarianService::VeterinarianService(Clinic& clinic) : clinic(clinic) {}
 
 void VeterinarianService::addVeterinarian(const VeterinarianInDTO& dto) {
+    validateName(dto.name);
+    validateAge(dto.age);
+    validateSpecialty(dto.specialty);
+
     int id = clinic.getVeterinarianContainer().getNextId();
     Veterinarian veterinarian(id, dto.name, dto.age, dto.specialty);
     clinic.getVeterinarianContainer().add(veterinarian);
@@ -44,6 +48,36 @@ VeterinarianOutDTO VeterinarianService::getVeterinarianById(int id) {
 void VeterinarianService::editVeterinarian(int id, const VeterinarianInDTO& dto) {
     if (id <= 0) {
         throw InvalidDataException("ID de Veterinário inválido.");
+    }
+
+    validateName(dto.name);
+    validateAge(dto.age);
+    validateSpecialty(dto.specialty);
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(id);
+
+    if (veterinarian == nullptr) {
+        throw NoDataException("Veterinário não encontrado.");
+    }
+
+    const std::string newSpecialtyKey = ServiceCatalog::normalizeKey(dto.specialty);
+
+    for (const Service& service : clinic.getServiceContainer().getAll()) {
+        if (service.getVeterinarian() == veterinarian) {
+            const std::string requiredSpecialty =
+                ServiceCatalog::requiredSpecialtyForService(service.getType());
+
+            const std::string requiredSpecialtyKey =
+                ServiceCatalog::normalizeKey(requiredSpecialty);
+
+            if (requiredSpecialtyKey.empty()) {
+                if (!newSpecialtyKey.empty()) {
+                    throw DataConsistencyException("Não é possível alterar a especialidade do Veterinário porque ele tem serviços sem especialidade associados.");
+                }
+            } else if (newSpecialtyKey != requiredSpecialtyKey) {
+                throw DataConsistencyException("Não é possível alterar a especialidade do Veterinário porque ele tem serviços que exigem outra especialidade.");
+            }
+        }
     }
 
     clinic.getVeterinarianContainer().edit(

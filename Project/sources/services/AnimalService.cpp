@@ -11,12 +11,21 @@ Created on: 15/05/2026
 #include "exceptions/DataConsistencyException.h"
 #include "model/Prescription.h"
 #include "model/Service.h"
+#include "services/ServiceCatalog.h"
+#include "services/AnimalCatalog.h"
 
 
 AnimalService::AnimalService(Clinic& clinic) : clinic(clinic) {}
 
 void AnimalService::addAnimal(const AnimalInDTO& dto) const {
+    validateName(dto.name);
+    validateSpecies(dto.species);
+    validateBreedForSpecies(dto.species, dto.breed);
+    validateWeight(dto.weight);
+    validateAge(dto.age);
+
     int id = clinic.getAnimalContainer().getNextId();
+
     Animal animal(id, dto.name, dto.species, dto.breed, dto.weight, dto.age);
     clinic.getAnimalContainer().add(animal);
 }
@@ -43,6 +52,27 @@ AnimalOutDTO AnimalService::getAnimalById(int id) {
 void AnimalService::editAnimal(int id, const AnimalInDTO& dto) {
     if (id <= 0) {
         throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    validateName(dto.name);
+    validateSpecies(dto.species);
+    validateBreedForSpecies(dto.species, dto.breed);
+    validateWeight(dto.weight);
+    validateAge(dto.age);
+
+    Animal* animal = clinic.getAnimalContainer().get(id);
+
+    if (animal == nullptr) {
+        throw NoDataException("Animal não encontrado.");
+    }
+
+    if (!AnimalCatalog::isExoticSpecies(dto.species)) {
+        for (const Service& service : clinic.getServiceContainer().getAll()) {
+            if (service.getAnimal() == animal &&
+                ServiceCatalog::requiresExoticAnimal(service.getType())) {
+                throw DataConsistencyException("Não é possível alterar este animal para não exótico porque tem serviços de animais exóticos associados.");
+                }
+        }
     }
 
     clinic.getAnimalContainer().edit(
@@ -150,8 +180,12 @@ void AnimalService::validateName(const std::string& name) const {
 }
 
 void AnimalService::validateSpecies(const std::string& species) const {
-    Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
+    Animal animal(1, "Nome", "Cão", "Rafeiro", 1.0f, 0);
     animal.setSpecies(species);
+
+    if (!AnimalCatalog::isValidSpecies(species)) {
+        throw InvalidDataException("Espécie de Animal não existe.");
+    }
 }
 
 void AnimalService::validateWeight(float weight) const {
@@ -162,4 +196,26 @@ void AnimalService::validateWeight(float weight) const {
 void AnimalService::validateAge(int age) const {
     Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
     animal.setAge(age);
+}
+
+void AnimalService::validateBreedForSpecies(const std::string& species, const std::string& breed) const {
+    if (!AnimalCatalog::isValidSpecies(species)) {
+        throw InvalidDataException("Espécie de Animal não existe.");
+    }
+
+    Animal animal(1, "Nome", "Cão", "Rafeiro", 1.0f, 0);
+    animal.setSpecies(species);
+    animal.setBreed(breed);
+
+    if (!AnimalCatalog::isValidBreedForSpecies(species, breed)) {
+        if (AnimalCatalog::isExoticSpecies(species)) {
+            throw InvalidDataException("Animal exótico não deve ter raça.");
+        }
+
+        throw InvalidDataException("Raça não existe para a espécie indicada.");
+    }
+}
+
+bool AnimalService::speciesRequiresBreed(const std::string& species) const {
+    return AnimalCatalog::requiresBreed(species);
 }

@@ -11,6 +11,7 @@ namespace {
     struct ServiceRule {
         std::string serviceType;
         std::string requiredSpecialty;
+        bool requiresExoticAnimal;
     };
 
     std::string trim(const std::string& value) {
@@ -51,20 +52,22 @@ namespace {
 
     const std::vector<ServiceRule>& serviceRules() {
         static const std::vector<ServiceRule> rules = {
-            {"Consulta Geral", ""},
-            {"Vacinação", ""},
-            {"Desparasitação", ""},
-            {"Check-up", ""},
+            {"Consulta Geral", "", false},
+            {"Vacinação", "", false},
+            {"Desparasitação", "", false},
+            {"Check-up", "", false},
 
-            {"Cirurgia", "Cirurgia"},
-            {"Consulta de Dermatologia", "Dermatologia"},
-            {"Consulta de Cardiologia", "Cardiologia"},
-            {"Destartarização", "Odontologia"},
-            {"Consulta de Ortopedia", "Ortopedia"},
-            {"Consulta de Oftalmologia", "Oftalmologia"},
-            {"Raio-X", "Imagiologia"},
-            {"Ecografia", "Imagiologia"},
-            {"Consulta de Animais Exóticos", "Animais Exóticos"}
+            {"Cirurgia", "Cirurgia", false},
+            {"Consulta de Dermatologia", "Dermatologia", false},
+            {"Consulta de Cardiologia", "Cardiologia", false},
+            {"Destartarização", "Odontologia", false},
+            {"Consulta de Ortopedia", "Ortopedia", false},
+            {"Consulta de Oftalmologia", "Oftalmologia", false},
+            {"Raio-X", "Imagiologia", false},
+            {"Ecografia", "Imagiologia", false},
+
+            {"Consulta de Animais Exóticos", "Animais Exóticos", true},
+            {"Cuidados de Animais Exóticos", "Animais Exóticos", true}
         };
 
         return rules;
@@ -175,4 +178,16 @@ std::vector<std::string> ServiceCatalog::getServiceTypes() {
     }
 
     return result;
+}
+
+bool ServiceCatalog::requiresExoticAnimal(const std::string& serviceType) {
+    const std::string serviceKey = normalizeKey(serviceType);
+
+    for (const ServiceRule& rule : serviceRules()) {
+        if (normalizeKey(rule.serviceType) == serviceKey) {
+            return rule.requiresExoticAnimal;
+        }
+    }
+
+    return false;
 }

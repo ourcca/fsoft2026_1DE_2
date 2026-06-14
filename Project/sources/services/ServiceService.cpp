@@ -13,6 +13,7 @@ Created on: 16/05/2026
 #include "model/Date.h"
 #include "model/Time.h"
 #include "services/ServiceCatalog.h"
+#include "services/AnimalCatalog.h"
 
 namespace {
     std::string trim(const std::string& value) {
@@ -116,6 +117,18 @@ void ServiceService::validateVeterinarianCanDoService(int veterinarianId, const 
     }
 }
 
+void ServiceService::validateAnimalCanDoService(int animalId, const std::string& serviceType) {
+    validateAnimalExists(animalId);
+    validateType(serviceType);
+
+    Animal* animal = clinic.getAnimalContainer().get(animalId);
+
+    if (ServiceCatalog::requiresExoticAnimal(serviceType) &&
+        !AnimalCatalog::isExoticSpecies(animal->getSpecies())) {
+        throw DataConsistencyException("Serviço de animais exóticos só pode ser realizado em Animal exótico.");
+        }
+}
+
 void ServiceService::addService(const ServiceInDTO& dto) {
     if (dto.animalId <= 0) {
         throw InvalidDataException("ID de Animal inválido.");
@@ -132,6 +145,7 @@ void ServiceService::addService(const ServiceInDTO& dto) {
         throw DataConsistencyException("Animal ou Veterinário não existe.");
     }
 
+    validateAnimalCanDoService(dto.animalId, dto.type);
     validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
 
     int id = clinic.getServiceContainer().getNextId();
@@ -191,6 +205,7 @@ void ServiceService::editService(int id, const ServiceInDTO& dto) {
 
     validateServiceStart(dto);
     validateType(dto.type);
+    validateAnimalCanDoService(dto.animalId, dto.type);
     validateVeterinarianCanDoService(dto.veterinarianId, dto.type);
     validateCost(dto.cost);
 

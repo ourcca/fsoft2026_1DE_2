@@ -10,7 +10,7 @@ Created on: 16/05/2026
 
 struct ServiceInDTO {
     std::string type;
-    float cost;
+    float cost{};
     std::string date;
     std::string time;
     int animalId{};

@@ -24,6 +24,7 @@ public:
     void validateAnimalExists(int animalId);
     void validateVeterinarianExists(int veterinarianId);
     void validateVeterinarianCanDoService(int veterinarianId, const std::string& serviceType);
+    void validateAnimalCanDoService(int animalId, const std::string& serviceType);
     void validateType(const std::string& type);
     void validateCost(float cost);
     void validateDateText(const std::string& dateText);
