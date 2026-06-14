@@ -15,6 +15,7 @@ int VeterinarianView::menu() {
     std::cout << "2. Listar Veterinários\n";
     std::cout << "3. Consultar Serviços de Veterinário\n";
     std::cout << "4. Editar Veterinário\n";
+    std::cout << "5. Remover Veterinário\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opção: ");
@@ -27,6 +28,15 @@ void VeterinarianView::showVeterinarianCreated() {
 void VeterinarianView::showVeterinarianUpdated() {
     std::cout << "Veterinário editado com sucesso.\n";
 }
+
+void VeterinarianView::showVeterinarianRemoved() {
+    std::cout << "Veterinario removido com sucesso.\n";
+}
+
+void VeterinarianView::showVeterinarianRemoveCancelled() {
+    std::cout << "Remoção do veterinario cancelada.\n";
+}
+
 
 void VeterinarianView::printVeterinarians(const std::vector<VeterinarianOutDTO>& veterinarians) {
     if (veterinarians.empty()) {
@@ -68,4 +78,22 @@ int VeterinarianView::getAge() {
 
 std::string VeterinarianView::getSpecialty() {
     return Utils::getString("Especialidade: ");
+}
+
+bool VeterinarianView::confirmRemoveAssociatedData(int prescriptionCount, int serviceCount) {
+    std::cout << "Este veterinario tem " << prescriptionCount << " prescrição(ões) e "
+              << serviceCount << " serviço(s) associado(s).\n";
+
+    std::string answer;
+
+    do {
+        answer = Utils::getString("Quer remover também as prescrições e serviços associados? (s/n): ");
+
+        if (answer != "s" && answer != "S" && answer != "n" && answer != "N") {
+            std::cout << "Opção inválida. Escreva s ou n.\n";
+        }
+
+    } while (answer != "s" && answer != "S" && answer != "n" && answer != "N");
+
+    return answer == "s" || answer == "S";
 }

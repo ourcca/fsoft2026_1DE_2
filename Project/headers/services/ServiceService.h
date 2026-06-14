@@ -34,6 +34,7 @@ public:
     ServiceOutDTO getServiceById(int id);
     std::vector<ServiceOutDTO> getServicesByVeterinarianId(int veterinarianId);
     void editService(int id,const ServiceInDTO& dto);
+    void removeService(int id);
 };
 
 #endif

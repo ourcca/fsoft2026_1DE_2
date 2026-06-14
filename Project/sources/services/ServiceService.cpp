@@ -227,6 +227,20 @@ void ServiceService::editService(int id, const ServiceInDTO& dto) {
     );
 }
 
+void ServiceService::removeService(int id) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Animal inválido.");
+    }
+
+    Service* service = clinic.getServiceContainer().get(id);
+
+    if (service == nullptr) {
+        throw NoDataException("Servico não encontrado.");
+    }
+
+    clinic.getServiceContainer().remove(id);
+}
+
 void ServiceService::validateType(const std::string& type) {
     Animal animal(1, "Nome", "Espécie", "", 1.0f, 0);
     Veterinarian veterinarian(1, "Nome", 18, "Especialidade");

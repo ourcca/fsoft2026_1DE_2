@@ -28,6 +28,7 @@ public:
 
     void showServiceCreated();
     void showServiceUpdated();
+    void showServiceRemoved();
 
     void printService(const ServiceOutDTO& service);
     void printServices(const std::vector<ServiceOutDTO>& services);

@@ -234,6 +234,35 @@ void Controller::runVeterinarians() {
 
                     break;
                     }
+                case 5: {
+                    int id = veterinarianView.getVeterinarianId();
+
+                    VeterinarianOutDTO veterinarian = veterinarianService.getVeterinarianById(id);
+                    veterinarianView.printVeterinarian(veterinarian);
+
+                    int prescriptionCount = veterinarianService.countPrescriptionsByVeterinarianId(id);
+                    int serviceCount = veterinarianService.countServicesByVeterinarianId(id);
+
+                    bool removeAssociatedRecords = false;
+
+                    if (prescriptionCount > 0 || serviceCount > 0) {
+                        removeAssociatedRecords = veterinarianView.confirmRemoveAssociatedData(
+                            prescriptionCount,
+                            serviceCount
+                        );
+
+                        if (!removeAssociatedRecords) {
+                            veterinarianView.showVeterinarianRemoveCancelled();
+                            break;
+                        }
+                    }
+
+                    veterinarianService.removeVeterinarian(id, removeAssociatedRecords);
+                    repository.save();
+                    veterinarianView.showVeterinarianRemoved();
+
+                    break;
+                }
                 case 0:
                     break;
                 default:
@@ -331,6 +360,17 @@ void Controller::runServices() {
 
                     repository.save();
                     serviceView.showServiceUpdated();
+
+                    break;
+                }
+            case 4: {
+                    int id = serviceView.getServiceId();
+                    ServiceOutDTO service = serviceService.getServiceById(id);
+                    serviceView.printService(service);
+
+                    serviceService.removeService(id);
+                    repository.save();
+                    serviceView.showServiceRemoved();
 
                     break;
                 }

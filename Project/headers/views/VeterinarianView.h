@@ -24,6 +24,9 @@ public:
 
     void showVeterinarianCreated();
     void showVeterinarianUpdated();
+    void showVeterinarianRemoved();
+    void showVeterinarianRemoveCancelled();
+    bool confirmRemoveAssociatedData(int prescriptionCount, int serviceCount);
     void printVeterinarians(const std::vector<VeterinarianOutDTO>& veterinarians);
     void printVeterinarian(const VeterinarianOutDTO& veterinarian);
 };
