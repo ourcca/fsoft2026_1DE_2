@@ -14,6 +14,7 @@ int ServiceView::menu() {
     std::cout << "1. Registar Serviço\n";
     std::cout << "2. Listar Serviços\n";
     std::cout << "3. Editar Serviço\n";
+    std::cout << "4. Remover Serviço\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opção: ");
@@ -76,6 +77,10 @@ void ServiceView::showServiceCreated() {
 
 void ServiceView::showServiceUpdated() {
     std::cout << "Serviço editado com sucesso.\n";
+}
+
+void ServiceView::showServiceRemoved() {
+    std::cout << "Serviço removido com sucesso.\n";
 }
 
 void ServiceView::printService(const ServiceOutDTO& service) {
