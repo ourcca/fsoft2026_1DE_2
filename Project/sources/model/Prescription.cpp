@@ -40,7 +40,7 @@ Prescription::Prescription(const Prescription &prescription) {
 
 void Prescription::setId(int id) {
     if (id <= 0) {
-        throw InvalidDataException("Id de Prescrição tem de ser positivo.");
+        throw InvalidDataException("ID de Prescrição tem de ser positivo.");
     }
     this->id = id;
 }

@@ -40,7 +40,7 @@ Animal::Animal(const Animal& animal) {
 
 void Animal::setId(int id) {
     if (id <= 0) {
-        throw InvalidDataException("Id de Animal tem de ser positivo");
+        throw InvalidDataException("ID de Animal tem de ser positivo.");
     }
     this->id = id;
 }

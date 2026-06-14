@@ -29,11 +29,11 @@ void VeterinarianView::showVeterinarianUpdated() {
 }
 
 void VeterinarianView::showVeterinarianRemoved() {
-    std::cout << "Veterinario removido com sucesso.\n";
+    std::cout << "Veterinário removido com sucesso.\n";
 }
 
 void VeterinarianView::showVeterinarianRemoveCancelled() {
-    std::cout << "Remoção do veterinario cancelada.\n";
+    std::cout << "Remoção do veterinário cancelada.\n";
 }
 
 
@@ -91,7 +91,7 @@ std::string VeterinarianView::getSpecialty() {
 }
 
 bool VeterinarianView::confirmRemoveAssociatedData(int prescriptionCount, int serviceCount) {
-    std::cout << "Este veterinario tem " << prescriptionCount << " prescrição(ões) e "
+    std::cout << "Este veterinário tem " << prescriptionCount << " prescrição(ões) e "
               << serviceCount << " serviço(s) associado(s).\n";
 
     std::string answer;

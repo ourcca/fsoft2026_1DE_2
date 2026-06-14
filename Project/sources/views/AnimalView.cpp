@@ -84,7 +84,7 @@ void AnimalView::showAnimalRemoved() {
 }
 
 void AnimalView::showAnimalRemoveCancelled() {
-    std::cout << "Remocao do animal cancelada.\n";
+    std::cout << "Remoção do animal cancelada.\n";
 }
 
 void AnimalView::printAnimals(const std::vector<AnimalOutDTO>& animals) {

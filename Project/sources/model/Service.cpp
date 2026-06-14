@@ -43,7 +43,7 @@ Service::Service(const Service& service) {
 
 void Service::setId(int id) {
     if (id <= 0) {
-        throw InvalidDataException("Id de serviço tem de ser positivo.");
+        throw InvalidDataException("ID de Serviço tem de ser positivo.");
     }
     this->id = id;
 }

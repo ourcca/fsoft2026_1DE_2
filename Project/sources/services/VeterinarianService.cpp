@@ -90,13 +90,13 @@ void VeterinarianService::editVeterinarian(int id, const VeterinarianInDTO& dto)
 
 int VeterinarianService::countPrescriptionsByVeterinarianId(int veterinarianId) const {
     if (veterinarianId <= 0) {
-        throw InvalidDataException("ID de Veterinario inválido.");
+        throw InvalidDataException("ID de Veterinário inválido.");
     }
 
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
 
     if (veterinarian == nullptr) {
-        throw NoDataException("Veterinario não encontrado.");
+        throw NoDataException("Veterinário não encontrado.");
     }
 
     int count = 0;
@@ -113,13 +113,13 @@ int VeterinarianService::countPrescriptionsByVeterinarianId(int veterinarianId) 
 
 int VeterinarianService::countServicesByVeterinarianId(int veterinarianId) const {
     if (veterinarianId <= 0) {
-        throw InvalidDataException("ID de Veterinario inválido.");
+        throw InvalidDataException("ID de Veterinário inválido.");
     }
 
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
 
     if (veterinarian == nullptr) {
-        throw NoDataException("Veterinario não encontrado.");
+        throw NoDataException("Veterinário não encontrado.");
     }
 
     int count = 0;
@@ -139,13 +139,13 @@ bool VeterinarianService::hasAssociatedRecords(int veterinarianId) const {
 
 void VeterinarianService::removeVeterinarian(int id, bool removeAssociatedRecords) {
     if (id <= 0) {
-        throw InvalidDataException("ID de Veterinario inválido.");
+        throw InvalidDataException("ID de Veterinário inválido.");
     }
 
     Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(id);
 
     if (veterinarian == nullptr) {
-        throw NoDataException("Veterinario não encontrado.");
+        throw NoDataException("Veterinário não encontrado.");
     }
 
     std::vector<int> prescriptionIds;
@@ -164,7 +164,7 @@ void VeterinarianService::removeVeterinarian(int id, bool removeAssociatedRecord
     }
 
     if ((!prescriptionIds.empty() || !serviceIds.empty()) && !removeAssociatedRecords) {
-        throw DataConsistencyException("Veterinario tem prescrições ou serviços associados. Remoção cancelada.");
+        throw DataConsistencyException("Veterinário tem prescrições ou serviços associados. Remoção cancelada.");
     }
 
     for (int prescriptionId : prescriptionIds) {

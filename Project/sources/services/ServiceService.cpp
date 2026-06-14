@@ -109,11 +109,11 @@ void ServiceService::validateVeterinarianCanDoService(int veterinarianId, const 
     }
 
     if (veterinarianSpecialtyKey.empty()) {
-        throw DataConsistencyException("Veterinário sem especialização necessária.");
+        throw DataConsistencyException("Veterinário sem especialidade necessária.");
     }
 
     if (veterinarianSpecialtyKey != requiredSpecialtyKey) {
-        throw DataConsistencyException("Veterinário sem especialização necessária.");
+        throw DataConsistencyException("Veterinário sem especialidade necessária.");
     }
 }
 
@@ -234,7 +234,7 @@ void ServiceService::removeService(int id) {
     Service* service = clinic.getServiceContainer().get(id);
 
     if (service == nullptr) {
-        throw NoDataException("Servico não encontrado.");
+        throw NoDataException("Serviço não encontrado.");
     }
 
     clinic.getServiceContainer().remove(id);
