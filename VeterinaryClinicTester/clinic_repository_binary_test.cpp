@@ -1,7 +1,9 @@
 #include "gtest/gtest.h"
 
 #include <cstdio>
-
+#include <fstream>
+#include "exceptions/InvalidDataException.h"
+#include "exceptions/DataConsistencyException.h"
 #include "repo/ClinicRepositoryBinary.h"
 #include "model/Animal.h"
 #include "model/Veterinarian.h"
@@ -141,3 +143,77 @@ TEST(ClinicRepositoryBinaryTest, LoadNonExistingFileDoesNotCrash) {
     EXPECT_EQ(repo.getClinic().getPrescriptionContainer().getAll().size(), 0);
 }
 
+TEST(ClinicRepositoryBinaryTest, LoadNegativeAnimalCountThrowsException) {
+    std::string fileName = "corrupted_negative_count.dat";
+
+    {
+        std::ofstream file(fileName, std::ios::binary);
+
+        int animalCount = -1;
+        file.write(reinterpret_cast<const char*>(&animalCount), sizeof(animalCount));
+    }
+
+    ClinicRepositoryBinary repo(fileName);
+
+    EXPECT_THROW(repo.load(), InvalidDataException);
+
+    std::remove(fileName.c_str());
+}
+
+TEST(ClinicRepositoryBinaryTest, LoadTruncatedFileThrowsException) {
+    std::string fileName = "corrupted_truncated.dat";
+
+    {
+        std::ofstream file(fileName, std::ios::binary);
+
+        int animalCount = 1;
+        file.write(reinterpret_cast<const char*>(&animalCount), sizeof(animalCount));
+    }
+
+    ClinicRepositoryBinary repo(fileName);
+
+    EXPECT_THROW(repo.load(), InvalidDataException);
+
+    std::remove(fileName.c_str());
+}
+
+TEST(ClinicRepositoryBinaryTest, LoadServiceWithMissingAnimalOrVeterinarianThrowsException) {
+    std::string fileName = "corrupted_service_reference.dat";
+
+    {
+        ClinicRepositoryBinary repo(fileName);
+
+        repo.getClinic().getAnimalContainer().add(Animal(1, "Rex", "Dog", "Labrador", 20.5f, 4));
+        repo.getClinic().getVeterinarianContainer().add(Veterinarian(1, "Joao", 35, "Surgery"));
+
+        Animal* animal = repo.getClinic().getAnimalContainer().get(1);
+        Veterinarian* vet = repo.getClinic().getVeterinarianContainer().get(1);
+
+        repo.getClinic().getServiceContainer().add(Service(
+            1,
+            "Surgery",
+            50.0f,
+            Date(20, 5, 2026),
+            Time(14, 30),
+            animal,
+            vet
+        ));
+
+        repo.save();
+    }
+
+    {
+        std::fstream file(fileName, std::ios::in | std::ios::out | std::ios::binary);
+
+        file.seekp(-2 * static_cast<int>(sizeof(int)), std::ios::end);
+
+        int missingAnimalId = 99;
+        file.write(reinterpret_cast<const char*>(&missingAnimalId), sizeof(missingAnimalId));
+    }
+
+    ClinicRepositoryBinary repo(fileName);
+
+    EXPECT_THROW(repo.load(), DataConsistencyException);
+
+    std::remove(fileName.c_str());
+}

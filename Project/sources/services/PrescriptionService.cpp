@@ -158,3 +158,18 @@ void PrescriptionService::validateDuration(const std::string& duration) {
 
     prescription.setDuration(duration);
 }
+
+void PrescriptionService::removePrescription(int id) {
+
+    if (id <= 0) {
+        throw InvalidDataException("ID de Prescrição inválido.");
+    }
+
+    Prescription* prescription = clinic.getPrescriptionContainer().get(id);
+
+    if (prescription == nullptr) {
+        throw NoDataException("Prescrição não encontrada.");
+    }
+
+    clinic.getPrescriptionContainer().remove(id);
+}

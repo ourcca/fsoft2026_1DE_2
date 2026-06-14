@@ -7,6 +7,8 @@ Created on: 15/05/2026
 #define HEADERS_SERVICES_ANIMALSERVICE_H_
 
 #include <string>
+#include <vector>
+
 #include "model/Clinic.h"
 #include "dto/AnimalInDTO.h"
 #include "dto/AnimalOutDTO.h"
@@ -26,6 +28,11 @@ public:
     std::vector<AnimalOutDTO> getAllAnimals() const;
     AnimalOutDTO getAnimalById(int id);
     void editAnimal(int id, const AnimalInDTO& dto);
+
+    int countPrescriptionsByAnimalId(int animalId) const;
+    int countServicesByAnimalId(int animalId) const;
+    bool hasAssociatedRecords(int animalId) const;
+    void removeAnimal(int id, bool removeAssociatedRecords);
 };
 
 #endif

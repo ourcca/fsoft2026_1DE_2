@@ -15,6 +15,7 @@ int PrescriptionView::menu() {
     std::cout << "2. Listar Prescricoes\n";
     std::cout << "3. Consultar Prescricoes de Animal\n";
     std::cout << "4. Editar Prescrição\n";
+    std::cout << "5. Remover Prescrição\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opcao: ");
@@ -38,6 +39,10 @@ void PrescriptionView::showPrescriptionCreated() {
 
 void PrescriptionView::showPrescriptionUpdated() {
     std::cout << "Prescrição editada com sucesso.\n";
+}
+
+void PrescriptionView::showPrescriptionRemoved() {
+    std::cout << "Prescrição removida com sucesso.\n";
 }
 
 void PrescriptionView::printPrescription(const PrescriptionOutDTO& prescription) {

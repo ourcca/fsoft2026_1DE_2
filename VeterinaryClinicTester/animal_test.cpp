@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "model/Animal.h"
+#include "exceptions/InvalidDataException.h"
 
 TEST(AnimalConstructorTest, ValidAnimal) {
     // Arrange + Act
@@ -36,4 +37,20 @@ TEST(AnimalOperatorEqualTest, DifferentAnimals) {
 
     // Assert
     EXPECT_FALSE(result);
+}
+
+TEST(AnimalValidationTest, InvalidAnimalFieldsThrowException) {
+    EXPECT_THROW(Animal(0, "Rex", "Dog", "Labrador", 20.5f, 4), InvalidDataException);
+    EXPECT_THROW(Animal(1, " ", "Dog", "Labrador", 20.5f, 4), InvalidDataException);
+    EXPECT_THROW(Animal(1, "Rex", " ", "Labrador", 20.5f, 4), InvalidDataException);
+    EXPECT_THROW(Animal(1, "Rex", "Dog", "Labrador", 0.0f, 4), InvalidDataException);
+    EXPECT_THROW(Animal(1, "Rex", "Dog", "Labrador", 20.5f, -1), InvalidDataException);
+}
+
+TEST(AnimalValidationTest, TextFieldsAreTrimmed) {
+    Animal animal(1, " Rex ", " Dog ", " Labrador ", 20.5f, 4);
+
+    EXPECT_EQ(animal.getName(), "Rex");
+    EXPECT_EQ(animal.getSpecies(), "Dog");
+    EXPECT_EQ(animal.getBreed(), "Labrador");
 }

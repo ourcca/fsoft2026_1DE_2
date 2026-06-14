@@ -27,6 +27,11 @@ public:
     std::vector<VeterinarianOutDTO> getAllVeterinarians();
     VeterinarianOutDTO getVeterinarianById(int id);
     void editVeterinarian(int id, const VeterinarianInDTO& dto);
+
+    int countPrescriptionsByVeterinarianId(int veterinarianId) const;
+    int countServicesByVeterinarianId(int veterinarianId) const;
+    bool hasAssociatedRecords(int veterinarianId) const;
+    void removeVeterinarian(int id, bool removeAssociatedRecords);
 };
 
 #endif

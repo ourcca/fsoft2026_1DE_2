@@ -25,9 +25,11 @@ void PrescriptionContainer::add(const Prescription& prescription) {
 void PrescriptionContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != prescriptions.end()) {
-        prescriptions.erase(it);
+    if (it == prescriptions.end()) {
+        throw NoDataException("Prescrição não existe.");
     }
+
+    prescriptions.erase(it);
 }
 
 Prescription* PrescriptionContainer::get(int id) {
@@ -63,11 +65,14 @@ Prescription* PrescriptionContainer::edit(int id,const std::string& medication,c
         throw NoDataException("Prescrição não existe.");
     }
 
-    prescription->setMedication(medication);
-    prescription->setQuantity(quantity);
-    prescription->setDuration(duration);
-    prescription->setAnimal(animal);
-    prescription->setVeterinarian(veterinarian);
+    Prescription updated(*prescription);
+    updated.setMedication(medication);
+    updated.setQuantity(quantity);
+    updated.setDuration(duration);
+    updated.setAnimal(animal);
+    updated.setVeterinarian(veterinarian);
+
+    *prescription = updated;
 
     return prescription;
 }

@@ -22,6 +22,12 @@ public:
 
     void showAnimalUpdated();
 
+    void showAnimalRemoved();
+
+    void showAnimalRemoveCancelled();
+
+    bool confirmRemoveAssociatedData(int prescriptionCount, int serviceCount);
+
     void printAnimals(const std::vector<AnimalOutDTO>& animals);
 
     std::string getName();

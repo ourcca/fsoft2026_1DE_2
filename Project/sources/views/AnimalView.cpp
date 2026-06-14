@@ -14,6 +14,7 @@ int AnimalView::menu() {
     std::cout << "2. Listar Animais\n";
     std::cout << "3. Consultar Animal por ID\n";
     std::cout << "4. Editar Animal\n";
+    std::cout << "5. Remover Animal\n";
     std::cout << "0. Voltar\n";
 
     return Utils::getNumber("Escolha uma opção: ");
@@ -51,6 +52,14 @@ void AnimalView::showAnimalUpdated() {
     std::cout << "Animal editado com sucesso.\n";
 }
 
+void AnimalView::showAnimalRemoved() {
+    std::cout << "Animal removido com sucesso.\n";
+}
+
+void AnimalView::showAnimalRemoveCancelled() {
+    std::cout << "Remocao do animal cancelada.\n";
+}
+
 void AnimalView::printAnimals(const std::vector<AnimalOutDTO>& animals) {
     if (animals.empty()) {
         std::cout << "Não existem animais registados.\n";
@@ -70,8 +79,6 @@ void AnimalView::printAnimals(const std::vector<AnimalOutDTO>& animals) {
     }
 }
 
-
-
 void AnimalView::printAnimal(const AnimalOutDTO& animal) {
     std::cout << "\n========== Dados do Animal ==========\n";
     std::cout << "ID: " << animal.id << "\n";
@@ -85,4 +92,22 @@ void AnimalView::printAnimal(const AnimalOutDTO& animal) {
 
 void AnimalView::showAnimalNotFound() {
     std::cout << "Animal não encontrado.\n";
+}
+
+bool AnimalView::confirmRemoveAssociatedData(int prescriptionCount, int serviceCount) {
+    std::cout << "Este animal tem " << prescriptionCount << " prescrição(ões) e "
+              << serviceCount << " serviço(s) associado(s).\n";
+
+    std::string answer;
+
+    do {
+        answer = Utils::getString("Quer remover também as prescrições e serviços associados? (s/n): ");
+
+        if (answer != "s" && answer != "S" && answer != "n" && answer != "N") {
+            std::cout << "Opção inválida. Escreva s ou n.\n";
+        }
+
+    } while (answer != "s" && answer != "S" && answer != "n" && answer != "N");
+
+    return answer == "s" || answer == "S";
 }

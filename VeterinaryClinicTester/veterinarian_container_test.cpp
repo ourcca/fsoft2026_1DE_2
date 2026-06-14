@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "model/VeterinarianContainer.h"
+#include "exceptions/NoDataException.h"
+#include "exceptions/DuplicatedDataException.h"
 
 TEST(VeterinarianContainerAddTest, AddVeterinarian) {
     // Arrange
@@ -49,4 +51,29 @@ TEST(VeterinarianContainerNextIdTest, NonEmptyContainer) {
 
     // Assert
     EXPECT_EQ(nextId, 3);
+}
+
+TEST(VeterinarianContainerAddTest, AddDuplicateVeterinarianThrowsException) {
+    VeterinarianContainer container;
+    container.add(Veterinarian(1, "Joao Silva", 35, "Surgery"));
+
+    EXPECT_THROW(
+        container.add(Veterinarian(1, "Maria Costa", 40, "Dermatology")),
+        DuplicatedDataException
+    );
+}
+
+TEST(VeterinarianContainerRemoveTest, RemoveExistingVeterinarian) {
+    VeterinarianContainer container;
+    container.add(Veterinarian(1, "Joao Silva", 35, "Surgery"));
+
+    EXPECT_NO_THROW(container.remove(1));
+    EXPECT_EQ(container.get(1), nullptr);
+    EXPECT_EQ(container.getAll().size(), 0);
+}
+
+TEST(VeterinarianContainerRemoveTest, RemoveNonExistingVeterinarianThrowsException) {
+    VeterinarianContainer container;
+
+    EXPECT_THROW(container.remove(1), NoDataException);
 }

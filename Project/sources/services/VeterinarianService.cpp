@@ -9,6 +9,10 @@ Created on: 16/05/2026
 #include "mappers/VeterinarianMapper.h"
 #include "exceptions/NoDataException.h"
 #include "exceptions/InvalidDataException.h"
+#include "exceptions/DataConsistencyException.h"
+#include "model/Prescription.h"
+#include "model/Service.h"
+
 
 VeterinarianService::VeterinarianService(Clinic& clinic) : clinic(clinic) {}
 
@@ -49,6 +53,97 @@ void VeterinarianService::editVeterinarian(int id, const VeterinarianInDTO& dto)
         dto.specialty
     );
 }
+
+int VeterinarianService::countPrescriptionsByVeterinarianId(int veterinarianId) const {
+    if (veterinarianId <= 0) {
+        throw InvalidDataException("ID de Veterinario inválido.");
+    }
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+    if (veterinarian == nullptr) {
+        throw NoDataException("Veterinario não encontrado.");
+    }
+
+    int count = 0;
+
+    for (const Prescription& prescription : clinic.getPrescriptionContainer().getAll()) {
+        if (prescription.getVeterinarian() == veterinarian) {
+            count++;
+        }
+    }
+
+    return count;
+
+}
+
+int VeterinarianService::countServicesByVeterinarianId(int veterinarianId) const {
+    if (veterinarianId <= 0) {
+        throw InvalidDataException("ID de Veterinario inválido.");
+    }
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(veterinarianId);
+
+    if (veterinarian == nullptr) {
+        throw NoDataException("Veterinario não encontrado.");
+    }
+
+    int count = 0;
+
+    for (const Service& service : clinic.getServiceContainer().getAll()) {
+        if (service.getVeterinarian() == veterinarian) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+bool VeterinarianService::hasAssociatedRecords(int veterinarianId) const {
+    return countPrescriptionsByVeterinarianId(veterinarianId) > 0 || countServicesByVeterinarianId(veterinarianId) > 0;
+}
+
+void VeterinarianService::removeVeterinarian(int id, bool removeAssociatedRecords) {
+    if (id <= 0) {
+        throw InvalidDataException("ID de Veterinario inválido.");
+    }
+
+    Veterinarian* veterinarian = clinic.getVeterinarianContainer().get(id);
+
+    if (veterinarian == nullptr) {
+        throw NoDataException("Veterinario não encontrado.");
+    }
+
+    std::vector<int> prescriptionIds;
+    std::vector<int> serviceIds;
+
+    for (const Prescription& prescription : clinic.getPrescriptionContainer().getAll()) {
+        if (prescription.getVeterinarian() == veterinarian) {
+            prescriptionIds.push_back(prescription.getId());
+        }
+    }
+
+    for (const Service& service : clinic.getServiceContainer().getAll()) {
+        if (service.getVeterinarian() == veterinarian) {
+            serviceIds.push_back(service.getId());
+        }
+    }
+
+    if ((!prescriptionIds.empty() || !serviceIds.empty()) && !removeAssociatedRecords) {
+        throw DataConsistencyException("Veterinario tem prescrições ou serviços associados. Remoção cancelada.");
+    }
+
+    for (int prescriptionId : prescriptionIds) {
+        clinic.getPrescriptionContainer().remove(prescriptionId);
+    }
+
+    for (int serviceId : serviceIds) {
+        clinic.getServiceContainer().remove(serviceId);
+    }
+
+    clinic.getVeterinarianContainer().remove(id);
+}
+
 
 void VeterinarianService::validateName(const std::string& name) {
     Veterinarian veterinarian(1, "Nome", 18, "Especialidade");
