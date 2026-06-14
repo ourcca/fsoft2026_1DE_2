@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "model/AnimalContainer.h"
+#include "exceptions/NoDataException.h"
+#include "exceptions/DuplicatedDataException.h"
 
 TEST(AnimalContainerAddTest, AddAnimal) {
     // Arrange
@@ -60,4 +62,29 @@ TEST(AnimalContainerNextIdTest, NonEmptyContainer) {
 
     // Assert
     EXPECT_EQ(nextId, 3);
+}
+
+TEST(AnimalContainerAddTest, AddDuplicateAnimalThrowsException) {
+    AnimalContainer container;
+    container.add(Animal(1, "Rex", "Dog", "Labrador", 20.5f, 4));
+
+    EXPECT_THROW(
+        container.add(Animal(1, "Luna", "Cat", "Siamese", 5.0f, 2)),
+        DuplicatedDataException
+    );
+}
+
+TEST(AnimalContainerRemoveTest, RemoveExistingAnimal) {
+    AnimalContainer container;
+    container.add(Animal(1, "Rex", "Dog", "Labrador", 20.5f, 4));
+
+    EXPECT_NO_THROW(container.remove(1));
+    EXPECT_EQ(container.get(1), nullptr);
+    EXPECT_EQ(container.getAll().size(), 0);
+}
+
+TEST(AnimalContainerRemoveTest, RemoveNonExistingAnimalThrowsException) {
+    AnimalContainer container;
+
+    EXPECT_THROW(container.remove(1), NoDataException);
 }

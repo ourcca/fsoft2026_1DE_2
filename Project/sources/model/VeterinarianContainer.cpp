@@ -26,9 +26,11 @@ void VeterinarianContainer::add(const Veterinarian& veterinarian) {
 void VeterinarianContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != veterinarians.end()) {
+    if (it == veterinarians.end()) {
         throw NoDataException("Veterinário não existe.");
     }
+
+    veterinarians.erase(it);
 }
 
 Veterinarian* VeterinarianContainer::get(int id) {
@@ -64,9 +66,12 @@ Veterinarian* VeterinarianContainer::edit(int id, const std::string& name, int a
         throw NoDataException("Veterinário não existe.");
     }
 
-    veterinarian->setName(name);
-    veterinarian->setAge(age);
-    veterinarian->setSpecialty(specialty);
+    Veterinarian updated(*veterinarian);
+    updated.setName(name);
+    updated.setAge(age);
+    updated.setSpecialty(specialty);
+
+    *veterinarian = updated;
 
     return veterinarian;
 }

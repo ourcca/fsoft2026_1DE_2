@@ -25,9 +25,11 @@ void ServiceContainer::add(const Service& service) {
 void ServiceContainer::remove(int id) {
     auto it = findByID(id);
 
-    if (it != services.end()) {
+    if (it == services.end()) {
         throw NoDataException("Serviço não existe.");
     }
+
+    services.erase(it);
 }
 
 Service* ServiceContainer::get(int id) {
@@ -63,12 +65,15 @@ Service* ServiceContainer::edit(int id,const std::string& type,float cost,const 
         throw NoDataException("Serviço não existe.");
     }
 
-    service->setType(type);
-    service->setCost(cost);
-    service->setDate(date);
-    service->setTime(time);
-    service->setAnimal(animal);
-    service->setVeterinarian(veterinarian);
+    Service updated(*service);
+    updated.setType(type);
+    updated.setCost(cost);
+    updated.setDate(date);
+    updated.setTime(time);
+    updated.setAnimal(animal);
+    updated.setVeterinarian(veterinarian);
+
+    *service = updated;
 
     return service;
 }

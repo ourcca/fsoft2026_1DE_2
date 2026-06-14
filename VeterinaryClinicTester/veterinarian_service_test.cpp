@@ -4,6 +4,8 @@
 #include "services/VeterinarianService.h"
 #include "dto/VeterinarianInDTO.h"
 #include "dto/VeterinarianOutDTO.h"
+#include "exceptions/InvalidDataException.h"
+#include "exceptions/NoDataException.h"
 
 TEST(VeterinarianServiceTest, AddVeterinarian) {
     Clinic clinic;
@@ -49,4 +51,75 @@ TEST(VeterinarianServiceTest, GetAllVeterinarians) {
     EXPECT_EQ(result[1].name, "Maria");
     EXPECT_EQ(result[1].age, 40);
     EXPECT_EQ(result[1].specialty, "Dental");
+}
+
+TEST(VeterinarianServiceEditTest, EditExistingVeterinarianUpdatesData) {
+    Clinic clinic;
+    VeterinarianService veterinarianService(clinic);
+
+    VeterinarianInDTO dto{};
+    dto.name = "Joao";
+    dto.age = 35;
+    dto.specialty = "Surgery";
+
+    veterinarianService.addVeterinarian(dto);
+
+    VeterinarianInDTO editDto{};
+    editDto.name = "Maria";
+    editDto.age = 40;
+    editDto.specialty = "Dental";
+
+    veterinarianService.editVeterinarian(1, editDto);
+
+    VeterinarianOutDTO result = veterinarianService.getVeterinarianById(1);
+
+    EXPECT_EQ(result.name, "Maria");
+    EXPECT_EQ(result.age, 40);
+    EXPECT_EQ(result.specialty, "Dental");
+}
+
+TEST(VeterinarianServiceEditTest, EditVeterinarianInvalidIdThrowsException) {
+    Clinic clinic;
+    VeterinarianService veterinarianService(clinic);
+
+    VeterinarianInDTO dto{};
+
+    EXPECT_THROW(veterinarianService.editVeterinarian(0, dto), InvalidDataException);
+}
+
+TEST(VeterinarianServiceEditTest, EditVeterinarianNonExistingThrowsException) {
+    Clinic clinic;
+    VeterinarianService veterinarianService(clinic);
+
+    VeterinarianInDTO dto{};
+    dto.name = "Maria";
+    dto.age = 40;
+    dto.specialty = "Dental";
+
+    EXPECT_THROW(veterinarianService.editVeterinarian(99, dto), NoDataException);
+}
+
+TEST(VeterinarianServiceEditTest, FailedEditDoesNotPartiallyModifyVeterinarian) {
+    Clinic clinic;
+    VeterinarianService veterinarianService(clinic);
+
+    VeterinarianInDTO dto{};
+    dto.name = "Joao";
+    dto.age = 35;
+    dto.specialty = "Surgery";
+
+    veterinarianService.addVeterinarian(dto);
+
+    VeterinarianInDTO badDto{};
+    badDto.name = "Maria";
+    badDto.age = 17;
+    badDto.specialty = "Dental";
+
+    EXPECT_THROW(veterinarianService.editVeterinarian(1, badDto), InvalidDataException);
+
+    VeterinarianOutDTO result = veterinarianService.getVeterinarianById(1);
+
+    EXPECT_EQ(result.name, "Joao");
+    EXPECT_EQ(result.age, 35);
+    EXPECT_EQ(result.specialty, "Surgery");
 }
